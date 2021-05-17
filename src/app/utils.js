@@ -1,8 +1,8 @@
-import { STATUS } from "./features.constants";
+import { STATUS } from "./constants";
 
-export const createStatusReducers = (...actions) => {
+export const createStatusReducers = (actions) => {
   const data = {};
-  actions.forEach((action) => {
+  Object.values(actions).forEach((action) => {
     data[action.pending] = (state, action) => {
       state.status = STATUS.pending;
     };

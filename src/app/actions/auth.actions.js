@@ -1,11 +1,11 @@
 import axios from "axios";
-import { BASE_URL, ACTIONS } from "../features.constants";
+import { BASE_URL, ACTIONS } from "../constants";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const signup = createAsyncThunk(
   ACTIONS.auth.signup,
   async (formData) => {
-    const res = await axios.post(`${BASE_URL}/users`, formData);
+    const res = await axios.post(`${BASE_URL}/user`, formData);
 
     localStorage.setItem("Authenticated", res.data.token);
     axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;

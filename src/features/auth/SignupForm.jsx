@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import CustomInput from "../../common/CustomInput";
-import { STATUS } from "../features.constants";
-import { signup } from "./auth.actions";
+import { STATUS } from "../../app/constants";
+import { signup } from "../../app/actions/auth.actions";
 
 export function SignupForm() {
   const status = useSelector(({ auth }) => auth.status);

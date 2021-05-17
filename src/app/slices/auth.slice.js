@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, logout, signup } from "./auth.actions";
-import { createStatusReducers } from "../features.utils";
-import { STATUS } from "../features.constants";
+import * as actions from "../actions/auth.actions";
+import { createStatusReducers } from "../utils";
+import { STATUS } from "../constants";
 
 const initialState = {
   authenticated: false,
@@ -9,12 +9,14 @@ const initialState = {
   error: null,
 };
 
+const { login, logout, signup } = actions;
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
   extraReducers: {
-    ...createStatusReducers(signup, login, logout),
+    ...createStatusReducers(actions),
     [signup.fulfilled]: (state, action) => {
       state.authenticated = action.payload;
       state.status = STATUS.success;

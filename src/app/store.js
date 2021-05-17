@@ -1,12 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counter.slice";
-import authReducer from "../features/auth/auth.slice";
+import authReducer from "./slices/auth.slice";
+import courseReducer from "./slices/course.slice";
+import collegeReducer from "./slices/college.slice";
+import departmentReducer from "./slices/department.slice";
+import reviewReducer from "./slices/review.slice";
+import userReducer from "./slices/user.slice";
+
 import axios from "axios";
 
 const options = {
   reducer: {
-    counter: counterReducer,
     auth: authReducer,
+    course: courseReducer,
+    college: collegeReducer,
+    department: departmentReducer,
+    review: reviewReducer,
+    user: userReducer,
   },
 };
 
