@@ -7,6 +7,7 @@ export const createStatusReducers = (...actions) => {
       state.status = STATUS.pending;
     };
     data[action.rejected] = (state, action) => {
+      state.error = action.error.message;
       state.status = STATUS.failed;
     };
   });

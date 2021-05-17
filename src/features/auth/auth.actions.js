@@ -7,10 +7,6 @@ export const signup = createAsyncThunk(
   async (formData) => {
     const res = await axios.post(`${BASE_URL}/users`, formData);
 
-    if (!res.data) {
-      throw new Error("No response data");
-    }
-
     localStorage.setItem("Authenticated", res.data.token);
     axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
 
@@ -25,10 +21,6 @@ export const login = createAsyncThunk(
       email,
       password,
     });
-
-    if (!res.data) {
-      throw new Error("No response data");
-    }
 
     localStorage.setItem("Authenticated", res.data.accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${res.data.accessToken}`;
