@@ -15,7 +15,7 @@ export function UniversityCard(props) {
                     <h2 class="text-gray-900 text-lg title-font font-medium">{props.name}</h2>
                 </div>
                 <div class="flex-grow">
-                    <p class="leading-relaxed text-base text-gray-500">Explore and add to the thousands of courses and reviews at {props.name}.</p>
+                    <p class="leading-relaxed text-base text-gray-500">Explore and add to the thousands of courses and reviews at {props.name}.</p> {/* Access props.description here */}
                     <a class="mt-3 text-indigo-500 inline-flex items-center" onClick={() => history.push(`/u/${props.tag}`)}
                     >Check Reviews
                                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">

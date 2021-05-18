@@ -29,7 +29,7 @@ export function Universities() {
                 </div>
                 <div class="flex flex-wrap -m-4">
                     {colleges.map(college => {
-                        return <UniversityCard name={college.shortName} tag={college.tag}/>;
+                        return <UniversityCard name={college.shortName} tag={college.tag} description={college.description}/>;
                     })}
                     
                 </div>
