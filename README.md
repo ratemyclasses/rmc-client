@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+## Figma Design
+
+Link to the Figma: https://www.figma.com/file/Va5sr4jMAUhP5oqmrBy4d4/RateMyClass?node-id=0%3A1
 
 ## Available Scripts
 
