@@ -7,7 +7,7 @@ export function SearchField() {
             </div>
             <div class=" relative ">
                 
-                <input type="text" id="rounded-email" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-100 w-3/6 py-4 px-8 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent" placeholder="Search course..." />
+                <input type="text" id="rounded-email" class=" rounded-lg border-transparent flex-1 appearance-none border w-4/6 py-4 px-8 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent" placeholder="Search course..." />
             </div>
         </div>
     )
