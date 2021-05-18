@@ -7,8 +7,8 @@ export const signup = createAsyncThunk(
   async (formData) => {
     const res = await axios.post(`${BASE_URL}/user`, formData);
 
-    localStorage.setItem("Authenticated", res.data.token);
-    axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
+    localStorage.setItem("Authenticated", res.data.accessToken);
+    axios.defaults.headers.common.Authorization = `Bearer ${res.data.accessToken}`;
 
     return true;
   }
@@ -21,6 +21,18 @@ export const login = createAsyncThunk(
       email,
       password,
     });
+
+    localStorage.setItem("Authenticated", res.data.accessToken);
+    axios.defaults.headers.common.Authorization = `Bearer ${res.data.accessToken}`;
+
+    return true;
+  }
+);
+
+export const googleLogin = createAsyncThunk(
+  ACTIONS.auth.googleLogin,
+  async () => {
+    const res = await axios.get(`${BASE_URL}/google`);
 
     localStorage.setItem("Authenticated", res.data.accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${res.data.accessToken}`;

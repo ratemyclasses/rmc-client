@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import CustomInput from "../../common/CustomInput";
 import { STATUS } from "../../app/constants";
-import { login } from "../../app/actions/auth.actions";
+import { googleLogin, login } from "../../app/actions/auth.actions";
 
 export function LoginForm() {
   const status = useSelector(({ auth }) => auth.status);
@@ -112,6 +112,12 @@ export function LoginForm() {
           </div>
         </Form>
       </Formik>
+      <button
+        onClick={() => dispatch(googleLogin())}
+        className="group relative flex justify-center py-2 px-4 border text-sm font-medium rounded-md text-red-600 bg-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
+      >
+        Continue with Google
+      </button>
     </div>
   );
 }

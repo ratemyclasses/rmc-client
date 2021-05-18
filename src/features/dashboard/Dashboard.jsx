@@ -1,26 +1,27 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../app/actions/auth.actions";
-import { getReviews } from "../../app/actions/review.actions";
+import { getDepartments } from "../../app/actions/department.actions";
 import { STATUS } from "../../app/constants";
 
 export function Dashboard() {
   const dispatch = useDispatch();
-  const reviews = useSelector((state) => state.review.reviews);
-  const status = useSelector((state) => state.review.status);
+  const departments = useSelector((state) => state.department.departments);
+  const status = useSelector((state) => state.department.status);
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     if (status === STATUS.idle) {
       dispatch(
-        getReviews({
-          courseId: "608e2f3a12dee4ea740927d7",
+        getDepartments({
+          sortBy: ["createdAt:-1"],
+          populate: ["collegeId"],
         })
       );
     }
   });
 
-  console.log(reviews, user);
+  console.log(departments, user);
 
   if (!user) {
     return <div>Loading...</div>;

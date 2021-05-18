@@ -5,6 +5,7 @@ export const ACTIONS = {
   auth: {
     signup: "auth/signup",
     login: "auth/login",
+    googleLogin: "auth/googleLogin",
     logout: "auth/logout",
   },
   course: {

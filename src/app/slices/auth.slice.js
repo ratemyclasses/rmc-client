@@ -9,7 +9,7 @@ const initialState = {
   error: null,
 };
 
-const { login, logout, signup } = actions;
+const { login, logout, signup, googleLogin } = actions;
 
 export const authSlice = createSlice({
   name: "auth",
@@ -22,6 +22,10 @@ export const authSlice = createSlice({
       state.status = STATUS.success;
     },
     [login.fulfilled]: (state, action) => {
+      state.authenticated = action.payload;
+      state.status = STATUS.success;
+    },
+    [googleLogin.fulfilled]: (state, action) => {
       state.authenticated = action.payload;
       state.status = STATUS.success;
     },
