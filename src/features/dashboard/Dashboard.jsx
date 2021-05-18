@@ -23,11 +23,12 @@ export function Dashboard() {
   console.log(reviews, user);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div>Dashboard: No User</div>;
   }
 
   return (
     <div>
+      <div>Dashboard: No User</div>
       Welcome to RMC, {user.firstName} {user.lastName}
       <button
         className="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
