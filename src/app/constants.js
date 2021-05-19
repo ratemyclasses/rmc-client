@@ -43,6 +43,9 @@ export const ACTIONS = {
     getCurrent: 'user/getCurrent',
     update: 'user/update',
     delete: 'user/delete'
+  },
+  common: {
+    reset: 'common/reset'
   }
 };
 

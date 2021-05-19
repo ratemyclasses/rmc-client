@@ -4,9 +4,8 @@ import { getCourses } from '../../app/actions/course.actions';
 import { CourseCard } from './CourseCard';
 
 export function CourseList() {
-  const college = useSelector((state) => state.college.college);
   const courses = useSelector((state) => state.course.courses);
-  const coursesStatus = useSelector((state) => state.course.status);
+  const college = useSelector((state) => state.college.college);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,9 +20,8 @@ export function CourseList() {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, dispatch]);
-
-  console.log(coursesStatus, courses, college);
 
   if (!courses.length) {
     return <div>Loading courses...</div>;
