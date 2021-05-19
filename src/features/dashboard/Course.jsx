@@ -1,16 +1,30 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getReviews } from '../../app/actions/review.actions';
+import { Review } from '../../common/Review';
 import { AverageGradeCard } from './AverageGradeCard';
 import { CourseInfo } from './CourseInfo';
 import { IndividualRatings } from './IndividualRatings';
 import { OverallRating } from './OverallRating';
 
 export function Course() {
+  const dispatch = useDispatch();
   const course = useSelector((state) => state.course.course);
+  const reviewStatus = useSelector((state) => state.review.status);
+  const reviews = useSelector((state) => state.review.reviews);
+
+  useEffect(() => {
+    if (course) {
+      dispatch(getReviews({ courseId: course._id }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course, dispatch]);
 
   if (!course) {
     return <div className="mt-3">Select a course</div>;
   }
+  console.log(course._id);
+  console.log(reviews);
 
   return (
     <div className="lg:flex lg:items-center lg:justify-between mt-4 bg-white rounded-lg px-10 py-10">
@@ -76,6 +90,16 @@ export function Course() {
         <div className="col-span-3">
           <CourseInfo />
         </div>
+        <div className="col-span-3">Reviews</div>
+        {reviews ? (
+          reviews.map((review) => (
+            <div className="col-span-3">
+              <Review review={review} />
+            </div>
+          ))
+        ) : (
+          <div className="col-span-3">Loading...</div>
+        )}
       </div>
 
       {/* <div>
