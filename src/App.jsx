@@ -8,6 +8,7 @@ import requireAuth from "./common/requireAuth";
 import { Auth } from "./features/auth/Auth.jsx";
 import { Dashboard } from "./features/dashboard/Dashboard.jsx";
 import { Landing } from "./features/landing/Landing";
+import { Profile } from "./features/profile/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,7 +32,8 @@ function App() {
           <Route path="/signup">
             <Auth />
           </Route>
-          <Route path="/u/*" component={Dashboard} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/u/:tag" component={Dashboard} />
           <Route exact path="/" component={Landing} />
           <Route path="/*" component={PageNotFound} />
         </Switch>

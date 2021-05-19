@@ -12,9 +12,7 @@ export function Universities() {
     useEffect(() => {
         if (status === STATUS.idle) {
           dispatch(
-            getColleges({
-                params:["hello"]
-            })
+            getColleges()
           );
         }
       });

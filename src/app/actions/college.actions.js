@@ -26,6 +26,15 @@ export const getCollegeById = createAsyncThunk(
   }
 );
 
+export const getCollegeByTag = createAsyncThunk(
+  ACTIONS.college.getByTag,
+  async (tag) => {
+    const res = await axios.get(`${BASE_URL}/colleges/tag/${tag}`);
+    return res.data;
+  }
+);
+
+
 export const updateCollegeById = createAsyncThunk(
   ACTIONS.college.updateById,
   async (id, formData) => {
