@@ -1,21 +1,9 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getColleges } from '../../app/actions/college.actions';
-import { STATUS } from '../../app/constants';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { UniversityCard } from './UniversityCard';
 
 export function Universities() {
-  const dispatch = useDispatch();
-  const status = useSelector((state) => state.college.status);
   const colleges = useSelector((state) => state.college.colleges);
-
-  useEffect(() => {
-    if (status === STATUS.idle) {
-      dispatch(getColleges());
-    }
-  });
-
-  console.log(colleges);
 
   return (
     <div>
@@ -34,6 +22,7 @@ export function Universities() {
               name={college.shortName}
               tag={college.tag}
               description={college.description}
+              key={college.tag}
             />
           ))}
         </div>

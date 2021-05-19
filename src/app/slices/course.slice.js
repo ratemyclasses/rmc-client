@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as actions from '../actions/course.actions';
+import { reset } from '../actions/common.actions';
 import { createStatusReducers } from '../utils';
 import { STATUS } from '../constants';
 
@@ -43,6 +44,9 @@ export const courseSlice = createSlice({
     [deleteCourseById.fulfilled]: (state, action) => {
       state.courses = state.courses.filter(({ id }) => id !== action.payload);
       state.status = STATUS.success;
+    },
+    [reset.fulfilled]: (state, action) => {
+      state = initialState;
     }
   }
 });

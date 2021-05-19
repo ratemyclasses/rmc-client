@@ -18,15 +18,15 @@ export function Navbar(props) {
     if (collegeStatus === STATUS.idle) {
       dispatch(
         getColleges({
-          fields: ['shortName', 'tag']
+          fields: ['shortName', 'tag', 'website']
         })
       );
     }
 
-    if (!currCollege || tag !== currCollege.tag) {
+    if (tag && (!currCollege || tag !== currCollege.tag)) {
       dispatch(getCollegeByTag(tag));
     }
-  });
+  }, [tag, dispatch, collegeStatus, currCollege]);
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [collegeMenuOpen, setCollegeMenuOpen] = useState(false);
