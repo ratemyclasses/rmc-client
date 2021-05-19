@@ -18,7 +18,7 @@ export function Dashboard() {
     if (status === STATUS.idle) {
       dispatch(getCollegeByTag(tag));
     }
-  });
+  }, [tag, dispatch, status]);
 
   console.log(tag);
   console.log(college);

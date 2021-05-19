@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CourseCard } from './CourseCard';
-import { STATUS } from '../../app/constants';
 import { getCourses } from '../../app/actions/course.actions';
+import { CourseCard } from './CourseCard';
 
 export function CourseList() {
   const college = useSelector((state) => state.college.college);
@@ -11,7 +10,7 @@ export function CourseList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (coursesStatus === STATUS.idle) {
+    if (college) {
       dispatch(
         getCourses({
           collegeId: college._id,
@@ -22,7 +21,7 @@ export function CourseList() {
         })
       );
     }
-  });
+  }, [college, dispatch]);
 
   console.log(coursesStatus, courses, college);
 
