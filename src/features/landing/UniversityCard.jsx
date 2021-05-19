@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export function UniversityCard(props) {
-  const history = useHistory();
-
   return (
     <div className="p-4 md:w-1/2 text-left">
       <div className="flex rounded-lg h-full bg-white p-8 flex-col shadow-sm">
