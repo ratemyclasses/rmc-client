@@ -5,7 +5,9 @@ import { logout } from "../../app/actions/auth.actions";
 import { getCollegeByTag } from "../../app/actions/college.actions";
 import { getDepartments } from "../../app/actions/department.actions";
 import { STATUS } from "../../app/constants";
+import CenteredContent from "../../common/layout/CenteredContent";
 import { Navbar } from "../../common/Navbar";
+import { DashboardContents } from "./DashboardContents";
 
 export function Dashboard() {
   const dispatch = useDispatch();
@@ -33,14 +35,7 @@ export function Dashboard() {
   return (
     <div>
       <Navbar />
-      <div>Dashboard: User</div>
-      Welcome to RMC, {user.firstName} {user.lastName}
-      <button
-        className="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        onClick={() => dispatch(logout())}
-      >
-        Logout
-      </button>
+      <CenteredContent centeredComponent={<DashboardContents />} />
     </div>
   );
 }
