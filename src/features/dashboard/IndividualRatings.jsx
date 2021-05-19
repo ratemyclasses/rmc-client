@@ -2,7 +2,7 @@ import React from 'react';
 
 export function IndividualRatings() {
   return (
-    <div className="rounded-xl w-full md:w-full p-6 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-100 relative overflow-hidden">
+    <div className="w-full md:w-full p-1 dark:bg-gray-800 text-gray-700 dark:text-gray-100 relative overflow-hidden">
       <a href="/" className="w-full h-full block">
         <div className="w-full">
           <div className="flex items-center justify-between text-gray-400 text-sm">
@@ -25,13 +25,6 @@ export function IndividualRatings() {
           </div>
           <div className="w-full h-2 bg-blue-100 rounded-full mb-4">
             <div className="w-1/4 h-full text-center text-xs text-white bg-blue-400 rounded-full" />
-          </div>
-          <div className="flex items-center justify-between text-gray-400 text-sm">
-            <p>Marketing</p>
-            <p>8/8</p>
-          </div>
-          <div className="w-full h-2 bg-pink-100 rounded-full">
-            <div className="w-full h-full text-center text-xs text-white bg-pink-400 rounded-full" />
           </div>
         </div>
       </a>
