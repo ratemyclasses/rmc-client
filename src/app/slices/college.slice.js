@@ -14,6 +14,7 @@ const {
   createCollege,
   getColleges,
   getCollegeById,
+  getCollegeByTag,
   updateCollegeById,
   deleteCollegeById,
 } = actions;
@@ -33,6 +34,10 @@ export const collegeSlice = createSlice({
       state.status = STATUS.success;
     },
     [getCollegeById.fulfilled]: (state, action) => {
+      state.college = action.payload;
+      state.status = STATUS.success;
+    },
+    [getCollegeByTag.fulfilled]: (state, action) => {
       state.college = action.payload;
       state.status = STATUS.success;
     },

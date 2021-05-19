@@ -31,7 +31,7 @@ function App() {
           <Route path="/signup">
             <Auth />
           </Route>
-          <Route path="/u/*" component={Dashboard} />
+          <Route path="/u/:tag" component={Dashboard} />
           <Route exact path="/" component={Landing} />
           <Route path="/*" component={PageNotFound} />
         </Switch>

@@ -18,6 +18,7 @@ export const ACTIONS = {
   college: {
     get: "college/get",
     getById: "college/getById",
+    getByTag: "college/getByTag",
     create: "college/create",
     updateById: "college/update",
     deleteById: "college/delete",
