@@ -10,7 +10,7 @@ export function Auth() {
   const history = useHistory();
 
   if (authenticated) {
-    history.push("/dashboard");
+    history.push("/");
   }
 
   return (
