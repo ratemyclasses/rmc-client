@@ -1,12 +1,22 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { getCourseById } from '../../app/actions/course.actions';
 
-export function CourseCard() {
+export function CourseCard({ course }) {
+  const dispatch = useDispatch();
+
   return (
-    <div className="bg-white  overflow-hidden shadow-sm rounded-lg w-full md:w-full relative py-4 px-4 mb-4">
-      <div className="">
-        <dl className="float-left py-2">
-          <dd className="text-md font-semibold text-gray-900">CS 361</dd>
-          <dt className="text-sm leading-5 text-gray-500 truncate">Probability and Statistics</dt>
+    <button
+      className="w-full focus:outline-none focus:ring focus:ring-purple-200 rounded-lg"
+      onClick={() => dispatch(getCourseById(course._id))}
+      type="button"
+    >
+      <div className="bg-white hover:bg-gray-200 overflow-hidden shadow-sm rounded-lg relative py-4 px-4">
+        <dl className="py-2">
+          <dd className="float-left text-md font-semibold text-gray-900">
+            {course.abbreviation}, {course.number}
+          </dd>
+          <dt className="float-left text-sm leading-5 text-gray-500 truncate">{course.name}</dt>
           {/* <dd className="text-gray-500 font-semibold">
                         <span>
                             Hongye Liu
@@ -17,6 +27,6 @@ export function CourseCard() {
           4.5
         </span>
       </div>
-    </div>
+    </button>
   );
 }
