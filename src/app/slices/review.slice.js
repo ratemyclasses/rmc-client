@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as actions from "../actions/review.actions";
-import { createStatusReducers } from "../utils";
-import { STATUS } from "../constants";
+import { createSlice } from '@reduxjs/toolkit';
+import * as actions from '../actions/review.actions';
+import { createStatusReducers } from '../utils';
+import { STATUS } from '../constants';
 
 const initialState = {
   reviews: [],
   review: null,
   status: STATUS.idle,
-  error: null,
+  error: null
 };
 
 const {
@@ -18,20 +18,18 @@ const {
   deleteReviewById,
   upvoteReviewById,
   downvoteReviewById,
-  clearVoteReviewById,
+  clearVoteReviewById
 } = actions;
 
 const updateReviewVotes = (state, action) => {
-  const review = state.reviews.find(
-    (review) => review.id === action.payload._id
-  );
+  const review = state.reviews.find((rev) => rev.id === action.payload._id);
   review.upvoteCount = action.payload.upvotes;
   review.downvoteCount = action.payload.downvotes;
   state.status = STATUS.success;
 };
 
 export const reviewSlice = createSlice({
-  name: "review",
+  name: 'review',
   initialState,
   reducers: {},
   extraReducers: {
@@ -64,8 +62,8 @@ export const reviewSlice = createSlice({
     },
     [upvoteReviewById.fulfilled]: updateReviewVotes,
     [downvoteReviewById.fulfilled]: updateReviewVotes,
-    [clearVoteReviewById.fulfilled]: updateReviewVotes,
-  },
+    [clearVoteReviewById.fulfilled]: updateReviewVotes
+  }
 });
 
 export default reviewSlice.reducer;

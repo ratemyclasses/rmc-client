@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { logout } from "../../app/actions/auth.actions";
-import { getCollegeByTag } from "../../app/actions/college.actions";
-import { getDepartments } from "../../app/actions/department.actions";
-import { STATUS } from "../../app/constants";
-import CenteredContent from "../../common/layout/CenteredContent";
-import { Navbar } from "../../common/Navbar";
-import { DashboardContents } from "./DashboardContents";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getCollegeByTag } from '../../app/actions/college.actions';
+import { STATUS } from '../../app/constants';
+import CenteredContent from '../../common/layout/CenteredContent';
+import { Navbar } from '../../common/Navbar';
+import { DashboardContents } from './DashboardContents';
 
 export function Dashboard() {
   const dispatch = useDispatch();
@@ -18,18 +16,20 @@ export function Dashboard() {
   const { tag } = useParams();
   useEffect(() => {
     if (status === STATUS.idle) {
-      dispatch(
-        getCollegeByTag(tag)
-      );
+      dispatch(getCollegeByTag(tag));
     }
   });
+
   console.log(tag);
   console.log(college);
 
   if (!user) {
-
     return (
-      <div><Navbar />Dashboard: No User</div>);
+      <div>
+        <Navbar />
+        Dashboard: No User
+      </div>
+    );
   }
 
   return (

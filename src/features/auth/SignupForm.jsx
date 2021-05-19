@@ -1,11 +1,11 @@
-import { Form, Formik } from "formik";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import * as Yup from "yup";
-import CustomInput from "../../common/CustomInput";
-import { STATUS } from "../../app/constants";
-import { signup } from "../../app/actions/auth.actions";
+import { Form, Formik } from 'formik';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { signup } from '../../app/actions/auth.actions';
+import { STATUS } from '../../app/constants';
+import CustomInput from '../../common/CustomInput';
 
 export function SignupForm() {
   const status = useSelector(({ auth }) => auth.status);
@@ -24,22 +24,18 @@ export function SignupForm() {
           src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
           alt="Workflow"
         />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign Up
-        </h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign Up</h2>
       </div>
       <Formik
         initialValues={{
-          email: "",
-          password: "",
+          email: '',
+          password: ''
         }}
         validationSchema={Yup.object({
-          email: Yup.string()
-            .email("Invalid email address")
-            .required("Required"),
+          email: Yup.string().email('Invalid email address').required('Required'),
           password: Yup.string()
-            .required("No password provided.")
-            .min(5, "Password is too short - should be 5 chars minimum."),
+            .required('No password provided.')
+            .min(5, 'Password is too short - should be 5 chars minimum.')
         })}
         onSubmit={onSubmit}
       >
@@ -53,7 +49,7 @@ export function SignupForm() {
                 autoComplete="email"
                 required
                 placeholder="Email address"
-              ></CustomInput>
+              />
             </div>
             <div>
               <CustomInput
@@ -63,21 +59,18 @@ export function SignupForm() {
                 autoComplete="current-password"
                 required
                 placeholder="Password"
-              ></CustomInput>
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <div className="text-red-500">
-                {status === STATUS.failed && "Account already exists"}
+                {status === STATUS.failed && 'Account already exists'}
               </div>
             </div>
             <div className="text-sm my-3">
               Already have an account?
-              <Link
-                to="/login"
-                className="font-medium text-indigo-600 hover:text-indigo-500 ml-3"
-              >
+              <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 ml-3">
                 Log In
               </Link>
             </div>

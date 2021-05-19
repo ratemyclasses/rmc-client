@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as actions from "../actions/department.actions";
-import { createStatusReducers } from "../utils";
-import { STATUS } from "../constants";
+import { createSlice } from '@reduxjs/toolkit';
+import * as actions from '../actions/department.actions';
+import { createStatusReducers } from '../utils';
+import { STATUS } from '../constants';
 
 const initialState = {
   departments: [],
   department: null,
   status: STATUS.idle,
-  error: null,
+  error: null
 };
 
 const {
@@ -15,11 +15,11 @@ const {
   getDepartments,
   getDepartmentById,
   updateDepartmentById,
-  deleteDepartmentById,
+  deleteDepartmentById
 } = actions;
 
 export const departmentSlice = createSlice({
-  name: "department",
+  name: 'department',
   initialState,
   reducers: {},
   extraReducers: {
@@ -47,12 +47,10 @@ export const departmentSlice = createSlice({
       state.status = STATUS.success;
     },
     [deleteDepartmentById.fulfilled]: (state, action) => {
-      state.departments = state.departments.filter(
-        ({ id }) => id !== action.payload
-      );
+      state.departments = state.departments.filter(({ id }) => id !== action.payload);
       state.status = STATUS.success;
-    },
-  },
+    }
+  }
 });
 
 export default departmentSlice.reducer;

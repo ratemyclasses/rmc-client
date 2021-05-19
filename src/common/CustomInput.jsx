@@ -1,4 +1,5 @@
-import { useField } from "formik";
+import React from 'react';
+import { useField } from 'formik';
 
 export default function CustomInput({ label, ...props }) {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]

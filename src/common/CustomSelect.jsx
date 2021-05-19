@@ -1,4 +1,5 @@
-import { useField } from "formik";
+import React from 'react';
+import { useField } from 'formik';
 
 export default function CustomSelect({ label, ...props }) {
   const [field, meta] = useField(props);
@@ -6,9 +7,7 @@ export default function CustomSelect({ label, ...props }) {
     <div>
       <label htmlFor={props.id || props.name}>{label}</label>
       <select {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
+      {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
     </div>
   );
 }

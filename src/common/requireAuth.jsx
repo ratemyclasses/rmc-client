@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 export default function requireAuth(ChildComponent) {
   function ComposedComponent(props) {
@@ -10,7 +10,7 @@ export default function requireAuth(ChildComponent) {
 
     useEffect(() => {
       if (!authenticated) {
-        history.push("/login");
+        history.push('/login');
       }
     }, [history, authenticated]);
 

@@ -1,11 +1,11 @@
-import { Form, Formik } from "formik";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import * as Yup from "yup";
-import CustomInput from "../../common/CustomInput";
-import { STATUS } from "../../app/constants";
-import { googleLogin, login } from "../../app/actions/auth.actions";
+import { Form, Formik } from 'formik';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { googleLogin, login } from '../../app/actions/auth.actions';
+import { STATUS } from '../../app/constants';
+import CustomInput from '../../common/CustomInput';
 
 export function LoginForm() {
   const status = useSelector(({ auth }) => auth.status);
@@ -30,16 +30,14 @@ export function LoginForm() {
       </div>
       <Formik
         initialValues={{
-          email: "",
-          password: "",
+          email: '',
+          password: ''
         }}
         validationSchema={Yup.object({
-          email: Yup.string()
-            .email("Invalid email address")
-            .required("Required"),
+          email: Yup.string().email('Invalid email address').required('Required'),
           password: Yup.string()
-            .required("No password provided.")
-            .min(5, "Password is too short - should be 5 chars minimum."),
+            .required('No password provided.')
+            .min(5, 'Password is too short - should be 5 chars minimum.')
         })}
         onSubmit={onSubmit}
       >
@@ -53,7 +51,7 @@ export function LoginForm() {
                 autoComplete="email"
                 required
                 placeholder="Email address"
-              ></CustomInput>
+              />
             </div>
             <div>
               <CustomInput
@@ -63,26 +61,20 @@ export function LoginForm() {
                 autoComplete="current-password"
                 required
                 placeholder="Password"
-              ></CustomInput>
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <div className="text-red-500">
-                {status === STATUS.failed && "Incorrect email or password"}
+                {status === STATUS.failed && 'Incorrect email or password'}
               </div>
             </div>
             <div className="text-sm my-3">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500 mr-4"
-              >
+              <a href="/" className="font-medium text-indigo-600 hover:text-indigo-500 mr-4">
                 Forgot your password?
               </a>
-              <Link
-                to="/signup"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
+              <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Sign Up
               </Link>
             </div>
@@ -115,6 +107,7 @@ export function LoginForm() {
       <button
         onClick={() => dispatch(googleLogin())}
         className="group relative flex justify-center py-2 px-4 border text-sm font-medium rounded-md text-red-600 bg-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
+        type="button"
       >
         Continue with Google
       </button>

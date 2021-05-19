@@ -1,11 +1,12 @@
-import { SearchField } from "./SearchField";
-import { Universities } from "./Universities";
+import React from 'react';
+import { SearchField } from './SearchField';
+import { Universities } from './Universities';
 
 export function LandingContents() {
-    return (
-        <div class="text-center mt-20">
-            <SearchField />
-            <Universities />
-        </div>
-    );
+  return (
+    <div className="text-center mt-20">
+      <SearchField />
+      <Universities />
+    </div>
+  );
 }

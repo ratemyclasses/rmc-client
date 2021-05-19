@@ -1,12 +1,12 @@
-import { STATUS } from "./constants";
+import { STATUS } from './constants';
 
 export const createStatusReducers = (actions) => {
   const data = {};
-  Object.values(actions).forEach((action) => {
-    data[action.pending] = (state, action) => {
+  Object.values(actions).forEach((a) => {
+    data[a.pending] = (state, action) => {
       state.status = STATUS.pending;
     };
-    data[action.rejected] = (state, action) => {
+    data[a.rejected] = (state, action) => {
       state.error = action.error.message;
       state.status = STATUS.failed;
     };

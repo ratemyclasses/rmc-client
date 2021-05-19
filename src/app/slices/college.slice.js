@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as actions from "../actions/college.actions";
-import { createStatusReducers } from "../utils";
-import { STATUS } from "../constants";
+import { createSlice } from '@reduxjs/toolkit';
+import * as actions from '../actions/college.actions';
+import { createStatusReducers } from '../utils';
+import { STATUS } from '../constants';
 
 const initialState = {
   colleges: [],
   college: null,
   status: STATUS.idle,
-  error: null,
+  error: null
 };
 
 const {
@@ -16,11 +16,11 @@ const {
   getCollegeById,
   getCollegeByTag,
   updateCollegeById,
-  deleteCollegeById,
+  deleteCollegeById
 } = actions;
 
 export const collegeSlice = createSlice({
-  name: "college",
+  name: 'college',
   initialState,
   reducers: {},
   extraReducers: {
@@ -54,8 +54,8 @@ export const collegeSlice = createSlice({
     [deleteCollegeById.fulfilled]: (state, action) => {
       state.colleges = state.colleges.filter(({ id }) => id !== action.payload);
       state.status = STATUS.success;
-    },
-  },
+    }
+  }
 });
 
 export default collegeSlice.reducer;
