@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function OverallRating() {
+export function OverallRating({ avgRating }) {
   return (
     <div className="rounded-xl float-right p-3 px-4 mb-2 bg-indigo-500 dark:bg-gray-800 text-right">
       <div className="text-right items-right">
@@ -23,7 +23,14 @@ export function OverallRating() {
         </div>
 
         <p className="text-white text-2xl text-right dark:text-white font-bold">
-          4.3<span className="text-white font-normal text-lg text-right dark:text-white ">/5</span>
+          {avgRating ? (
+            <>
+              {avgRating}
+              <span className="text-white font-normal text-lg text-right dark:text-white ">/5</span>
+            </>
+          ) : (
+            'N/A'
+          )}
         </p>
 
         {/* <div className="relative w-28 h-2 bg-indigo-300 rounded">
