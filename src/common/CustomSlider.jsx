@@ -1,8 +1,8 @@
 import React from 'react';
 import { Range } from 'react-range';
 
-export function CustomSlider({ field, form, step, min, max, minLabel, maxLabel }) {
-  const [values, setValues] = React.useState([0]);
+export function CustomSlider({ field, form, value, step, min, max, minLabel, maxLabel }) {
+  const [values, setValues] = React.useState([value || 0]);
 
   return (
     <div>

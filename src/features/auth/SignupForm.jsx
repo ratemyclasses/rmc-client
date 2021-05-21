@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { signup } from '../../app/actions/auth.actions';
 import { STATUS } from '../../app/constants';
-import CustomInput from '../../common/CustomInput';
+import { CustomInput } from '../../common/CustomInput';
 
 export function SignupForm() {
   const status = useSelector(({ auth }) => auth.status);

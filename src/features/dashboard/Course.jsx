@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReviews } from '../../app/actions/review.actions';
+import { CustomAlert } from '../../common/CustomAlert';
 import { CustomModal } from '../../common/CustomModal';
 import { Review } from '../../common/Review';
 import { AverageGradeCard } from './AverageGradeCard';
@@ -14,6 +15,7 @@ export function Course() {
   const course = useSelector((state) => state.course.course);
   const reviewStatus = useSelector((state) => state.review.status);
   const reviews = useSelector((state) => state.review.reviews);
+  const [success, setSuccess] = useState(false);
 
   const [open, setOpen] = useState(false);
 
@@ -32,14 +34,39 @@ export function Course() {
 
   return (
     <>
-      <CustomModal
-        open={open}
-        setOpen={setOpen}
-        title="Leave Review"
-        submitBtn="Submit"
-        cancelBtn="Cancel"
-      >
-        <CreateReviewForm />
+      <CustomAlert setOpen={setSuccess} open={success}>
+        <div className="bg-white rounded-lg p-10 flex items-center justify-between">
+          <div>
+            <svg
+              className="mb-4 h-20 w-20 text-green-500 mx-auto"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
+            </svg>
+
+            <h2 className="text-2xl mb-4 text-gray-800 text-center font-bold">Review Completed!</h2>
+
+            <div className="text-gray-600 mb-8 text-center">
+              Thank you. Your review will be published when it is approved within 1 business day.
+            </div>
+
+            <button
+              type="button"
+              className="w-40 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
+              onClick={() => setSuccess(false)}
+            >
+              Back to home
+            </button>
+          </div>
+        </div>
+      </CustomAlert>
+      <CustomModal open={open} setOpen={setOpen}>
+        <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} />
       </CustomModal>
       <div className="lg:flex lg:items-center lg:justify-between mt-4 bg-white rounded-lg px-10 py-10">
         <div className="grid grid-cols-3 gap-4">

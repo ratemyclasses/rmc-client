@@ -1,10 +1,8 @@
 /* eslint-disable */
-import { Field, Form, Formik } from 'formik';
-import React from 'react';
-import { CustomSelect } from '../../common/CustomSelect';
-import { CustomSlider } from '../../common/CustomSlider';
-import { WizardForm } from '../../common/WizardForm';
+import React, { useState } from 'react';
+import { CustomAlert } from '../../common/CustomAlert';
 import { requireAuth } from '../../common/requireAuth';
+import { WizardForm } from '../../common/WizardForm';
 
 const options = [
   'Textbook',
@@ -15,11 +13,11 @@ const options = [
   'Other'
 ];
 
-function CreateReviewForm() {
+function CreateReviewForm({ setOpen, setSuccess }) {
   return (
-    <div>
-      <WizardForm />
-    </div>
+    <>
+      <WizardForm setOpen={setOpen} setSuccess={setSuccess} />
+    </>
   );
 }
 

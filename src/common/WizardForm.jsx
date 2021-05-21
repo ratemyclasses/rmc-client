@@ -1,9 +1,11 @@
 import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import * as Yup from 'yup';
+import { CustomInput } from './CustomInput';
 import { CustomSelect } from './CustomSelect';
 import { CustomSlider } from './CustomSlider';
 
-function Step5() {
+function Step5({ formValues }) {
   const a = 5;
 
   return (
@@ -39,129 +41,122 @@ function Step5() {
   );
 }
 
-function Step4() {
+function Step4({ formValues }) {
   const a = 5;
 
   return (
-    <div>
-      <div>
-        <div className="mb-5 text-center">
-          <div className="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 mb-4 shadow-inset">
-            <img
-              id="image"
-              alt="img"
-              className="object-cover w-full h-32 rounded-full"
-              src="image"
-            />
-          </div>
-
-          <label
-            htmlFor="fileInput"
-            type="button"
-            className="cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="0" y="0" width="24" height="24" stroke="none" />
-              <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-              <circle cx="12" cy="13" r="3" />
-            </svg>
-            Browse Photo
-          </label>
-
-          <div className="mx-auto w-48 text-gray-500 text-xs text-center mt-1">
-            Click to add profile picture
-          </div>
-
-          <input name="photo" id="fileInput" accept="image/*" className="hidden" type="file" />
-        </div>
-
-        <div className="mb-5">
-          <label htmlFor="firstname" className="font-bold mb-1 text-gray-700 block">
-            Firstname
-          </label>
-          <input
-            type="text"
-            className="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-            placeholder="Enter your firstname..."
-          />
-        </div>
-
-        <div className="mb-5">
-          <label htmlFor="email" className="font-bold mb-1 text-gray-700 block">
-            Email
-          </label>
-          <input
-            type="email"
-            className="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-            placeholder="Enter your email address..."
-          />
-        </div>
-      </div>
+    <div className="text-center">
+      <h1 className="mt-6 mb-3 text-2xl font-bold">Would you take this class again?</h1>
+      <Field
+        name="wouldTakeAgain"
+        component={CustomSelect}
+        options={['Yes', 'No']}
+        values={[formValues.wouldTakeAgain]}
+      />
     </div>
   );
 }
 
-function Step3() {
+function Step3({ formValues }) {
+  const quizFrequencies = ['Weekly', 'Biweekly', 'Monthly'];
+
+  return (
+    <div className="md:w-2/3">
+      <h1 className="mt-3 font-extrabold">How often are there quizzes (if any)?</h1>
+      <Field
+        name="quizFrequency"
+        component={CustomSelect}
+        options={quizFrequencies}
+        values={[formValues.quizFrequency]}
+      />
+
+      <h1 className="mt-3 font-extrabold">When did you take this class?</h1>
+      <Field
+        name="timeTaken"
+        id="timeTaken"
+        type="text"
+        required
+        component={CustomInput}
+        label=""
+        value={formValues.timeTaken}
+        placeholder="i.e. Spring 2016"
+      />
+      <h1 className="mt-3 font-extrabold">How many hours of homework per week?</h1>
+      <Field
+        name="hoursPerWeek"
+        id="hoursPerWeek"
+        type="number"
+        required
+        component={CustomInput}
+        label=""
+        value={formValues.hoursPerWeek}
+        placeholder="5"
+      />
+    </div>
+  );
+}
+
+function Step2({ formValues }) {
   const a = 5;
 
   return (
-    <div>
-      <div className="mb-5">
-        <label htmlFor="email" className="font-bold mb-1 text-gray-700 block">
-          Gender
-        </label>
-
-        <div className="flex">
-          <label className="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
-            <div className="text-teal-600 mr-3">
-              <input
-                type="radio"
-                x-model="gender"
-                value="Male"
-                className="form-radio focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="select-none text-gray-700">Male</div>
-          </label>
-
-          <label className="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm">
-            <div className="text-teal-600 mr-3">
-              <input
-                type="radio"
-                x-model="gender"
-                value="Female"
-                className="form-radio focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="select-none text-gray-700">Female</div>
-          </label>
-        </div>
-      </div>
-
-      <div className="mb-5">
-        <label htmlFor="profession" className="font-bold mb-1 text-gray-700 block">
-          Profession
-        </label>
-        <input
-          type="profession"
-          className="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-          placeholder="eg. Web Developer"
+    <div className="md:w-2/3">
+      <div className="flex flex-wrap gap-2">
+        <h1 className="mt-3 font-extrabold">Is attendance mandatory?</h1>
+        <Field
+          name="mandatoryAttendance"
+          component={CustomSelect}
+          options={['Yes', 'No']}
+          values={[formValues.mandatoryAttendance]}
         />
       </div>
+      <div className="flex flex-wrap gap-2">
+        <h1 className="mt-3 font-extrabold">Was it a project heavy class?</h1>
+        <Field
+          name="projHeavy"
+          component={CustomSelect}
+          options={['Yes', 'No']}
+          values={[formValues.projHeavy]}
+        />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <h1 className="mt-3 font-extrabold">Does the class have fair deadlines?</h1>
+        <Field
+          name="fairDeadlines"
+          component={CustomSelect}
+          options={['Yes', 'No']}
+          values={[formValues.fairDeadlines]}
+        />
+      </div>
+
+      <h1 className="mt-3 mb-3 font-extrabold">How responsive is the professor?</h1>
+      <Field
+        name="profResponsiveness"
+        component={CustomSlider}
+        step={1}
+        min={0}
+        max={5}
+        minLabel="Not Responsive"
+        maxLabel="Very Responsive"
+        value={formValues.profResponsiveness}
+      />
+
+      <h1 className="mt-10 mb-3 font-extrabold">How difficult are the exams?</h1>
+      <Field
+        name="examDifficulty"
+        component={CustomSlider}
+        step={1}
+        min={0}
+        max={5}
+        minLabel="Easy"
+        maxLabel="Very Hard"
+        value={formValues.examDifficulty}
+      />
     </div>
   );
 }
 
-function Step2() {
+function Step1({ formValues }) {
   const options = [
     'Textbook',
     'Lecture Notes',
@@ -173,8 +168,14 @@ function Step2() {
 
   return (
     <div className="md:w-2/3">
-      <h1 className="mb-3 font-extrabold">What resources does the class offer?</h1>
-      <Field name="resources" component={CustomSelect} options={options} isMulti />
+      <h1 className="mt-6 mb-3 font-extrabold">What resources does the class offer?</h1>
+      <Field
+        name="resources"
+        component={CustomSelect}
+        options={options}
+        values={formValues.resources}
+        isMulti
+      />
       <h1 className="mt-6 mb-3 font-extrabold">How difficult is this class?</h1>
       <Field
         name="difficulty"
@@ -184,6 +185,7 @@ function Step2() {
         max={5}
         minLabel="Not Helpful"
         maxLabel="Very Helpful"
+        value={formValues.difficulty}
       />
 
       <h1 className="mt-10 mb-3 font-extrabold">How helpful were the course staff?</h1>
@@ -195,63 +197,36 @@ function Step2() {
         max={5}
         minLabel="Not Helpful"
         maxLabel="Very Helpful"
+        value={formValues.staffRating}
       />
-
-      {/* <div className="mb-5">
-        <label htmlFor="email" className="font-bold mb-1 text-gray-700 block">
-          Gender
-        </label>
-
-        <div className="flex">
-          <label className="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm mr-4">
-            <div className="text-teal-600 mr-3">
-              <input
-                type="radio"
-                x-model="gender"
-                value="Male"
-                className="form-radio focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="select-none text-gray-700">Male</div>
-          </label>
-
-          <label className="flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 shadow-sm">
-            <div className="text-teal-600 mr-3">
-              <input
-                type="radio"
-                x-model="gender"
-                value="Female"
-                className="form-radio focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="select-none text-gray-700">Female</div>
-          </label>
-        </div>
-      </div>
-
-      <div className="mb-5">
-        <label htmlFor="profession" className="font-bold mb-1 text-gray-700 block">
-          Profession
-        </label>
-        <input
-          type="profession"
-          className="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-          placeholder="eg. Web Developer"
-        />
-      </div>
-    </div> */}
     </div>
   );
 }
 
-export function WizardForm() {
+export function WizardForm({ setOpen, setSuccess }) {
   const [step, setStep] = useState(1);
+  const [formValues, setFormValues] = useState({});
+
+  const validate = {
+    3: Yup.object({
+      timeTaken: Yup.string("Invalid. Must be in form 'Spring 2016'")
+        .required('Required')
+        .nullable(),
+      hoursPerWeek: Yup.number('Invalid. Must be a valid number').required('Required').nullable()
+    })
+  };
 
   const onSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
+    if (step === 4) {
       alert(JSON.stringify(values, null, 2));
+      setOpen(false);
+      setSuccess(true);
+    } else {
+      console.log('SUBMITTING', { ...formValues, ...values });
+      setFormValues({ ...formValues, ...values });
+      setStep(step + 1);
       setSubmitting(false);
-    }, 400);
+    }
   };
 
   return (
@@ -285,14 +260,14 @@ export function WizardForm() {
         </div>
       </div>
 
-      <Formik initialValues={{ resources: '', difficulty: 0 }} onSubmit={onSubmit}>
+      <Formik initialValues={formValues} validationSchema={validate[step]} onSubmit={onSubmit}>
         <Form>
           <div className="mb-24">
-            {step === 5 && <Step5 />}
-            {step === 4 && <Step4 />}
-            {step === 3 && <Step4 />}
-            {step === 2 && <Step3 />}
-            {step === 1 && <Step2 />}
+            {step === 5 && <Step5 formValues={formValues} />}
+            {step === 4 && <Step4 formValues={formValues} />}
+            {step === 3 && <Step3 formValues={formValues} />}
+            {step === 2 && <Step2 formValues={formValues} />}
+            {step === 1 && <Step1 formValues={formValues} />}
           </div>
 
           <div className="fixed bottom-5 left-0 right-0 py-5">
@@ -311,17 +286,16 @@ export function WizardForm() {
                 </div>
 
                 <div className="w-1/2 text-right">
-                  {step <= 4 && (
+                  {step <= 3 && (
                     <button
-                      type="button"
+                      type="submit"
                       className="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-indigo-500 hover:bg-indigo-600 font-medium"
-                      onClick={() => setStep(step + 1)}
                     >
                       Next
                     </button>
                   )}
 
-                  {step === 5 && (
+                  {step === 4 && (
                     <button
                       type="submit"
                       className="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-blue-500 hover:bg-blue-600 font-medium"

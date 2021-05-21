@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-export const CustomSelect = ({ field, form, options, isMulti = false }) => {
+export const CustomSelect = ({ field, form, options, values, isMulti = false }) => {
   const btnState = {};
   options.forEach((tag) => {
-    btnState[tag] = false;
+    btnState[tag] = values && values.includes(tag);
   });
 
   const [buttons, setButtons] = useState(btnState);
