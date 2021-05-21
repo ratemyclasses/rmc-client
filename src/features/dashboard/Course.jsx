@@ -27,20 +27,23 @@ export function Course() {
   console.log(reviews);
 
   return (
-    <div className="lg:flex lg:items-center lg:justify-between mt-4 bg-white rounded-lg px-10 py-10">
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-3">
-          <div className="grid grid-cols-4 gap-4">
-            <div className="col-span-2">
-              <div className="flex-1 min-w-0">
-                <h2 className="text-xl font-bold leading-7 text-gray-900 sm:text-2xl sm:truncate">
-                  {course.abbreviation}, {course.number}
-                </h2>
-                <h2 className="text-xl font-regular leading-5 text-gray-700 sm:text-lg mb-2 ">
-                  {course.name}
-                </h2>
-                <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
-                  <div className="mt-2 flex items-center text-sm text-gray-500">
+    <div className="mx-6 mt-8 sm:mt-16">
+      <div className="mx-auto">
+        <div>
+          <div className="flex flex-wrap items-center">
+            <div className="">
+              <div className="">
+                <div className="w-full sm:w-80">
+                  <h2 className="text-3xl mb-2 font-bold leading-7 text-gray-900 sm:text-2xl sm:truncate">
+                    {course.abbreviation}, {course.number}
+                  </h2>
+                  <h2 className="text-2xl mb-4 font-regular leading-5 text-gray-500 sm:text-lg mb-2 ">
+                    {course.name}
+                  </h2>
+                </div>
+
+                <div className="mt-1 w-full flex flex-wrap items-center sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                  <div className="mt-2 mr-4 flex items-center text-lg sm:text-sm text-gray-500">
                     <svg
                       className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +60,7 @@ export function Course() {
                     </svg>
                     Average Grade: {course.avgLetterGrade || 'N/A'}
                   </div>
-                  <div className="mt-2 flex items-center text-sm text-gray-500">
+                  <div className="mt-2 mb-2 flex items-center text-lg sm:text-sm text-gray-500">
                     <svg
                       className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
@@ -77,17 +80,17 @@ export function Course() {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="min-w-32 w-5/12 sm:w-32 mr-4">
               <OverallRating />
               <AverageGradeCard />
             </div>
-            <div>
+            <div className="min-w-32 w-5/12 sm:w-32">
               <IndividualRatings />
             </div>
             {/* <div className="col-span-2"></div> */}
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="">
           <CourseInfo />
         </div>
         <div className="col-span-3">Reviews</div>
@@ -100,11 +103,11 @@ export function Course() {
         ) : (
           <div className="col-span-3">Loading...</div>
         )}
-      </div>
 
-      {/* <div>
+        {/* <div>
         <div className="mt-10">{course.description}</div>
       </div> */}
+      </div>
     </div>
   );
 }
