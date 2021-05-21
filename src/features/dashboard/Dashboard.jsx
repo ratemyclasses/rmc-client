@@ -14,14 +14,14 @@ export function Dashboard() {
 
   console.log(tag, college, status);
 
-  if (!user) {
-    return (
-      <div>
-        <Navbar />
-        Dashboard: No User
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div>
+  //       <Navbar />
+  //       Dashboard: No User
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>

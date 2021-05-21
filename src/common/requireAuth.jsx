@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-export default function requireAuth(ChildComponent) {
+export function requireAuth(ChildComponent) {
   function ComposedComponent(props) {
     // Our component got rendered for first time
     const history = useHistory();

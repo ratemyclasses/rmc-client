@@ -27,8 +27,8 @@ export const CustomSelect = ({ field, form, options, isMulti = false }) => {
   return Object.keys(buttons).map((tag) => (
     <button
       key={tag}
-      className={`px-4 py-2 text-base rounded-full mr-1 border border-indigo-500 ${
-        buttons[tag] ? 'bg-indigo-600 text-white' : 'text-indigo-500'
+      className={`px-4 py-2 text-base rounded-full mr-1 mt-1 focus:outline-none border border-indigo-500 ${
+        buttons[tag] ? 'bg-indigo-600 text-white' : 'text-indigo-500 hover:bg-indigo-100'
       }`}
       type="button"
       onClick={(e) => onChange(e, tag)}
