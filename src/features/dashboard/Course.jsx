@@ -27,8 +27,8 @@ export function Course() {
   console.log(reviews);
 
   return (
-    <div className="lg:flex lg:items-center lg:justify-between mt-4 bg-white rounded-lg px-10 py-10">
-      <div className="grid grid-cols-3 gap-4">
+    <div className="mx-auto mt-16 flex items-center">
+      <div className="mx-auto">
         <div className="col-span-3">
           <div className="grid grid-cols-4 gap-4">
             <div className="col-span-2">
@@ -36,7 +36,7 @@ export function Course() {
                 <h2 className="text-xl font-bold leading-7 text-gray-900 sm:text-2xl sm:truncate">
                   {course.abbreviation}, {course.number}
                 </h2>
-                <h2 className="text-xl font-regular leading-5 text-gray-700 sm:text-lg mb-2 ">
+                <h2 className="text-xl font-regular leading-5 text-gray-500 sm:text-lg mb-2 ">
                   {course.name}
                 </h2>
                 <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
@@ -100,11 +100,11 @@ export function Course() {
         ) : (
           <div className="col-span-3">Loading...</div>
         )}
-      </div>
 
-      {/* <div>
+        {/* <div>
         <div className="mt-10">{course.description}</div>
       </div> */}
+      </div>
     </div>
   );
 }

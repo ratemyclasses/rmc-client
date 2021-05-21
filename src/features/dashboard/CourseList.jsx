@@ -28,13 +28,13 @@ export function CourseList() {
   }
 
   return (
-    <div className="mt-4 mb-8">
-      <input
+    <div className="mb-8 bg-white h-screen overflow-y-auto">
+      {/* <input
         type="text"
         id="rounded-email"
         className=" rounded-lg border-transparent flex-1 appearance-none border md:w-full py-4 px-8 sm:w-full bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent mb-4"
         placeholder="Search course..."
-      />
+      /> */}
 
       {courses.map((course) => (
         <CourseCard key={course._id} course={course} />
