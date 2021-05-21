@@ -1,13 +1,39 @@
-import React from 'react';
-import { useField } from 'formik';
+import React, { useState } from 'react';
 
-export default function CustomSelect({ label, ...props }) {
-  const [field, meta] = useField(props);
-  return (
-    <div>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
-      {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
-    </div>
-  );
-}
+export const CustomSelect = ({ field, form, options, isMulti = false }) => {
+  const btnState = {};
+  options.forEach((tag) => {
+    btnState[tag] = false;
+  });
+
+  const [buttons, setButtons] = useState(btnState);
+
+  const onChange = (e, tag) => {
+    let newButtons = {};
+    if (isMulti) {
+      newButtons = { ...buttons, [e.target.innerText]: !buttons[tag] };
+    } else {
+      Object.keys(buttons).forEach((t) => {
+        newButtons[t] = t === tag;
+      });
+    }
+    setButtons(newButtons);
+    form.setFieldValue(
+      field.name,
+      isMulti ? Object.keys(newButtons).filter((t) => newButtons[t]) : tag
+    );
+  };
+
+  return Object.keys(buttons).map((tag) => (
+    <button
+      key={tag}
+      className={`px-4 py-2 text-base rounded-full mr-1 border border-indigo-500 ${
+        buttons[tag] ? 'bg-indigo-600 text-white' : 'text-indigo-500'
+      }`}
+      type="button"
+      onClick={(e) => onChange(e, tag)}
+    >
+      {tag}
+    </button>
+  ));
+};
