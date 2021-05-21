@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import CenteredContent from '../../common/layout/CenteredContent';
+// import CenteredContent from '../../common/layout/CenteredContent';
 import { Navbar } from '../../common/Navbar';
 import { DashboardContents } from './DashboardContents';
 
@@ -26,7 +26,8 @@ export function Dashboard() {
   return (
     <div>
       <Navbar />
-      <CenteredContent centeredComponent={<DashboardContents />} />
+      {/* <CenteredContent centeredComponent={} /> */}
+      <DashboardContents />
     </div>
   );
 }

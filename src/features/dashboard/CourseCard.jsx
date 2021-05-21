@@ -7,22 +7,24 @@ export function CourseCard({ course }) {
 
   return (
     <button
-      className="w-full focus:outline-none focus:ring focus:ring-purple-200 rounded-lg"
+      className="w-full py-2 px-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-purple-200 border-b"
       onClick={() => dispatch(getCourseById(course._id))}
       type="button"
     >
-      <div className="bg-white hover:bg-gray-200 overflow-hidden shadow-sm rounded-lg relative py-4 px-4">
-        <dl className="py-2">
-          <dd className="float-left text-md font-semibold text-gray-900">
-            {course.abbreviation}, {course.number}
-          </dd>
-          <dt className="float-left text-sm leading-5 text-gray-500 truncate">{course.name}</dt>
+      <div className="overflow-ellipsis overflow-hidden relative py-4 px-4 flex items-start justify-between">
+        <div className="py-2 w-2/3 text-left">
+          <p className="float-left text-lg font-bold text-gray-900">
+            {course.abbreviation} {course.number}
+          </p>
+          <p className="float-left text-md font-regular leading-5 text-gray-500 w-full truncate">
+            {course.name}
+          </p>
           {/* <dd className="text-gray-500 font-semibold">
                         <span>
                             Hongye Liu
                         </span>
                     </dd> */}
-        </dl>
+        </div>
         <span className="rounded-xl px-4 py-4 bg-purple-200 float-right font-extrabold text-purple-800">
           4.5
         </span>

@@ -19,10 +19,10 @@ export function CourseInfo() {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="flex items-center">
       {vals.map((val) => {
         return (
-          <div>
+          <div className="w-64">
             <h2 className="font-medium title-font tracking-widest text-gray-900 mb-4 text-sm text-center sm:text-left">
               {val.title}
             </h2>
