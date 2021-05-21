@@ -8,10 +8,10 @@ export function DashboardContents() {
     <div>
       <Header />
       <div className="flex items-start justify-between">
-        <div className="w-full border-r border-gray-200 sm:w-64 lg:w-96">
+        <div className="hidden sm:block w-full border-r border-gray-200 sm:w-64 lg:w-96">
           <CourseList />
         </div>
-        <div className="hidden sm:w-full sm:block bg-white">
+        <div className="block w-full sm:w-full sm:block bg-white">
           <Course />
         </div>
       </div>

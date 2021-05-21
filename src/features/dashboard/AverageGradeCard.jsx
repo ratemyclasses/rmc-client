@@ -2,7 +2,7 @@ import React from 'react';
 
 export function AverageGradeCard() {
   return (
-    <div className="rounded-xl float-right p-3 px-4 mb-2 bg-green-500 dark:bg-gray-800 text-right">
+    <div className="rounded-xl min-w-32 w-full float-right p-3 px-4 mb-2 bg-green-500 dark:bg-gray-800 text-right">
       <div className="text-right items-right">
         {/* <svg viewBox="206.372 159.55 70.073 67.114" width="15" height="15">
           <path
@@ -12,8 +12,8 @@ export function AverageGradeCard() {
         </svg> */}
         {/* <p className="text-xs text-right text-white dark:text-gray-50">Grade</p> */}
       </div>
-      <div className="flex flex-row justify-start text-right">
-        <div className="float-left py-2 mr-2 text-white font-normal">
+      <div className="flex flex-row justify-start text-right items-center">
+        <div className="float-left py-2 mr-2 text-white font-normal mx-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
