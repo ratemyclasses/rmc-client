@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export const CustomSelect = ({ field, form, options, values, isMulti = false }) => {
+export const Select = ({ field, form, options, values, isMulti = false }) => {
   const btnState = {};
   options.forEach((tag) => {
     btnState[tag] = values && values.includes(tag);

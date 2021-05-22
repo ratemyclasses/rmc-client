@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { signup } from '../../app/actions/auth.actions';
 import { STATUS } from '../../app/constants';
-import { CustomInput } from '../../common/CustomInput';
+import { Input } from '../../common/Input';
 
 export function SignupForm() {
   const status = useSelector(({ auth }) => auth.status);
@@ -49,7 +49,7 @@ export function SignupForm() {
                 autoComplete="email"
                 required
                 placeholder="Email address"
-                component={CustomInput}
+                component={Input}
               />
             </div>
             <div>
@@ -60,7 +60,7 @@ export function SignupForm() {
                 autoComplete="current-password"
                 required
                 placeholder="Password"
-                component={CustomInput}
+                component={Input}
               />
             </div>
           </div>

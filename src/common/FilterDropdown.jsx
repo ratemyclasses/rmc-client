@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Link } from 'react-router-dom';
 
-/* eslint-disable */
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function CustomFilterDropdown({ form, field }) {
+export function FilterDropdown({ form, field }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       {({ open }) => (
@@ -36,41 +36,41 @@ export function CustomFilterDropdown({ form, field }) {
               <div className="py-1">
                 <Menu.Item>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm'
                       )}
                     >
                       Account settings
-                    </a>
+                    </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm'
                       )}
                     >
                       Support
-                    </a>
+                    </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm'
                       )}
                     >
                       License
-                    </a>
+                    </Link>
                   )}
                 </Menu.Item>
                 <form method="POST" action="#">

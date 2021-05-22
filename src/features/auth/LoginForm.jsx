@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { googleLogin, login } from '../../app/actions/auth.actions';
 import { STATUS } from '../../app/constants';
-import { CustomInput } from '../../common/CustomInput';
+import { Input } from '../../common/Input';
 
 export function LoginForm() {
   const status = useSelector(({ auth }) => auth.status);
@@ -51,7 +51,7 @@ export function LoginForm() {
                 autoComplete="email"
                 required
                 placeholder="Email address"
-                component={CustomInput}
+                component={Input}
               />
             </div>
             <div>
@@ -62,7 +62,7 @@ export function LoginForm() {
                 autoComplete="current-password"
                 required
                 placeholder="Password"
-                component={CustomInput}
+                component={Input}
               />
             </div>
           </div>
