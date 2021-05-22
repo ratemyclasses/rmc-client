@@ -4,6 +4,7 @@ import { getReviews } from '../../app/actions/review.actions';
 import { Alert } from '../../common/Alert';
 import { Modal } from '../../common/Modal';
 import { LoginForm } from '../auth/LoginForm';
+import { SignupForm } from '../auth/SignupForm';
 import { AverageGradeCard } from './AverageGradeCard';
 import { CourseInfo } from './CourseInfo';
 import { CreateReviewForm } from './CreateReviewForm';
@@ -18,6 +19,7 @@ export function Course() {
   const authenticated = useSelector((state) => state.auth.authenticated);
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
+  const [signup, setSignup] = useState(false);
 
   useEffect(() => {
     if (course) {
@@ -61,15 +63,23 @@ export function Course() {
     </Alert>
   );
 
-  const renderModal = () => (
-    <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>
-      {authenticated ? (
-        <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} />
-      ) : (
-        <LoginForm />
-      )}
-    </Modal>
-  );
+  const renderModal = () => {
+    const AuthForm = signup ? (
+      <SignupForm setSignup={setSignup} />
+    ) : (
+      <LoginForm setSignup={setSignup} />
+    );
+
+    return (
+      <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>
+        {authenticated ? (
+          <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} />
+        ) : (
+          <>{AuthForm}</>
+        )}
+      </Modal>
+    );
+  };
 
   return (
     <>

@@ -1,15 +1,16 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import { signup } from '../../app/actions/auth.actions';
 import { STATUS } from '../../app/constants';
 import { Input } from '../../common/Input';
 
-export function SignupForm() {
+export function SignupForm({ setSignup }) {
   const status = useSelector(({ auth }) => auth.status);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const onSubmit = (values, { setSubmitting }) => {
     dispatch(signup(values));
@@ -72,9 +73,19 @@ export function SignupForm() {
             </div>
             <div className="text-sm my-3">
               Already have an account?
-              <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 ml-3">
-                Log In
-              </Link>
+              {location.pathname === '/signup' ? (
+                <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Login
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setSignup(false)}
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  type="button"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </div>
           <div>
