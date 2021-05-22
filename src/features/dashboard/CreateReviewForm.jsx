@@ -1,8 +1,8 @@
 /* eslint-disable */
-import React, { useState } from 'react';
-import { CustomAlert } from '../../common/CustomAlert';
-import { requireAuth } from '../../common/requireAuth';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { WizardForm } from '../../common/WizardForm';
+import { LoginForm } from '../auth/LoginForm';
 
 const options = [
   'Textbook',
@@ -13,14 +13,10 @@ const options = [
   'Other'
 ];
 
-function CreateReviewForm({ setOpen, setSuccess }) {
+export function CreateReviewForm({ setOpen, setSuccess }) {
+  const authenticated = useSelector((state) => state.auth.authenticated);
+
   return (
-    <>
-      <WizardForm setOpen={setOpen} setSuccess={setSuccess} />
-    </>
+    <>{authenticated ? <WizardForm setOpen={setOpen} setSuccess={setSuccess} /> : <LoginForm />}</>
   );
 }
-
-CreateReviewForm = requireAuth(CreateReviewForm);
-
-export { CreateReviewForm };

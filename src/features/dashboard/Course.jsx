@@ -126,23 +126,28 @@ export function Course() {
                 <AverageGradeCard avgLetterGrade={course.avgLetterGrade} />
               </div>
               <div className="min-w-32 w-5/12 sm:w-32">
-                <IndividualRatings />
+                <IndividualRatings
+                  avgDifficulty={course.avgDifficulty}
+                  avgHoursPerWeek={course.avgHoursPerWeek}
+                  wtaPercent={course.wtaPercent}
+                />
               </div>
               {/* <div className="col-span-2"></div> */}
             </div>
-            <div className="col-span-3">
-              <CourseInfo />
+            <div className="col-span-3 py-6">
+              <CourseInfo course={course} />
+              <h1 className="text-xl font-bold">REVIEWS</h1>
+              {reviews ? (
+                reviews.map((review) => (
+                  <div>
+                    <Review review={review} />
+                  </div>
+                ))
+              ) : (
+                <div>Loading...</div>
+              )}
             </div>
-            <div className="col-span-3">Reviews</div>
-            {reviews ? (
-              reviews.map((review) => (
-                <div className="col-span-3">
-                  <Review review={review} />
-                </div>
-              ))
-            ) : (
-              <div className="col-span-3">Loading...</div>
-            )}
+
             <button
               type="submit"
               className="group relative w-1/3 mb-6 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

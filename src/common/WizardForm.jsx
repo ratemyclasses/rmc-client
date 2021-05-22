@@ -1,49 +1,14 @@
+/* eslint-disable */
 import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { CustomInput } from './CustomInput';
 import { CustomSelect } from './CustomSelect';
 import { CustomSlider } from './CustomSlider';
-
-function Step5({ formValues }) {
-  const a = 5;
-
-  return (
-    <div className="bg-white rounded-lg p-10 flex items-center shadow justify-between">
-      <div>
-        <svg
-          className="mb-4 h-20 w-20 text-green-500 mx-auto"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-            clipRule="evenodd"
-          />
-        </svg>
-
-        <h2 className="text-2xl mb-4 text-gray-800 text-center font-bold">Review Published!</h2>
-
-        <div className="text-gray-600 mb-8">
-          Thank you. We have sent you an email to demo@demo.test. Please click the link in the
-          message to activate your account.
-        </div>
-
-        <button
-          type="button"
-          className="w-40 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
-        >
-          Back to home
-        </button>
-      </div>
-    </div>
-  );
-}
+import { createReview } from '../app/actions/review.actions';
 
 function Step4({ formValues }) {
-  const a = 5;
-
   return (
     <div className="text-center">
       <h1 className="mt-6 mb-3 text-2xl font-bold">Would you take this class again?</h1>
@@ -199,6 +164,18 @@ function Step1({ formValues }) {
         maxLabel="Very Helpful"
         value={formValues.staffRating}
       />
+
+      <h1 className="mt-10 mb-3 font-extrabold">What would you rate this class overall?</h1>
+      <Field
+        name="rating"
+        component={CustomSlider}
+        step={1}
+        min={0}
+        max={5}
+        minLabel="Awful"
+        maxLabel="Awesome"
+        value={formValues.staffRating}
+      />
     </div>
   );
 }
@@ -206,6 +183,9 @@ function Step1({ formValues }) {
 export function WizardForm({ setOpen, setSuccess }) {
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({});
+
+  const dispatch = useDispatch();
+  const course = useSelector((state) => state.course.course);
 
   const validate = {
     3: Yup.object({
@@ -218,7 +198,18 @@ export function WizardForm({ setOpen, setSuccess }) {
 
   const onSubmit = (values, { setSubmitting }) => {
     if (step === 4) {
-      alert(JSON.stringify(values, null, 2));
+      const cleanedData = {};
+      Object.keys(values).forEach((key) => {
+        if (!isNaN(values[key])) {
+          cleanedData[key] = parseInt(values[key], 10);
+        } else if (values[key] === 'Yes' || values[key] === 'No') {
+          cleanedData[key] = values[key] === 'Yes' ? true : false;
+        } else {
+          cleanedData[key] = values[key];
+        }
+      });
+
+      dispatch(createReview({ ...cleanedData, courseId: course._id }));
       setOpen(false);
       setSuccess(true);
     } else {

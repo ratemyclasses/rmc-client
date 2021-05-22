@@ -2,51 +2,63 @@ import React from 'react';
 
 /* eslint-disable */
 
-export function CourseInfo() {
+export function CourseInfo({ course }) {
   const vals = [
     {
+      title: 'COURSE STRUCTURE',
+      values: [
+        `Professor Responsiveness:  ${course.avgProfResponsiveness || 'N/A'}`,
+        `Course Staff Rating: ${course.staffRating || 'N/A'}`,
+        `Mandatory Attendance: ${`${course.attendancePercent * 100}%` || 'N/A'}`
+      ]
+    },
+    {
       title: 'RESOURCES',
-      values: ['Helpfulness', 'Teaching Quality', 'Office Hours']
+      values: course.resources || []
     },
     {
-      title: 'DIFFICULTY',
-      values: ['Workload', 'Assitance', 'People', 'Commitment']
-    },
-    {
-      title: 'QUALITY',
-      values: ['Course Website', 'Teaching Quality', 'Materials']
+      title: 'ASSIGNMENTS/EXAMS',
+      values: [
+        ,
+        `Project Heavy: ${`${course.projHeavyPercent * 100}%` || 'N/A'}`,
+        `Quiz Frequency: ${course.quizFrequencies || 'N/A'}`,
+        `Exam Difficulty: ${course.avgExamDifficulty || 'N/A'}`,
+        `Fair Deadlines: ${`${course.fairDeadlinesPercent * 100}%` || 'N/A'}`
+      ]
     }
   ];
 
   return (
     <div className="flex items-center">
-      {vals.map((val) => {
+      {vals.map((col) => {
         return (
           <div className="w-64">
             <h2 className="font-medium title-font tracking-widest text-gray-900 mb-4 text-sm text-center sm:text-left">
-              {val.title}
+              {col.title}
             </h2>
             <div className="flex flex-col sm:items-start sm:text-left text-center items-center -mb-1 space-y-2.5">
-              {val.values.map((value) => {
-                return (
-                  <div className="text-gray-700">
-                    <span className="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                      <svg
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="3"
-                        className="w-3 h-3"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M20 6L9 17l-5-5"></path>
-                      </svg>
-                    </span>
-                    {value}
-                  </div>
-                );
-              })}
+              {col.values.length
+                ? col.values.map((value) => {
+                    return (
+                      <div className="text-gray-700">
+                        <span className="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
+                          <svg
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            stroke-width="3"
+                            className="w-3 h-3"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M20 6L9 17l-5-5"></path>
+                          </svg>
+                        </span>
+                        {value}
+                      </div>
+                    );
+                  })
+                : 'N/A'}
             </div>
           </div>
         );
