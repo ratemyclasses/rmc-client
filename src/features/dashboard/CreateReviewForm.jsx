@@ -1,8 +1,6 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { CustomAlert } from '../../common/CustomAlert';
-import { requireAuth } from '../../common/requireAuth';
 import { WizardForm } from '../../common/WizardForm';
 import { LoginForm } from '../auth/LoginForm';
 
