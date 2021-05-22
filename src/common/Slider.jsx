@@ -1,7 +1,7 @@
 import React from 'react';
 import { Range } from 'react-range';
 
-export function CustomSlider({ field, form, value, step, min, max, minLabel, maxLabel }) {
+export function Slider({ field, form, value, step, min, max, minLabel, maxLabel }) {
   const [values, setValues] = React.useState([value || 0]);
 
   return (

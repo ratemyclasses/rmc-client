@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, useRef } from 'react';
 
-export function CustomAlert({ open, setOpen, title, children, okBtn, cancelBtn }) {
+export function Alert({ open, setOpen, title, children, okBtn, cancelBtn }) {
   const cancelButtonRef = useRef(null);
 
   return (

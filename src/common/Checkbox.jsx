@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useField } from 'formik';
 
-export default function CustomCheckbox({ children, ...props }) {
+export default function Checkbox({ children, ...props }) {
   // React treats radios and checkbox inputs differently other input types, select, and textarea.
   // Formik does this too! When you specify `type` to useField(), it will
   // return the correct bag of props for you -- a `checked` prop will be included

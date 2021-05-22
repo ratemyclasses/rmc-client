@@ -8,7 +8,6 @@ export function Header() {
     return <div>Loading...</div>;
   }
 
-  /* eslint-disable */
   return (
     <div className="md:flex md:items-center bg-white border-t border-b">
       <div className="relative flex items-center w-full px-4 my-4 sm:w-96 sm:ml-4">
@@ -19,7 +18,10 @@ export function Header() {
         />
       </div>
       <div className="w-full flex mb-4 mx-auto items-center overflow-auto sm:w-full sm:ml-4 sm:mb-0">
-        <button class="px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined ">
+        <button
+          type="button"
+          className="px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
+        >
           Department
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +33,10 @@ export function Header() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <button class="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined ">
+        <button
+          type="button"
+          className="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
+        >
           Department
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +48,10 @@ export function Header() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <button class="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined ">
+        <button
+          type="button"
+          className="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
+        >
           Department
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +63,10 @@ export function Header() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <button class="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined ">
+        <button
+          type="button"
+          className="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
+        >
           Department
           <svg
             xmlns="http://www.w3.org/2000/svg"

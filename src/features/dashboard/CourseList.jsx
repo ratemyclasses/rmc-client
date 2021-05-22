@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses } from '../../app/actions/course.actions';
-import { CourseCard } from './CourseCard';
+import { CourseCard } from '../course/CourseCard';
 
 export function CourseList() {
   const courses = useSelector((state) => state.course.courses);

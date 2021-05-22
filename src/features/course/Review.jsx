@@ -1,11 +1,10 @@
 import React from 'react';
 
-/* eslint-disable */
 export function Review({ review }) {
   return (
-    <div class="py-8 flex flex-wrap md:flex-nowrap">
-      <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-        <div class="inline-block relative">
+    <div className="py-8 flex flex-wrap md:flex-nowrap">
+      <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+        <div className="inline-block relative">
           <div className="rounded-xl float-left p-3 px-4 mb-2 mr-6 bg-indigo-500 dark:bg-gray-800 text-right">
             <div className="text-right items-right">
               {/* <svg viewBox="206.372 159.55 70.073 67.114" width="15" height="15">
@@ -37,12 +36,11 @@ export function Review({ review }) {
           </div>
         </div>
       </div>
-      <div class="md:flex-grow">
-        {/* <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">
+      <div className="md:flex-grow">
+        {/* <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
           Bitters hashtag waistcoat fashion axe chia unicorn
         </h2> */}
-        <p class="leading-relaxed">{review.content}</p>
-        <a class="text-indigo-500 inline-flex items-center mt-4"></a>
+        <p className="leading-relaxed">{review.content}</p>
       </div>
     </div>
   );
@@ -50,10 +48,10 @@ export function Review({ review }) {
 
 // return (
 //   <div>
-//     <div class="bg-white dark:bg-gray-800 w-full mb-6 sm:inline-block">
-//       <div class="flex items-start text-left">
-//         <div class="flex-shrink-0">
-//           <div class="inline-block relative">
+//     <div className="bg-white dark:bg-gray-800 w-full mb-6 sm:inline-block">
+//       <div className="flex items-start text-left">
+//         <div className="flex-shrink-0">
+//           <div className="inline-block relative">
 //             <div className="rounded-xl float-right p-3 px-4 mb-2 bg-indigo-500 dark:bg-gray-800 text-right">
 //               <div className="text-right items-right">
 //                 {/* <svg viewBox="206.372 159.55 70.073 67.114" width="15" height="15">
@@ -83,14 +81,14 @@ export function Review({ review }) {
 //             </div>
 //           </div>
 //         </div>
-//         <div class="ml-6">
-//           <p class="flex items-baseline">
-//             <span class="text-gray-900 dark:text-gray-200 font-bold">A Msan</span>
-//             <span class="text-gray-500 dark:text-gray-300  ml-2 text-sm">2 months ago</span>
+//         <div className="ml-6">
+//           <p className="flex items-baseline">
+//             <span className="text-gray-900 dark:text-gray-200 font-bold">A Msan</span>
+//             <span className="text-gray-500 dark:text-gray-300  ml-2 text-sm">2 months ago</span>
 //           </p>
 
-//           <div class="mt-3">
-//             <p class="mt-1 text-gray-700 max-w-xs dark:text-white">
+//           <div className="mt-3">
+//             <p className="mt-1 text-gray-700 max-w-xs dark:text-white">
 //               My first job of scanning photos at the Memories 2 Digital Photo Scanning was
 //               fantastic. She completed the work quickly while I was waiting. Thanks for a great
 //               service..
