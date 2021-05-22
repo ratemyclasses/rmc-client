@@ -14,6 +14,8 @@ export function Navbar(props) {
   const history = useHistory();
   const { tag } = useParams();
 
+  const tags = colleges.map((college) => college.tag);
+
   useEffect(() => {
     if (collegeStatus === STATUS.idle) {
       dispatch(
@@ -23,10 +25,10 @@ export function Navbar(props) {
       );
     }
 
-    if (tag && (!currCollege || tag !== currCollege.tag)) {
+    if (tag && tags.includes(tag) && (!currCollege || tag !== currCollege.tag)) {
       dispatch(getCollegeByTag(tag));
     }
-  }, [tag, dispatch, collegeStatus, currCollege]);
+  }, [tag, tags, dispatch, collegeStatus, currCollege]);
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [collegeMenuOpen, setCollegeMenuOpen] = useState(false);

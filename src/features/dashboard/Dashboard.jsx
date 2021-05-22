@@ -1,32 +1,27 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-// import CenteredContent from '../../common/layout/CenteredContent';
+import { Route, useRouteMatch } from 'react-router-dom';
 import { Navbar } from '../../common/Navbar';
-import { DashboardContents } from './DashboardContents';
+import { Course } from '../course/Course';
+import { CourseList } from './CourseList';
+import { Header } from './Header';
 
 export function Dashboard() {
-  const college = useSelector((state) => state.college.college);
-  const status = useSelector((state) => state.college.status);
-
-  const { tag } = useParams();
-
-  console.log(tag, college, status);
-
-  // if (!user) {
-  //   return (
-  //     <div>
-  //       <Navbar />
-  //       Dashboard: No User
-  //     </div>
-  //   );
-  // }
+  const { path } = useRouteMatch();
 
   return (
     <div>
       <Navbar />
-      {/* <CenteredContent centeredComponent={} /> */}
-      <DashboardContents />
+      <div>
+        <Header />
+        <div className="flex items-start justify-between">
+          <div className="hidden sm:block w-full border-r border-gray-200 sm:w-64 lg:w-96">
+            <CourseList />
+          </div>
+          <div className="block w-full sm:w-full sm:block bg-white">
+            <Route path={`${path}/:courseId`} component={Course} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

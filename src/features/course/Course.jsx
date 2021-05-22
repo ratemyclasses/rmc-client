@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
 import { Alert } from '../../common/Alert';
 import { Modal } from '../../common/Modal';
@@ -14,7 +16,9 @@ import { Review } from './Review';
 
 export function Course() {
   const dispatch = useDispatch();
+  const { courseId } = useParams();
   const course = useSelector((state) => state.course.course);
+  const college = useSelector((state) => state.college.college);
   const reviews = useSelector((state) => state.review.reviews);
   const authenticated = useSelector((state) => state.auth.authenticated);
   const [success, setSuccess] = useState(false);
@@ -22,11 +26,12 @@ export function Course() {
   const [signup, setSignup] = useState(false);
 
   useEffect(() => {
-    if (course) {
-      dispatch(getReviews({ courseId: course._id }));
+    if (college) {
+      dispatch(getCourseById({ collegeId: college._id, id: courseId }));
     }
+    dispatch(getReviews({ courseId }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [course, dispatch]);
+  }, [college, courseId, dispatch]);
 
   if (!course) {
     return <div className="mt-3">Select a course</div>;

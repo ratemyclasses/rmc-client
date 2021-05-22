@@ -1,14 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { getCourseById } from '../../app/actions/course.actions';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 export function CourseCard({ course }) {
-  const dispatch = useDispatch();
+  const { url } = useRouteMatch();
+  const history = useHistory();
 
   return (
     <button
+      onClick={() => history.push(`${url}/${course._id}`)}
       className="w-full py-2 px-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-purple-200 border-b"
-      onClick={() => dispatch(getCourseById(course._id))}
       type="button"
     >
       <div className="overflow-ellipsis overflow-hidden relative py-4 px-4 flex items-start justify-between">
