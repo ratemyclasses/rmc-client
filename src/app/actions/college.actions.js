@@ -24,7 +24,7 @@ export const getCollegeByTag = createAsyncThunk(ACTIONS.college.getByTag, async 
 
 export const updateCollegeById = createAsyncThunk(
   ACTIONS.college.updateById,
-  async (id, formData) => {
+  async ({ id, formData }) => {
     const res = await axios.patch(`${BASE_URL}/colleges/${id}`, formData);
     return res.data;
   }

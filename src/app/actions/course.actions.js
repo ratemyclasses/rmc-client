@@ -2,30 +2,36 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BASE_URL, ACTIONS } from '../constants';
 
-export const createCourse = createAsyncThunk(ACTIONS.course.create, async (formData) => {
-  const res = await axios.post(`${BASE_URL}/courses`, formData);
+export const createCourse = createAsyncThunk(
+  ACTIONS.course.create,
+  async ({ collegeId, formData }) => {
+    const res = await axios.post(`${BASE_URL}/colleges/${collegeId}/courses`, formData);
+    return res.data;
+  }
+);
+
+export const getCourses = createAsyncThunk(ACTIONS.course.get, async ({ collegeId, params }) => {
+  const res = await axios.get(`${BASE_URL}/colleges/${collegeId}/courses`, { params });
   return res.data;
 });
 
-export const getCourses = createAsyncThunk(ACTIONS.course.get, async (params) => {
-  const res = await axios.get(`${BASE_URL}/courses`, { params });
-  return res.data;
-});
-
-export const getCourseById = createAsyncThunk(ACTIONS.course.getById, async (id) => {
-  const res = await axios.get(`${BASE_URL}/courses/${id}`);
+export const getCourseById = createAsyncThunk(ACTIONS.course.getById, async ({ collegeId, id }) => {
+  const res = await axios.get(`${BASE_URL}/colleges/${collegeId}/courses/${id}`);
   return res.data;
 });
 
 export const updateCourseById = createAsyncThunk(
   ACTIONS.course.updateById,
-  async (id, formData) => {
-    const res = await axios.patch(`${BASE_URL}/courses/${id}`, formData);
+  async ({ collegeId, id, formData }) => {
+    const res = await axios.patch(`${BASE_URL}/colleges/${collegeId}/courses/${id}`, formData);
     return res.data;
   }
 );
 
-export const deleteCourseById = createAsyncThunk(ACTIONS.course.deleteById, async (id) => {
-  await axios.delete(`${BASE_URL}/courses/${id}`);
-  return id;
-});
+export const deleteCourseById = createAsyncThunk(
+  ACTIONS.course.deleteById,
+  async ({ collegeId, id }) => {
+    await axios.delete(`${BASE_URL}/colleges/${collegeId}/courses/${id}`);
+    return id;
+  }
+);

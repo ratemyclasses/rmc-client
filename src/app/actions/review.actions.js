@@ -19,7 +19,7 @@ export const getReviewById = createAsyncThunk(ACTIONS.review.getById, async (id)
 
 export const updateReviewById = createAsyncThunk(
   ACTIONS.review.updateById,
-  async (id, formData) => {
+  async ({ id, formData }) => {
     const res = await axios.patch(`${BASE_URL}/reviews/${id}`, formData);
     return res.data;
   }
