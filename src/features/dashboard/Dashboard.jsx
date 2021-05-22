@@ -8,7 +8,6 @@ import { DashboardContents } from './DashboardContents';
 export function Dashboard() {
   const college = useSelector((state) => state.college.college);
   const status = useSelector((state) => state.college.status);
-  const user = useSelector((state) => state.user.user);
 
   const { tag } = useParams();
 
