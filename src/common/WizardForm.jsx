@@ -201,11 +201,9 @@ export function WizardForm({ setOpen, setSuccess }) {
       const cleanedData = {};
       Object.keys(values).forEach((key) => {
         if (!isNaN(values[key])) {
-          console.log('look3:', key, cleanedData[key], cleanedData[key] === 'Yes');
           cleanedData[key] = parseInt(values[key], 10);
         } else if (values[key] === 'Yes' || values[key] === 'No') {
           cleanedData[key] = values[key] === 'Yes' ? true : false;
-          console.log('look2:', key, cleanedData[key], cleanedData[key] === 'Yes');
         } else {
           cleanedData[key] = values[key];
         }

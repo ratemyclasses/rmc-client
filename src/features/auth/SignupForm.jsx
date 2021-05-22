@@ -1,4 +1,4 @@
-import { Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -42,23 +42,25 @@ export function SignupForm() {
         <Form>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <CustomInput
+              <Field
                 id="email-address"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
                 placeholder="Email address"
+                component={CustomInput}
               />
             </div>
             <div>
-              <CustomInput
+              <Field
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 required
                 placeholder="Password"
+                component={CustomInput}
               />
             </div>
           </div>
