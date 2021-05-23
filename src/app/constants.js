@@ -37,7 +37,9 @@ export const ACTIONS = {
     deleteById: 'review/delete',
     upvote: 'review/upvote',
     downvote: 'review/downvote',
-    clearVote: 'review/clearVote'
+    clearVote: 'review/clearVote',
+    approveById: 'review/approveById',
+    rejectById: 'review/rejectById'
   },
   user: {
     getCurrent: 'user/getCurrent',
