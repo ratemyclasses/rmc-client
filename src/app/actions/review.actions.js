@@ -31,21 +31,22 @@ export const deleteReviewById = createAsyncThunk(ACTIONS.review.deleteById, asyn
 });
 
 export const upvoteReviewById = createAsyncThunk(ACTIONS.review.upvote, async (id) => {
-  const res = await axios.patch(`${BASE_URL}/reviews/${id}/vote`, {
+  const res = await axios.patch(`${BASE_URL}/reviews/${id}/votes`, {
     voteType: 'UPVOTE'
   });
+
   return res.data;
 });
 
 export const downvoteReviewById = createAsyncThunk(ACTIONS.review.downvote, async (id) => {
-  const res = await axios.patch(`${BASE_URL}/reviews/${id}/vote`, {
+  const res = await axios.patch(`${BASE_URL}/reviews/${id}/votes`, {
     voteType: 'DOWNVOTE'
   });
   return res.data;
 });
 
 export const clearVoteReviewById = createAsyncThunk(ACTIONS.review.downvote, async (id) => {
-  const res = await axios.patch(`${BASE_URL}/reviews/${id}/vote`, {
+  const res = await axios.patch(`${BASE_URL}/reviews/${id}/votes`, {
     voteType: 'CLEAR'
   });
   return res.data;

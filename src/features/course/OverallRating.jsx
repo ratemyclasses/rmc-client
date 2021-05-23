@@ -25,7 +25,7 @@ export function OverallRating({ avgRating }) {
         <p className="text-white text-2xl text-right dark:text-white font-bold">
           {avgRating ? (
             <>
-              {avgRating}
+              {avgRating.toFixed(1)}
               <span className="text-white font-normal text-lg text-right dark:text-white ">/5</span>
             </>
           ) : (

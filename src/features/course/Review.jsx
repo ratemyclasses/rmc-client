@@ -1,9 +1,29 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearVoteReviewById,
+  downvoteReviewById,
+  upvoteReviewById
+} from '../../app/actions/review.actions';
 
 export function Review({ review }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+
+  let upvoted = false;
+  let downvoted = false;
+
+  if (user) {
+    if (review.upvoters.includes(user._id)) {
+      upvoted = true;
+    } else if (review.downvoters.includes(user._id)) {
+      downvoted = true;
+    }
+  }
+
   return (
     <div className="py-8 flex flex-wrap md:flex-nowrap">
-      <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+      <div className="md:w-1/8 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
         <div className="inline-block relative">
           <div className="rounded-xl float-left p-3 px-4 mb-2 mr-6 bg-indigo-500 dark:bg-gray-800 text-right">
             <div className="text-right items-right">
@@ -36,11 +56,64 @@ export function Review({ review }) {
           </div>
         </div>
       </div>
-      <div className="md:flex-grow">
+      <div className="flex gap-10">
         {/* <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
           Bitters hashtag waistcoat fashion axe chia unicorn
         </h2> */}
-        <p className="leading-relaxed">{review.content}</p>
+        <div className="leading-relaxed w-1/2">{review.content}</div>
+        <div className="flex justify-center h-12 rounded-lg text-lg mb-4" role="group">
+          <button
+            type="button"
+            disabled={!user}
+            className={`${
+              upvoted ? 'bg-indigo-500 text-white' : 'text-gray-600'
+            } flex hover:border-indigo-500 rounded-l-lg px-4 py-2 mx-0 border outline-none focus:outline-none focus:shadow-outline`}
+            onClick={() =>
+              dispatch(upvoted ? clearVoteReviewById(review._id) : upvoteReviewById(review._id))
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+              />
+            </svg>
+            {review.upvoteCount}
+          </button>
+          <button
+            type="button"
+            disabled={!user}
+            className={`${downvoted ? 'bg-indigo-500 text-white' : 'text-gray-600'}
+            flex hover:border-indigo-500 border rounded-r-lg px-4 py-2 mx-0 outline-none focus:outline-none focus:shadow-outline`}
+            onClick={() =>
+              dispatch(downvoted ? clearVoteReviewById(review._id) : downvoteReviewById(review._id))
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"
+              />
+            </svg>
+            {review.downvoteCount}
+          </button>
+        </div>
       </div>
     </div>
   );
