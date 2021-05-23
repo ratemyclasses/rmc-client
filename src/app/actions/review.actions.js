@@ -51,3 +51,23 @@ export const clearVoteReviewById = createAsyncThunk(ACTIONS.review.downvote, asy
   });
   return res.data;
 });
+
+/**
+ * Only moderators and admins can use this route
+ */
+export const approveReviewById = createAsyncThunk(ACTIONS.review.approveById, async (id) => {
+  const res = await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
+    approve: true
+  });
+  return { _id: id };
+});
+
+/**
+ * Only moderators and admins can use this route
+ */
+export const rejectReviewById = createAsyncThunk(ACTIONS.review.rejectById, async (id) => {
+  const res = await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
+    approve: false
+  });
+  return { _id: id };
+});

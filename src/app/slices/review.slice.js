@@ -18,7 +18,9 @@ const {
   deleteReviewById,
   upvoteReviewById,
   downvoteReviewById,
-  clearVoteReviewById
+  clearVoteReviewById,
+  approveReviewById,
+  rejectReviewById
 } = actions;
 
 const updateReviewVotes = (state, action) => {
@@ -60,6 +62,16 @@ export const reviewSlice = createSlice({
     },
     [deleteReviewById.fulfilled]: (state, action) => {
       state.reviews = state.reviews.filter(({ id }) => id !== action.payload);
+      state.status = STATUS.success;
+    },
+    [approveReviewById.fulfilled]: (state, action) => {
+      const review = state.reviews.find((rev) => rev._id === action.payload._id);
+      review.approved = true;
+      state.status = STATUS.success;
+    },
+    [rejectReviewById.fulfilled]: (state, action) => {
+      const review = state.reviews.find((rev) => rev._id === action.payload._id);
+      review.approved = false;
       state.status = STATUS.success;
     },
     [upvoteReviewById.fulfilled]: updateReviewVotes,
