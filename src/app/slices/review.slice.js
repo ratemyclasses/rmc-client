@@ -22,9 +22,11 @@ const {
 } = actions;
 
 const updateReviewVotes = (state, action) => {
-  const review = state.reviews.find((rev) => rev.id === action.payload._id);
-  review.upvoteCount = action.payload.upvotes;
-  review.downvoteCount = action.payload.downvotes;
+  const review = state.reviews.find((rev) => rev._id === action.payload._id);
+  review.upvoteCount = action.payload.upvoteCount;
+  review.upvoters = action.payload.upvoters;
+  review.downvoteCount = action.payload.downvoteCount;
+  review.downvoters = action.payload.downvoters;
   state.status = STATUS.success;
 };
 
