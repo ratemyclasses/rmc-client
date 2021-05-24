@@ -13,12 +13,14 @@ export function Dashboard() {
       <Navbar />
       <div>
         <Header />
-        <div className="flex items-start justify-between">
+        <div className="h-screen flex justify-between">
           <div className="hidden sm:block w-full border-r border-gray-200 sm:w-64 lg:w-96">
             <CourseList />
           </div>
-          <div className="block w-full sm:w-full sm:block bg-white">
-            <Route path={`${path}/:courseId`} component={CourseCard} />
+          <div className="flex-1 flex overflow-hidden">
+            <div className="block w-full sm:w-full sm:block bg-white flex-1 overflow-y-scroll">
+              <Route path={`${path}/:courseId`} component={CourseCard} />
+            </div>
           </div>
         </div>
       </div>
