@@ -9,7 +9,9 @@ export function CourseList() {
   const college = useSelector((state) => state.college.college);
   const dispatch = useDispatch();
   const [offset, setOffset] = useState(0);
-  const limit = 7;
+  const total = 15456;
+  const perPage = 7;
+  const limit = Math.min(perPage, total - offset);
 
   useEffect(() => {
     if (college) {
@@ -37,8 +39,8 @@ export function CourseList() {
       <div className="mt-3 ml-3">
         <p className="text-sm text-gray-700">
           Showing <span className="font-medium">{offset + 1}</span> to{' '}
-          <span className="font-medium">{offset + 7}</span> of{' '}
-          <span className="font-medium">15,456</span> results
+          <span className="font-medium">{Math.min(offset + 7, total)}</span> of{' '}
+          <span className="font-medium">{total}</span> results
         </p>
       </div>
       {courses.map((course) => (
@@ -47,7 +49,9 @@ export function CourseList() {
       <Paginator
         setOffset={setOffset}
         offset={offset}
-        curPageNum={Math.round(offset / limit) + 1}
+        perPage={perPage}
+        curPageNum={Math.round(offset / perPage) + 1}
+        total={total}
       />
     </div>
   );
