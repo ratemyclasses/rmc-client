@@ -9,7 +9,11 @@ export const createCollege = createAsyncThunk(ACTIONS.college.create, async (for
 
 export const getColleges = createAsyncThunk(ACTIONS.college.get, async (params) => {
   const res = await axios.get(`${BASE_URL}/colleges`, { params });
-  return res.data;
+  let totalCount = 0;
+  if (res.headers['x-total-count']) {
+    totalCount = parseInt(res.headers['x-total-count'], 10);
+  }
+  return { data: res.data, totalCount };
 });
 
 export const getCollegeById = createAsyncThunk(ACTIONS.college.getById, async (id) => {

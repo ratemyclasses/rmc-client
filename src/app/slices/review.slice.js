@@ -7,7 +7,8 @@ const initialState = {
   reviews: [],
   review: null,
   status: STATUS.idle,
-  error: null
+  error: null,
+  totalCount: 0
 };
 
 const {
@@ -43,7 +44,8 @@ export const reviewSlice = createSlice({
       state.status = STATUS.success;
     },
     [getReviews.fulfilled]: (state, action) => {
-      state.reviews = action.payload;
+      state.reviews = action.payload.data;
+      state.totalCount = action.payload.totalCount;
       state.status = STATUS.success;
     },
     [getReviewById.fulfilled]: (state, action) => {

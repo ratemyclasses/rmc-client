@@ -9,7 +9,11 @@ export const createReview = createAsyncThunk(ACTIONS.review.create, async (formD
 
 export const getReviews = createAsyncThunk(ACTIONS.review.get, async (params) => {
   const res = await axios.get(`${BASE_URL}/reviews`, { params });
-  return res.data;
+  let totalCount = 0;
+  if (res.headers['x-total-count']) {
+    totalCount = parseInt(res.headers['x-total-count'], 10);
+  }
+  return { data: res.data, totalCount };
 });
 
 export const getReviewById = createAsyncThunk(ACTIONS.review.getById, async (id) => {

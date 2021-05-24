@@ -8,7 +8,8 @@ const initialState = {
   courses: [],
   course: null,
   status: STATUS.idle,
-  error: null
+  error: null,
+  totalCount: 0
 };
 
 const { createCourse, getCourses, getCourseById, updateCourseById, deleteCourseById } = actions;
@@ -24,7 +25,8 @@ export const courseSlice = createSlice({
       state.status = STATUS.success;
     },
     [getCourses.fulfilled]: (state, action) => {
-      state.courses = action.payload;
+      state.courses = action.payload.data;
+      state.totalCount = action.payload.totalCount;
       state.status = STATUS.success;
     },
     [getCourseById.fulfilled]: (state, action) => {

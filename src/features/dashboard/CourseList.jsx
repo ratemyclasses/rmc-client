@@ -6,12 +6,12 @@ import { Paginator } from '../../common/Paginator';
 
 export function CourseList() {
   const courses = useSelector((state) => state.course.courses);
+  const total = useSelector((state) => state.course.totalCount);
   const college = useSelector((state) => state.college.college);
   const dispatch = useDispatch();
   const [offset, setOffset] = useState(0);
-  const total = 15456;
   const perPage = 7;
-  const limit = Math.min(perPage, total - offset);
+  const limit = total ? Math.min(perPage, total - offset) : perPage;
 
   useEffect(() => {
     if (college) {
