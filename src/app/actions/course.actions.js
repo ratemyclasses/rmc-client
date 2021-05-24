@@ -12,7 +12,11 @@ export const createCourse = createAsyncThunk(
 
 export const getCourses = createAsyncThunk(ACTIONS.course.get, async ({ collegeId, params }) => {
   const res = await axios.get(`${BASE_URL}/colleges/${collegeId}/courses`, { params });
-  return res.data;
+  let totalCount = 0;
+  if (res.headers['x-total-count']) {
+    totalCount = parseInt(res.headers['x-total-count'], 10);
+  }
+  return { data: res.data, totalCount };
 });
 
 export const getCourseById = createAsyncThunk(ACTIONS.course.getById, async ({ collegeId, id }) => {

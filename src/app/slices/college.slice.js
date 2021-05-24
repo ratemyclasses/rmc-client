@@ -7,7 +7,8 @@ const initialState = {
   colleges: [],
   college: null,
   status: STATUS.idle,
-  error: null
+  error: null,
+  totalCount: 0
 };
 
 const {
@@ -30,7 +31,8 @@ export const collegeSlice = createSlice({
       state.status = STATUS.success;
     },
     [getColleges.fulfilled]: (state, action) => {
-      state.colleges = action.payload;
+      state.colleges = action.payload.data;
+      state.totalCount = action.payload.totalCount;
       state.status = STATUS.success;
     },
     [getCollegeById.fulfilled]: (state, action) => {

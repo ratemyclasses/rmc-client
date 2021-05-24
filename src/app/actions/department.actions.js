@@ -14,7 +14,11 @@ export const getDepartments = createAsyncThunk(
   ACTIONS.department.get,
   async ({ collegeId, params }) => {
     const res = await axios.get(`${BASE_URL}/colleges/${collegeId}/departments`, { params });
-    return res.data;
+    let totalCount = 0;
+    if (res.headers['x-total-count']) {
+      totalCount = parseInt(res.headers['x-total-count'], 10);
+    }
+    return { data: res.data, totalCount };
   }
 );
 

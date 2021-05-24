@@ -7,7 +7,8 @@ const initialState = {
   departments: [],
   department: null,
   status: STATUS.idle,
-  error: null
+  error: null,
+  totalCount: 0
 };
 
 const {
@@ -29,7 +30,8 @@ export const departmentSlice = createSlice({
       state.status = STATUS.success;
     },
     [getDepartments.fulfilled]: (state, action) => {
-      state.departments = action.payload;
+      state.departments = action.payload.data;
+      state.totalCount = action.payload.totalCount;
       state.status = STATUS.success;
     },
     [getDepartmentById.fulfilled]: (state, action) => {
