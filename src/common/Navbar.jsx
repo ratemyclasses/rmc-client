@@ -197,6 +197,7 @@ export function Navbar({ moderate = false }) {
               >
                 <Link
                   to="/profile"
+                  onClick={() => setUserMenuOpen(false)}
                   className={
                     !userMenuOpen
                       ? 'hidden'
@@ -208,9 +209,24 @@ export function Navbar({ moderate = false }) {
                 >
                   Your Profile
                 </Link>
+                <Link
+                  to="/u/ucb"
+                  onClick={() => setUserMenuOpen(false)}
+                  className={
+                    !userMenuOpen
+                      ? 'hidden'
+                      : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                  }
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-1"
+                >
+                  Course Search
+                </Link>
                 {user && hasRoles(user.roles, ['ADMIN', 'MODERATOR']) && (
                   <Link
                     to="/moderate/u/ucb"
+                    onClick={() => setUserMenuOpen(false)}
                     className={
                       !userMenuOpen
                         ? 'hidden'
@@ -218,7 +234,7 @@ export function Navbar({ moderate = false }) {
                     }
                     role="menuitem"
                     tabIndex="-1"
-                    id="user-menu-item-1"
+                    id="user-menu-item-2"
                   >
                     Approve Reviews
                   </Link>
@@ -232,7 +248,7 @@ export function Navbar({ moderate = false }) {
                   }
                   role="menuitem"
                   tabIndex="-1"
-                  id="user-menu-item-2"
+                  id="user-menu-item-3"
                   type="button"
                 >
                   Sign out
