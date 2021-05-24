@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams, Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { logout } from '../app/actions/auth.actions';
 import { getCollegeByTag, getColleges } from '../app/actions/college.actions';
 import { STATUS } from '../app/constants';
+import { hasRoles } from '../features/utils';
 
-export function Navbar(props) {
+export function Navbar({ moderate = false }) {
   const dispatch = useDispatch();
   const collegeStatus = useSelector((state) => state.college.status);
   const colleges = useSelector((state) => state.college.colleges);
@@ -126,7 +127,8 @@ export function Navbar(props) {
                     if (college.tag !== tag) {
                       return (
                         <Link
-                          to={`/u/${college.tag}`}
+                          onClick={() => setCollegeMenuOpen(false)}
+                          to={moderate ? `/moderate/u/${college.tag}` : `/u/${college.tag}`}
                           className={
                             !collegeMenuOpen ? 'hidden' : 'block px-4 py-2 text-sm text-gray-700'
                           }
@@ -195,16 +197,39 @@ export function Navbar(props) {
               >
                 <Link
                   to="/profile"
-                  className={!userMenuOpen ? 'hidden' : 'block px-4 py-2 text-sm text-gray-700'}
+                  className={
+                    !userMenuOpen
+                      ? 'hidden'
+                      : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                  }
                   role="menuitem"
                   tabIndex="-1"
                   id="user-menu-item-0"
                 >
                   Your Profile
                 </Link>
+                {user && hasRoles(user.roles, ['ADMIN', 'MODERATOR']) && (
+                  <Link
+                    to="/moderate/u/ucb"
+                    className={
+                      !userMenuOpen
+                        ? 'hidden'
+                        : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                    }
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="user-menu-item-1"
+                  >
+                    Approve Reviews
+                  </Link>
+                )}
                 <button
                   onClick={() => dispatch(logout())}
-                  className={!userMenuOpen ? 'hidden' : 'block px-4 py-2 text-sm text-gray-700'}
+                  className={
+                    !userMenuOpen
+                      ? 'hidden'
+                      : 'w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                  }
                   role="menuitem"
                   tabIndex="-1"
                   id="user-menu-item-2"

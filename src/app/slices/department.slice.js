@@ -47,7 +47,7 @@ export const departmentSlice = createSlice({
       state.status = STATUS.success;
     },
     [deleteDepartmentById.fulfilled]: (state, action) => {
-      state.departments = state.departments.filter(({ id }) => id !== action.payload);
+      state.departments = state.departments.filter(({ _id }) => _id !== action.payload);
       state.status = STATUS.success;
     }
   }

@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { getCurrentUser } from './app/actions/user.actions';
 import { STATUS } from './app/constants';
 import { PageNotFound } from './common/PageNotFound';
+import { requireAuth } from './common/requireAuth';
 import { Auth } from './features/auth/Auth';
 import { Dashboard } from './features/dashboard/Dashboard';
 import { Landing } from './features/landing/Landing';
+import { ModerateDashboard } from './features/moderator/ModerateDashboard';
 import { Profile } from './features/profile/Profile';
 
 function App() {
@@ -24,14 +26,13 @@ function App() {
     <div>
       <Router>
         <Switch>
-          {/* <Route path="/unauthorized" component={Unauthorized} /> */}
-          <Route path="/login">
-            <Auth />
-          </Route>
-          <Route path="/signup">
-            <Auth />
-          </Route>
-          <Route path="/profile" component={Profile} />
+          <Route path="/login" component={Auth} />
+          <Route path="/signup" component={Auth} />
+          <Route path="/profile" component={requireAuth(Profile)} />
+          <Route
+            path="/moderate/u/:tag"
+            component={requireAuth(ModerateDashboard, ['ADMIN', 'MODERATOR'])}
+          />
           <Route path="/u/:tag" component={Dashboard} />
           <Route exact path="/" component={Landing} />
           <Route path="/*" component={PageNotFound} />

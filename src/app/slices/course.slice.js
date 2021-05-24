@@ -42,7 +42,7 @@ export const courseSlice = createSlice({
       state.status = STATUS.success;
     },
     [deleteCourseById.fulfilled]: (state, action) => {
-      state.courses = state.courses.filter(({ id }) => id !== action.payload);
+      state.courses = state.courses.filter(({ _id }) => _id !== action.payload);
       state.status = STATUS.success;
     },
     [reset.fulfilled]: (state, action) => {

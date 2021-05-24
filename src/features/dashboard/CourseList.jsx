@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses } from '../../app/actions/course.actions';
-import { CourseCard } from '../course/CourseCard';
+import { CourseListItem } from '../course/CourseListItem';
 
 export function CourseList() {
   const courses = useSelector((state) => state.course.courses);
@@ -32,7 +32,7 @@ export function CourseList() {
   return (
     <div className="mb-8 bg-white h-screen overflow-y-auto">
       {courses.map((course) => (
-        <CourseCard key={course._id} course={course} />
+        <CourseListItem key={course._id} course={course} />
       ))}
     </div>
   );

@@ -52,7 +52,7 @@ export const collegeSlice = createSlice({
       state.status = STATUS.success;
     },
     [deleteCollegeById.fulfilled]: (state, action) => {
-      state.colleges = state.colleges.filter(({ id }) => id !== action.payload);
+      state.colleges = state.colleges.filter(({ _id }) => _id !== action.payload);
       state.status = STATUS.success;
     }
   }
