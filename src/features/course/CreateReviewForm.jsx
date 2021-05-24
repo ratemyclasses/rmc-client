@@ -17,6 +17,17 @@ function Step4({ formValues }) {
         options={['Yes', 'No']}
         values={[formValues.wouldTakeAgain]}
       />
+      <h1 className="mt-3 font-extrabold">Your personalized review</h1>
+      <Field
+        name="content"
+        id="content"
+        type="text"
+        required
+        component={Input}
+        label=""
+        value={formValues.content}
+        placeholder="Tell us about the course"
+      />
     </div>
   );
 }

@@ -61,17 +61,18 @@ export const reviewSlice = createSlice({
       state.status = STATUS.success;
     },
     [deleteReviewById.fulfilled]: (state, action) => {
-      state.reviews = state.reviews.filter(({ id }) => id !== action.payload);
+      state.reviews = state.reviews.filter(({ _id }) => _id !== action.payload);
+      state.review = null;
       state.status = STATUS.success;
     },
     [approveReviewById.fulfilled]: (state, action) => {
-      const review = state.reviews.find((rev) => rev._id === action.payload._id);
-      review.approved = true;
+      state.reviews = state.reviews.filter(({ _id }) => _id !== action.payload._id);
+      state.review = null;
       state.status = STATUS.success;
     },
     [rejectReviewById.fulfilled]: (state, action) => {
-      const review = state.reviews.find((rev) => rev._id === action.payload._id);
-      review.approved = false;
+      state.reviews = state.reviews.filter(({ _id }) => _id !== action.payload._id);
+      state.review = null;
       state.status = STATUS.success;
     },
     [upvoteReviewById.fulfilled]: updateReviewVotes,

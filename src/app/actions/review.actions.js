@@ -56,8 +56,8 @@ export const clearVoteReviewById = createAsyncThunk(ACTIONS.review.downvote, asy
  * Only moderators and admins can use this route
  */
 export const approveReviewById = createAsyncThunk(ACTIONS.review.approveById, async (id) => {
-  const res = await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
-    approve: true
+  await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
+    approved: true
   });
   return { _id: id };
 });
@@ -66,8 +66,8 @@ export const approveReviewById = createAsyncThunk(ACTIONS.review.approveById, as
  * Only moderators and admins can use this route
  */
 export const rejectReviewById = createAsyncThunk(ACTIONS.review.rejectById, async (id) => {
-  const res = await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
-    approve: false
+  await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
+    approved: false
   });
   return { _id: id };
 });
