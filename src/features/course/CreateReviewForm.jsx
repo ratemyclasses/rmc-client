@@ -6,15 +6,21 @@ import { Input } from '../../common/Input';
 import { Select } from '../../common/Select';
 import { Slider } from '../../common/Slider';
 import { createReview } from '../../app/actions/review.actions';
+import { isNumeric } from '../utils';
 
 function Step4({ formValues }) {
+  const options = [
+    { name: 'Yes', value: true },
+    { name: 'No', value: false }
+  ];
+
   return (
     <div className="text-center">
       <h1 className="mt-6 mb-3 text-2xl font-bold">Would you take this class again?</h1>
       <Field
         name="wouldTakeAgain"
         component={Select}
-        options={['Yes', 'No']}
+        options={options}
         values={[formValues.wouldTakeAgain]}
       />
       <h1 className="mt-3 font-extrabold">Your personalized review</h1>
@@ -33,7 +39,11 @@ function Step4({ formValues }) {
 }
 
 function Step3({ formValues }) {
-  const quizFrequencies = ['Weekly', 'Biweekly', 'Monthly'];
+  const quizFrequencies = [
+    { name: 'Weekly', value: 'WEEKLY' },
+    { name: 'Biweekly', value: 'BIWEEKLY' },
+    { name: 'Monthly', value: 'MONTHLY' }
+  ];
 
   return (
     <div className="md:w-2/3">
@@ -72,6 +82,11 @@ function Step3({ formValues }) {
 }
 
 function Step2({ formValues }) {
+  const options = [
+    { name: 'Yes', value: true },
+    { name: 'No', value: false }
+  ];
+
   return (
     <div className="md:w-2/3">
       <div className="flex flex-wrap gap-2">
@@ -79,7 +94,7 @@ function Step2({ formValues }) {
         <Field
           name="mandatoryAttendance"
           component={Select}
-          options={['Yes', 'No']}
+          options={options}
           values={[formValues.mandatoryAttendance]}
         />
       </div>
@@ -88,7 +103,7 @@ function Step2({ formValues }) {
         <Field
           name="projHeavy"
           component={Select}
-          options={['Yes', 'No']}
+          options={options}
           values={[formValues.projHeavy]}
         />
       </div>
@@ -97,7 +112,7 @@ function Step2({ formValues }) {
         <Field
           name="fairDeadlines"
           component={Select}
-          options={['Yes', 'No']}
+          options={options}
           values={[formValues.fairDeadlines]}
         />
       </div>
@@ -131,12 +146,12 @@ function Step2({ formValues }) {
 
 function Step1({ formValues }) {
   const options = [
-    'Textbook',
-    'Lecture Notes',
-    'Course Website',
-    'Office Hours',
-    'Lots of TAs',
-    'Other'
+    { name: 'Textbook', value: 'Textbook' },
+    { name: 'Lecture Notes', value: 'Lecture Notes' },
+    { name: 'Course Website', value: 'Course Website' },
+    { name: 'Office Hours', value: 'Office Hours' },
+    { name: 'Lots of TAs', value: 'Lots Of TAs' },
+    { name: 'Other', value: 'Other' }
   ];
 
   return (
@@ -188,9 +203,9 @@ function Step1({ formValues }) {
   );
 }
 
-export function CreateReviewForm({ setOpen, setSuccess }) {
+export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState(initValues);
 
   const dispatch = useDispatch();
   const course = useSelector((state) => state.course.course);
@@ -208,11 +223,8 @@ export function CreateReviewForm({ setOpen, setSuccess }) {
     if (step === 4) {
       const cleanedData = {};
       Object.keys(values).forEach((key) => {
-        /* eslint-disable-next-line */
-        if (!isNaN(values[key])) {
+        if (isNumeric(values[key])) {
           cleanedData[key] = parseInt(values[key], 10);
-        } else if (values[key] === 'Yes' || values[key] === 'No') {
-          cleanedData[key] = values[key] === 'Yes';
         } else {
           cleanedData[key] = values[key];
         }
