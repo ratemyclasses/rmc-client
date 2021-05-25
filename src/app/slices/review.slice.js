@@ -21,7 +21,7 @@ const {
   downvoteReviewById,
   clearVoteReviewById,
   approveReviewById,
-  rejectReviewById
+  denyReviewById
 } = actions;
 
 const updateReviewVotes = (state, action) => {
@@ -72,7 +72,7 @@ export const reviewSlice = createSlice({
       state.review = null;
       state.status = STATUS.success;
     },
-    [rejectReviewById.fulfilled]: (state, action) => {
+    [denyReviewById.fulfilled]: (state, action) => {
       state.reviews = state.reviews.filter(({ _id }) => _id !== action.payload._id);
       state.review = null;
       state.status = STATUS.success;

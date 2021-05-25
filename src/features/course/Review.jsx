@@ -61,7 +61,7 @@ export function Review({ review, moderate = false }) {
           Bitters hashtag waistcoat fashion axe chia unicorn
         </h2> */}
         <div className="leading-relaxed w-1/2">
-          {!review.approved ? (
+          {review.approved !== 'APPROVED' ? (
             <span className="text-sm font-medium bg-red-100 py-1 px-2 rounded text-red-500 align-middle">
               DRAFT
             </span>
