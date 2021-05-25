@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import {
-  approveReviewById,
-  getReviewById,
-  rejectReviewById
-} from '../../app/actions/review.actions';
+import { approveReviewById, getReviewById, denyReviewById } from '../../app/actions/review.actions';
 import { Review } from '../course/Review';
 
 export function ReviewCard() {
@@ -39,9 +35,9 @@ export function ReviewCard() {
         <button
           className="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           type="button"
-          onClick={() => dispatch(rejectReviewById(review._id))}
+          onClick={() => dispatch(denyReviewById(review._id))}
         >
-          Reject
+          Deny
         </button>
         <div className="w-1/6" />
         <Link
