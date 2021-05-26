@@ -1,4 +1,4 @@
-import { DotsVerticalIcon } from '@heroicons/react/solid';
+import { DotsVerticalIcon, StarIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -8,15 +8,15 @@ import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
 import { LoginForm } from '../auth/LoginForm';
 import { SignupForm } from '../auth/SignupForm';
-import { hasRoles } from '../utils';
+import { hasRoles, rounded } from '../utils';
 import { CourseResources } from './CourseResources';
 import { CourseStatistic } from './CourseStatistic';
-import { AverageGradeCard } from './AverageGradeCard';
-import { CourseInfo } from './CourseInfo';
+// import { AverageGradeCard } from './AverageGradeCard';
+// import { CourseInfo } from './CourseInfo';
 import { CreateReviewForm } from './CreateReviewForm';
 import { SummaryColumn } from './SummaryColumn';
-import { IndividualRatings } from './IndividualRatings';
-import { OverallRating } from './OverallRating';
+// import { IndividualRatings } from './IndividualRatings';
+// import { OverallRating } from './OverallRating';
 import { Review } from './Review';
 import { ReviewCompleteAlert } from './ReviewCompleteAlert';
 
@@ -67,7 +67,7 @@ export function CourseCard() {
     const btn = (
       <button
         type="submit"
-        className="group relative w-1/3 mb-6 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="rounded-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={() => setOpen(true)}
       >
         Leave Review
@@ -85,6 +85,18 @@ export function CourseCard() {
     return btn;
   };
 
+  const determinePillColor = (value) => {
+    if (value < 3) {
+      return 'red';
+    }
+
+    if (value < 4) {
+      return 'yellow';
+    }
+
+    return 'green';
+  };
+
   return (
     <>
       <ReviewCompleteAlert setSuccess={setSuccess} success={success} />
@@ -92,9 +104,19 @@ export function CourseCard() {
       <div className="w-full mt-16 mx-auto md:w-9/12 md:mx-auto">
         <div className="flex flex-wrap items-start gap-16">
           <div className="flex-none w-80">
-            <h2 className="text-3xl mb-2 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-              {course.abbreviation}, {course.number}
-            </h2>
+            <div className="flex items-center mb-2">
+              <h2 className="text-3xl mr-4 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                {course.abbreviation} {course.number}
+              </h2>
+              <span
+                className={`px-3 py-1 flex items-center text-2xl rounded-lg font-bold text-${determinePillColor(
+                  rounded(course.avgRating)
+                )}-500 bg-${determinePillColor(rounded(course.avgRating))}-50`}
+              >
+                <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.avgRating)}
+              </span>
+            </div>
+
             <h2 className="text-2xl mb-2 font-regular leading-5 text-gray-500 sm:text-lg">
               {course.name}
             </h2>
@@ -104,7 +126,7 @@ export function CourseCard() {
             </div>
             <div className="flex items-center">
               <button
-                className="py-3 px-6 bg-indigo-700 rounded-full text-white text-md font-bold"
+                className="py-3 px-6 bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-md font-bold"
                 type="button"
               >
                 Visit Website
@@ -119,18 +141,10 @@ export function CourseCard() {
           <div className="flex flex-none flex-wrap items-center gap-16 w-80">
             <CourseStatistic field="difficulty" value={course.avgDifficulty} subtext="/5" />
             <CourseStatistic field="workload" value={course.avgHoursPerWeek} subtext="hours/week" />
-            <CourseResources
-              resources={[
-                'Course Wesbite ',
-                'TAs',
-                'Lecture Videos',
-                'Textbook',
-                'Active Online Forum'
-              ]}
-            />
+            <CourseResources resources={course.resources} />
           </div>
         </div>
-        <div className="flex flex-wrap items-start gap-16 mt-8">
+        <div className="flex flex-wrap items-start gap-16 mt-8 mb-8">
           <div className="flex-none w-80">
             <SummaryColumn col="structure" />
           </div>
@@ -139,8 +153,28 @@ export function CourseCard() {
             <SummaryColumn col="assignments" />
           </div>
         </div>
+        <div>
+          <div className="flex items-center">
+            <p className="font-bold text-xl mr-6">Student Reviews</p>
+            {renderReviewBtn()}
+          </div>
+
+          {reviews && reviews.length ? (
+            reviews.map((review) => (
+              <Review
+                key={review._id}
+                review={review}
+                setOpen={setOpen}
+                setInitValues={setInitValues}
+              />
+            ))
+          ) : (
+            <div>No reviews yet</div>
+          )}
+        </div>
       </div>
-      <div className="sm:mx-6 md:mx-20 sm:mt-10 md:mt-6">
+
+      {/* <div className="sm:mx-6 md:mx-20 sm:mt-10 md:mt-6">
         <div className="flex flex-wrap items-center">
           <div className="">
             <div className="">
@@ -203,7 +237,6 @@ export function CourseCard() {
           </div>
         </div>
         <div className="col-span-3 py-6">
-          <CourseInfo course={course} />
           <h1 className="text-xl font-bold">REVIEWS</h1>
           {reviews && reviews.length ? (
             reviews.map((review) => (
@@ -219,7 +252,7 @@ export function CourseCard() {
           )}
         </div>
         {renderReviewBtn()}
-      </div>
+      </div> */}
     </>
   );
 }

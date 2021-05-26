@@ -66,6 +66,7 @@ export function SummaryColumn({ col }) {
   };
 
   const course = useSelector((state) => state.course.course);
+  console.log(course);
 
   if (!course) {
     return <div> Loading...</div>;

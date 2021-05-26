@@ -1,6 +1,7 @@
 import { StarIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { STATISTICS } from '../../app/constants';
+import { rounded } from '../utils';
 // import { mode } from '../utils';
 
 export function StatisticPill({ field, value }) {
@@ -13,14 +14,14 @@ export function StatisticPill({ field, value }) {
 
     if (type === STATISTICS.rating) {
       if (value < 3) {
-        return ratingReverse ? 'red' : 'green';
+        return ratingReverse ? 'green' : 'red';
       }
 
       if (value < 4) {
         return 'yellow';
       }
 
-      return ratingReverse ? 'green' : 'red';
+      return ratingReverse ? 'red' : 'green';
     }
 
     if (type === STATISTICS.percentage) {
@@ -35,7 +36,7 @@ export function StatisticPill({ field, value }) {
       <span
         className={`px-2 py-1 flex items-center text-sm rounded-lg font-semibold text-${determinePillColor()}-500 bg-${determinePillColor()}-50`}
       >
-        <StarIcon className="h-3 w-3 mr-1" /> {value}
+        <StarIcon className="h-3 w-3 mr-1" /> {rounded(value)}
       </span>
     );
   }

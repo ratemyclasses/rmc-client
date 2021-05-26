@@ -37,3 +37,5 @@ export const mode = (array) => {
   }
   return maxEl;
 };
+
+export const rounded = (n) => Math.round(n * 10) / 10;

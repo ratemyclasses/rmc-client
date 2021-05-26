@@ -6,7 +6,7 @@ export function CourseResources({ resources }) {
     <div>
       <div className="flex items-center mb-4">
         <span className="rounded-xl relative p-2 bg-purple-200">
-          <CogIcon className="h-5 h-5 text-indigo-600" />
+          <CogIcon className="h-5 w-5 text-indigo-600" />
         </span>
         <p className="text-md text-gray-900 dark:text-white ml-2">Resources</p>
       </div>
