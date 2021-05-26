@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearVoteReviewById,
+  deleteReviewById,
   downvoteReviewById,
   upvoteReviewById
 } from '../../app/actions/review.actions';
-import { Modal } from '../../common/Modal';
-import { CreateReviewForm } from './CreateReviewForm';
 
-export function Review({ review, moderate = false }) {
+export function Review({ review, moderate = false, setInitValues, setOpen }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const [open, setOpen] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   let upvoted = false;
   let downvoted = false;
@@ -27,9 +24,6 @@ export function Review({ review, moderate = false }) {
 
   return (
     <>
-      <Modal open={open} setOpen={setOpen} width="4xl">
-        <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} initValues={review} />
-      </Modal>
       <div className="py-8 flex flex-wrap md:flex-nowrap">
         <div className="md:w-1/8 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
           <div className="inline-block relative">
@@ -130,8 +124,36 @@ export function Review({ review, moderate = false }) {
                 </button>
               </div>
               {user && user._id === review.userId && (
-                <button onClick={() => setOpen(true)} type="button">
+                <button
+                  onClick={() => {
+                    setInitValues(review);
+                    setOpen(true);
+                  }}
+                  type="button"
+                >
                   Edit
+                </button>
+              )}
+              {user && user._id === review.userId && (
+                <button
+                  className="text-red-500"
+                  onClick={() => dispatch(deleteReviewById(review._id))}
+                  type="button"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
                 </button>
               )}
             </>
