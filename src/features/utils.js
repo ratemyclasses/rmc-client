@@ -8,3 +8,32 @@ export const isNumeric = (str) => {
     !isNaN(parseFloat(str))
   ); // ...and ensure strings of whitespace fail
 };
+
+export const capitalize = (s) => {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+export const mode = (array) => {
+  if (array.length === 0) {
+    return null;
+  }
+
+  const modeMap = {};
+  let maxEl = array[0];
+  let maxCount = 1;
+  for (let i = 0; i < array.length; i++) {
+    const el = array[i];
+    if (modeMap[el] == null) {
+      modeMap[el] = 1;
+    } else {
+      modeMap[el] += 1;
+    }
+
+    if (modeMap[el] > maxCount) {
+      maxEl = el;
+      maxCount = modeMap[el];
+    }
+  }
+  return maxEl;
+};

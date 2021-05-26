@@ -1,3 +1,4 @@
+import { DotsVerticalIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -5,12 +6,16 @@ import { getCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
 import { Alert } from '../../common/Alert';
 import { Modal } from '../../common/Modal';
+import { Sidenote } from '../../common/Sidenote';
 import { LoginForm } from '../auth/LoginForm';
 import { SignupForm } from '../auth/SignupForm';
 import { hasRoles } from '../utils';
+import { CourseResources } from './CourseResources';
+import { CourseStatistic } from './CourseStatistic';
 import { AverageGradeCard } from './AverageGradeCard';
 import { CourseInfo } from './CourseInfo';
 import { CreateReviewForm } from './CreateReviewForm';
+import { SummaryColumn } from './SummaryColumn';
 import { IndividualRatings } from './IndividualRatings';
 import { OverallRating } from './OverallRating';
 import { Review } from './Review';
@@ -38,6 +43,8 @@ export function CourseCard() {
   if (!course) {
     return <div className="mt-3">Select a course</div>;
   }
+
+  console.log(course);
 
   const renderAlert = () => (
     <Alert setOpen={setSuccess} open={success}>
@@ -114,6 +121,57 @@ export function CourseCard() {
     <>
       {renderAlert()}
       {renderModal()}
+      <div className="w-full mt-16 mx-auto md:w-9/12 md:mx-auto">
+        <div className="flex flex-wrap items-start gap-16">
+          <div className="flex-none w-80">
+            <h2 className="text-3xl mb-2 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+              {course.abbreviation}, {course.number}
+            </h2>
+            <h2 className="text-2xl mb-2 font-regular leading-5 text-gray-500 sm:text-lg">
+              {course.name}
+            </h2>
+            <div className="flex items-center mb-6">
+              <p className="mr-4 text-gray-500">{reviews.length} Reviews</p>
+              <p className="text-gray-500">Average Grade: {course.avgLetterGrade}</p>
+            </div>
+            <div className="flex items-center">
+              <button
+                className="py-3 px-6 bg-indigo-700 rounded-full text-white text-md font-bold"
+                type="button"
+              >
+                Visit Website
+              </button>
+              <button className="rounded-full ml-3 relative p-3 bg-gray-100" type="button">
+                <DotsVerticalIcon className="h-5 w-5 text-gray-600" />
+              </button>
+            </div>
+            <Sidenote label={`${course.wtaPercent * 100}% reviewers would take this class again`} />
+          </div>
+          <div className="flex-grow"> </div>
+          <div className="flex flex-none flex-wrap items-center gap-16 w-80">
+            <CourseStatistic field="difficulty" value={course.avgDifficulty} subtext="/5" />
+            <CourseStatistic field="workload" value={course.avgHoursPerWeek} subtext="hours/week" />
+            <CourseResources
+              resources={[
+                'Course Wesbite ',
+                'TAs',
+                'Lecture Videos',
+                'Textbook',
+                'Active Online Forum'
+              ]}
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap items-start gap-16 mt-8">
+          <div className="flex-none w-80">
+            <SummaryColumn col="structure" />
+          </div>
+          <div className="flex-grow"> </div>
+          <div className="flex flex-none flex-wrap items-center gap-16 w-80">
+            <SummaryColumn col="assignments" />
+          </div>
+        </div>
+      </div>
       <div className="sm:mx-6 md:mx-20 sm:mt-10 md:mt-6">
         <div className="flex flex-wrap items-center">
           <div className="">
