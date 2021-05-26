@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
-import { Alert } from '../../common/Alert';
 import { Modal } from '../../common/Modal';
 import { LoginForm } from '../auth/LoginForm';
 import { SignupForm } from '../auth/SignupForm';
@@ -14,6 +13,7 @@ import { CreateReviewForm } from './CreateReviewForm';
 import { IndividualRatings } from './IndividualRatings';
 import { OverallRating } from './OverallRating';
 import { Review } from './Review';
+import { ReviewCompleteAlert } from './ReviewCompleteAlert';
 
 export function CourseCard() {
   const dispatch = useDispatch();
@@ -26,6 +26,7 @@ export function CourseCard() {
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
   const [signup, setSignup] = useState(false);
+  const [initValues, setInitValues] = useState({});
 
   useEffect(() => {
     if (college) {
@@ -39,37 +40,6 @@ export function CourseCard() {
     return <div className="mt-3">Select a course</div>;
   }
 
-  const renderAlert = () => (
-    <Alert setOpen={setSuccess} open={success}>
-      <div className="bg-white rounded-lg p-10 flex items-center justify-between">
-        <div>
-          <svg
-            className="mb-4 h-20 w-20 text-green-500 mx-auto"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <h2 className="text-2xl mb-4 text-gray-800 text-center font-bold">Review Completed!</h2>
-          <div className="text-gray-600 mb-8 text-center">
-            Thank you. Your review will be published when it is approved within 1 business day.
-          </div>
-          <button
-            type="button"
-            className="w-40 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
-            onClick={() => setSuccess(false)}
-          >
-            Back to home
-          </button>
-        </div>
-      </div>
-    </Alert>
-  );
-
   const renderModal = () => {
     const AuthForm = signup ? (
       <SignupForm setSignup={setSignup} />
@@ -80,7 +50,7 @@ export function CourseCard() {
     return (
       <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>
         {authenticated ? (
-          <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} />
+          <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} initValues={initValues} />
         ) : (
           <>{AuthForm}</>
         )}
@@ -112,7 +82,7 @@ export function CourseCard() {
 
   return (
     <>
-      {renderAlert()}
+      <ReviewCompleteAlert setSuccess={setSuccess} success={success} />
       {renderModal()}
       <div className="sm:mx-6 md:mx-20 sm:mt-10 md:mt-6">
         <div className="flex flex-wrap items-center">
@@ -180,7 +150,14 @@ export function CourseCard() {
           <CourseInfo course={course} />
           <h1 className="text-xl font-bold">REVIEWS</h1>
           {reviews && reviews.length ? (
-            reviews.map((review) => <Review key={review._id} review={review} />)
+            reviews.map((review) => (
+              <Review
+                key={review._id}
+                review={review}
+                setOpen={setOpen}
+                setInitValues={setInitValues}
+              />
+            ))
           ) : (
             <div>No reviews yet</div>
           )}
