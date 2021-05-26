@@ -4,6 +4,16 @@ Link to the Figma: https://www.figma.com/file/Va5sr4jMAUhP5oqmrBy4d4/RateMyClass
 
 Run ```npm install``` before running anything else. 
 
+### Creating .env file
+
+13. In the root directory, create a **.env** file with the following contents:
+
+**.env**
+
+```dosini
+PORT=8080
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
