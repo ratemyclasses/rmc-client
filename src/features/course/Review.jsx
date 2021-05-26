@@ -123,7 +123,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen }) {
                   {review.downvoteCount}
                 </button>
               </div>
-              {user && user._id === review.userId && (
+              {user && user._id === review.userId && review.approved !== 'APPROVED' && (
                 <button
                   onClick={() => {
                     setInitValues(review);

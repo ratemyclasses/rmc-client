@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { Input } from '../../common/Input';
 import { Select } from '../../common/Select';
 import { Slider } from '../../common/Slider';
-/* eslint-disable */
 import { createReview, updateReviewById } from '../../app/actions/review.actions';
 import { isNumeric } from '../utils';
 
@@ -172,8 +171,8 @@ function Step1({ formValues }) {
         step={1}
         min={0}
         max={5}
-        minLabel="Not Helpful"
-        maxLabel="Very Helpful"
+        minLabel="Easy"
+        maxLabel="Very Hard"
         value={formValues.difficulty}
       />
 
