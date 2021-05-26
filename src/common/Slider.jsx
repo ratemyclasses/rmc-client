@@ -21,7 +21,7 @@ export function Slider({ field, form, value, step, min, max, minLabel, maxLabel 
               <span className="text-sm">{minLabel}</span>
               <span className="text-sm">{maxLabel}</span>
             </div>
-            <div {...props} className="w-1/2 h-5 pr-2 my-4 bg-gray-200 rounded-lg">
+            <div {...props} className="w-1/2 h-2 pr-2 my-4 bg-indigo-600 rounded-lg">
               {children}
             </div>
           </>
@@ -30,7 +30,7 @@ export function Slider({ field, form, value, step, min, max, minLabel, maxLabel 
           <>
             <div
               {...props}
-              className="w-7 h-8 p-2 transform translate-x-10 bg-indigo-600 rounded-full focus:outline-none ring-2 ring-offset-2 ring-indigo-500"
+              className="w-7 h-7 p-2 transform translate-x-10 bg-gray-50 bg-opacity-100 border rounded-full focus:outline-none shadow-md"
             >
               <div className="mt-7 text-lg">{values[0]}</div>
             </div>
