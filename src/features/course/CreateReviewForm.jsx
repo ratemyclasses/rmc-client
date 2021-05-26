@@ -5,7 +5,8 @@ import * as Yup from 'yup';
 import { Input } from '../../common/Input';
 import { Select } from '../../common/Select';
 import { Slider } from '../../common/Slider';
-import { createReview } from '../../app/actions/review.actions';
+/* eslint-disable */
+import { createReview, updateReviewById } from '../../app/actions/review.actions';
 import { isNumeric } from '../utils';
 
 function Step4({ formValues }) {
@@ -150,7 +151,7 @@ function Step1({ formValues }) {
     { name: 'Lecture Notes', value: 'Lecture Notes' },
     { name: 'Course Website', value: 'Course Website' },
     { name: 'Office Hours', value: 'Office Hours' },
-    { name: 'Lots of TAs', value: 'Lots Of TAs' },
+    { name: 'Lots of TAs', value: 'Lots of TAs' },
     { name: 'Other', value: 'Other' }
   ];
 
@@ -230,7 +231,11 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
         }
       });
 
-      dispatch(createReview({ ...cleanedData, courseId: course._id }));
+      if (initValues._id) {
+        dispatch(updateReviewById({ id: initValues._id, formData: cleanedData }));
+      } else {
+        dispatch(createReview({ ...cleanedData, courseId: course._id }));
+      }
       setOpen(false);
       setSuccess(true);
     } else {

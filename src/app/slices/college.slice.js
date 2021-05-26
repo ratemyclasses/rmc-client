@@ -45,7 +45,7 @@ export const collegeSlice = createSlice({
     },
     [updateCollegeById.fulfilled]: (state, action) => {
       state.colleges = state.colleges.map((s) => {
-        if (s.id === action.payload.id) {
+        if (s._id === action.payload._id) {
           return { ...s, ...action.payload };
         }
         return s;

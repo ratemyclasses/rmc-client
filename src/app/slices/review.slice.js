@@ -54,7 +54,7 @@ export const reviewSlice = createSlice({
     },
     [updateReviewById.fulfilled]: (state, action) => {
       state.reviews = state.reviews.map((s) => {
-        if (s.id === action.payload.id) {
+        if (s._id === action.payload._id) {
           return { ...s, ...action.payload };
         }
         return s;

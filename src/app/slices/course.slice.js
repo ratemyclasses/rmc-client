@@ -35,7 +35,7 @@ export const courseSlice = createSlice({
     },
     [updateCourseById.fulfilled]: (state, action) => {
       state.courses = state.courses.map((s) => {
-        if (s.id === action.payload.id) {
+        if (s._id === action.payload._id) {
           return { ...s, ...action.payload };
         }
         return s;

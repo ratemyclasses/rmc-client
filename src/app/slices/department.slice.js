@@ -40,7 +40,7 @@ export const departmentSlice = createSlice({
     },
     [updateDepartmentById.fulfilled]: (state, action) => {
       state.departments = state.departments.map((s) => {
-        if (s.id === action.payload.id) {
+        if (s._id === action.payload._id) {
           return { ...s, ...action.payload };
         }
         return s;
