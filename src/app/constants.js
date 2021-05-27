@@ -57,3 +57,9 @@ export const STATUS = {
   pending: 'pending',
   failed: 'failed'
 };
+
+export const STATISTICS = {
+  majority: 'majority',
+  rating: 'rating',
+  percentage: 'percentage'
+};
