@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReviews } from '../../app/actions/review.actions';
+import { APPROVAL_STATUS } from '../../app/constants';
 import { Paginator } from '../../common/Paginator';
 import { ReviewListItem } from './ReviewListItem';
 
@@ -17,7 +18,7 @@ export function ReviewList() {
     if (college) {
       dispatch(
         getReviews({
-          approved: 'IN_PROGRESS',
+          approved: APPROVAL_STATUS.in_progress,
           limit,
           offset,
           sortBy: ['createdAt:1', 'updatedAt:1'],

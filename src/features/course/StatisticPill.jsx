@@ -52,7 +52,6 @@ export function StatisticPill({ field, value }) {
   }
 
   if (type === STATISTICS.majority) {
-    console.log(value);
     return (
       <span
         className={`px-2 py-1 flex items-center text-sm rounded-lg font-semibold text-${determinePillColor()}-500 bg-${determinePillColor()}-50`}

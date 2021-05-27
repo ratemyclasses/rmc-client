@@ -10,12 +10,12 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { STATISTICS } from '../../app/constants';
-import { capitalize } from '../utils';
+import { rounded } from '../utils';
 import { StatisticPill } from './StatisticPill';
 
 export function SummaryColumn({ col }) {
   const fields = {
-    structure: {
+    Structure: {
       avgProfResponsiveness: {
         icon: <UserIcon className="h-3 w-3 text-indigo-600" />,
         label: 'Professor Responsiveness',
@@ -35,7 +35,7 @@ export function SummaryColumn({ col }) {
         type: STATISTICS.percentage
       }
     },
-    assignments: {
+    'Assignments/Exams': {
       avgExamDifficulty: {
         icon: <AdjustmentsIcon className="h-3 w-3 text-indigo-600" />,
         label: 'Exam Difficulty',
@@ -66,18 +66,41 @@ export function SummaryColumn({ col }) {
   };
 
   const course = useSelector((state) => state.course.course);
-  console.log(course);
 
   if (!course) {
     return <div> Loading...</div>;
   }
 
+  const renderRows = () => {
+    let existCount = 0;
+    const rows = Object.keys(fields[col]).map((key) => {
+      const isArr = Array.isArray(course[key]);
+      if ((!isArr && course[key]) || (isArr && course[key].length)) {
+        existCount += 1;
+        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+      }
+
+      return '';
+    });
+
+    return (
+      <div>
+        {rows}
+        {existCount < rounded(0.5 * Object.keys(fields[col]).length) && (
+          <p className="text-gray-500">
+            {col === 'Structure'
+              ? 'Share details about this course’s structure.'
+              : 'Help us learn more about this course’s assignments/exams.'}
+          </p>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div>
-      <p className="font-bold text-xl mb-2">{capitalize(col)}</p>
-      {Object.keys(fields[col]).map((key) => (
-        <SummaryRow field={fields[col][key]} value={course[key]} />
-      ))}
+      <p className="font-bold text-xl mb-2">{col}</p>
+      {renderRows()}
     </div>
   );
 }

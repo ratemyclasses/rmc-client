@@ -11,9 +11,11 @@ export function CourseResources({ resources }) {
         <p className="text-md text-gray-900 dark:text-white ml-2">Resources</p>
       </div>
       <div className="flex flex-wrap items-center justify-start gap-2">
-        {resources.map((resource) => (
-          <ResourcePill label={resource} />
-        ))}
+        {resources.length ? (
+          resources.map((resource) => <ResourcePill key={resource} label={resource} />)
+        ) : (
+          <p className="text-gray-500">Be the first one to share this course’s resources</p>
+        )}
       </div>
     </div>
   );

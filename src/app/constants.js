@@ -63,3 +63,9 @@ export const STATISTICS = {
   rating: 'rating',
   percentage: 'percentage'
 };
+
+export const APPROVAL_STATUS = {
+  approved: 'APPROVED',
+  in_progress: 'IN_PROGRESS',
+  denied: 'DENIED'
+};

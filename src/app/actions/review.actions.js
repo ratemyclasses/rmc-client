@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BASE_URL, ACTIONS } from '../constants';
+import { BASE_URL, ACTIONS, APPROVAL_STATUS } from '../constants';
 
 export const createReview = createAsyncThunk(ACTIONS.review.create, async (formData) => {
   const res = await axios.post(`${BASE_URL}/reviews`, formData);
@@ -61,7 +61,7 @@ export const clearVoteReviewById = createAsyncThunk(ACTIONS.review.downvote, asy
  */
 export const approveReviewById = createAsyncThunk(ACTIONS.review.approveById, async (id) => {
   await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
-    approved: 'APPROVED'
+    approved: APPROVAL_STATUS.approved
   });
   return { _id: id };
 });
@@ -71,7 +71,7 @@ export const approveReviewById = createAsyncThunk(ACTIONS.review.approveById, as
  */
 export const denyReviewById = createAsyncThunk(ACTIONS.review.rejectById, async (id) => {
   await axios.patch(`${BASE_URL}/reviews/${id}/approve`, {
-    approved: 'DENIED'
+    approved: APPROVAL_STATUS.denied
   });
   return { _id: id };
 });
