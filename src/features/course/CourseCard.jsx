@@ -101,7 +101,7 @@ export function CourseCard() {
     <>
       <ReviewCompleteAlert setSuccess={setSuccess} success={success} />
       {renderModal()}
-      <div className="w-full mt-16 mx-auto md:w-9/12 md:mx-auto">
+      <div className="w-full mt-16 mx-8 sm:mx-auto md:w-9/12">
         <div className="flex flex-wrap items-start gap-16">
           <div className="flex-none w-80">
             <div className="flex items-center mb-2">
@@ -117,14 +117,14 @@ export function CourseCard() {
               </span>
             </div>
 
-            <h2 className="text-2xl mb-2 font-regular leading-5 text-gray-500 sm:text-lg">
+            <h2 className="text-xl mb-2 font-regular leading-7 sm:leading-5 text-gray-500 sm:text-lg">
               {course.name}
             </h2>
             <div className="flex items-center mb-6">
               <p className="mr-4 text-gray-500">{reviews.length} Reviews</p>
               <p className="text-gray-500">Average Grade: {course.avgLetterGrade}</p>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mb-8">
               <button
                 className="py-3 px-6 bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-md font-bold"
                 type="button"
@@ -137,14 +137,14 @@ export function CourseCard() {
             </div>
             <Sidenote label={`${course.wtaPercent * 100}% reviewers would take this class again`} />
           </div>
-          <div className="flex-grow"> </div>
-          <div className="flex flex-none flex-wrap items-center gap-16 w-80">
+          <div className="flex-grow hidden sm:block"> </div>
+          <div className="flex flex-none flex-wrap items-center gap-12 sm:gap-16 w-80">
             <CourseStatistic field="difficulty" value={course.avgDifficulty} subtext="/5" />
             <CourseStatistic field="workload" value={course.avgHoursPerWeek} subtext="hours/week" />
             <CourseResources resources={course.resources} />
           </div>
         </div>
-        <div className="flex flex-wrap items-start gap-16 mt-8 mb-8">
+        <div className="flex flex-wrap items-start gap-8 sm:gap-16 mt-8 mb-8">
           <div className="flex-none w-80">
             <SummaryColumn col="structure" />
           </div>
