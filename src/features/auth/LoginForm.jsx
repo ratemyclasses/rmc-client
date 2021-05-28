@@ -74,9 +74,12 @@ export function LoginForm({ setSignup }) {
               </div>
             </div>
             <div className="text-sm my-3">
-              <a href="/" className="font-medium text-indigo-600 hover:text-indigo-500 mr-4">
+              <Link
+                to="/forgot-password"
+                className="font-medium text-indigo-600 hover:text-indigo-500 mr-4"
+              >
                 Forgot your password?
-              </a>
+              </Link>
               {location.pathname === '/login' ? (
                 <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
                   Sign Up
