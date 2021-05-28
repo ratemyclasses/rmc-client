@@ -129,7 +129,7 @@ export function CourseCard() {
                   ? `${course.reviewCount} Review${course.reviewCount !== 1 ? 's' : ''}`
                   : 'No Reviews'}
               </p>
-              <p className="text-gray-500">Average Grade: {course.avgLetterGrade}</p>
+              <p className="text-gray-500">Average Grade: {course.avgLetterGrade || 'N/A'}</p>
             </div>
             <div className="flex items-center mb-8">
               {course.website && (

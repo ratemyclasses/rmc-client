@@ -22,8 +22,14 @@ export function CourseStatistic({ field, value, subtext }) {
       </div>
       <div className="flex flex-col justify-start">
         <p className="text-gray-900 dark:text-gray-100 text-4xl text-left font-bold my-4">
-          {rounded(value)}
-          {fields[field].subtext}
+          {value ? (
+            <>
+              {rounded(value)}
+              {fields[field].subtext}
+            </>
+          ) : (
+            'N/A'
+          )}
         </p>
       </div>
     </div>
