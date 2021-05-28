@@ -1,8 +1,9 @@
-import { DotsVerticalIcon, StarIcon } from '@heroicons/react/solid';
+import { BookmarkIcon as BookmarkOutlineIcon } from '@heroicons/react/outline';
+import { BookmarkIcon, DotsVerticalIcon, StarIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getCourseById } from '../../app/actions/course.actions';
+import { getCourseById, toggleBookmarkCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
 import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
@@ -108,13 +109,15 @@ export function CourseCard() {
               <h2 className="text-3xl mr-4 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
                 {course.abbreviation} {course.number}
               </h2>
-              <span
-                className={`px-3 py-1 flex items-center text-2xl rounded-lg font-bold text-${determinePillColor(
-                  rounded(course.avgRating)
-                )}-500 bg-${determinePillColor(rounded(course.avgRating))}-50`}
-              >
-                <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.avgRating)}
-              </span>
+              {course.reviewCount > 0 && (
+                <span
+                  className={`px-3 py-1 flex items-center text-2xl rounded-lg font-bold text-${determinePillColor(
+                    rounded(course.avgRating)
+                  )}-500 bg-${determinePillColor(rounded(course.avgRating))}-50`}
+                >
+                  <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.avgRating)}
+                </span>
+              )}
             </div>
 
             <h2 className="text-xl mb-2 font-regular leading-7 sm:leading-5 text-gray-500 sm:text-lg">
@@ -122,25 +125,62 @@ export function CourseCard() {
             </h2>
             <div className="flex items-center mb-6">
               <p className="mr-4 text-gray-500">
-                {reviews.length} Review{reviews.length !== 1 && 's'}
+                {course.reviewCount
+                  ? `${course.reviewCount} Review${course.reviewCount !== 1 ? 's' : ''}`
+                  : 'No Reviews'}
               </p>
               <p className="text-gray-500">Average Grade: {course.avgLetterGrade}</p>
             </div>
             <div className="flex items-center mb-8">
-              <button
-                className="py-3 px-6 bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-md font-bold"
-                type="button"
-              >
-                Visit Website
-              </button>
+              {course.website && (
+                <button
+                  className="py-3 px-6 bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-md font-bold"
+                  type="button"
+                >
+                  Visit Website
+                </button>
+              )}
               <button className="rounded-full ml-3 relative p-3 bg-gray-100" type="button">
                 <DotsVerticalIcon className="h-5 w-5 text-gray-600" />
               </button>
+              {user && (
+                <button
+                  onClick={() =>
+                    dispatch(toggleBookmarkCourseById({ collegeId: college._id, id: course._id }))
+                  }
+                  className="rounded-full ml-3 relative p-3 bg-gray-100"
+                  type="button"
+                >
+                  {user.bookmarkedCourses.includes(course._id) ? (
+                    <BookmarkIcon className="h-5 w-5 text-indigo-600" />
+                  ) : (
+                    <BookmarkOutlineIcon className="h-5 w-5 text-gray-600" />
+                  )}
+                </button>
+              )}
             </div>
             <Sidenote
-              label={`${
-                course.wtaPercent < 1 ? `${course.wtaPercent * 100}%` : 'All'
-              } reviewers would take this class again`}
+              label={
+                course.reviewCount ? (
+                  `${
+                    course.wtaPercent < 1 ? `${course.wtaPercent * 100}% of` : 'All'
+                  } reviewers said they would take this class again`
+                ) : (
+                  <>
+                    Would you take this class again?{' '}
+                    <button
+                      type="button"
+                      className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
+                      onClick={() => {
+                        setInitValues({});
+                        setOpen(true);
+                      }}
+                    >
+                      Leave a review now
+                    </button>
+                  </>
+                )
+              }
             />
           </div>
           <div className="flex-grow hidden sm:block"> </div>
@@ -165,7 +205,7 @@ export function CourseCard() {
             {renderReviewBtn()}
           </div>
 
-          {reviews && reviews.length ? (
+          {reviews.length ? (
             reviews.map((review) => (
               <Review
                 key={review._id}
@@ -175,7 +215,20 @@ export function CourseCard() {
               />
             ))
           ) : (
-            <div>No reviews yet</div>
+            <div className="text-gray-500 mt-3">
+              Oh no! This course doesn’t have any reviews yet. Be the first to{' '}
+              <button
+                type="button"
+                className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
+                onClick={() => {
+                  setInitValues({});
+                  setOpen(true);
+                }}
+              >
+                leave a review now
+              </button>
+              .
+            </div>
           )}
         </div>
       </div>

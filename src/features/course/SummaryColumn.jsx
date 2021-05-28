@@ -32,7 +32,8 @@ export function SummaryColumn({ col }) {
         icon: <ClipboardCheckIcon className="h-3 w-3 text-indigo-600" />,
         label: 'Attendance Mandatory',
         questionContent: null,
-        type: STATISTICS.percentage
+        type: STATISTICS.percentage,
+        ratingReverse: true
       }
     },
     'Assignments/Exams': {
@@ -74,8 +75,17 @@ export function SummaryColumn({ col }) {
   const renderRows = () => {
     let existCount = 0;
     const rows = Object.keys(fields[col]).map((key) => {
-      const isArr = Array.isArray(course[key]);
-      if ((!isArr && course[key]) || (isArr && course[key].length)) {
+      if (fields[col][key].type === STATISTICS.rating && course[key]) {
+        existCount += 1;
+        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+      }
+
+      if (fields[col][key].type === STATISTICS.percentage && course[key] !== null) {
+        existCount += 1;
+        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+      }
+
+      if (fields[col][key].type === STATISTICS.majority && course[key].length) {
         existCount += 1;
         return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
       }

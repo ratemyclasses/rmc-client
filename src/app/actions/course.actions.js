@@ -36,6 +36,14 @@ export const deleteCourseById = createAsyncThunk(
   ACTIONS.course.deleteById,
   async ({ collegeId, id }) => {
     await axios.delete(`${BASE_URL}/colleges/${collegeId}/courses/${id}`);
-    return id;
+    return { _id: id };
+  }
+);
+
+export const toggleBookmarkCourseById = createAsyncThunk(
+  ACTIONS.course.toggleBookmarkById,
+  async ({ collegeId, id }) => {
+    await axios.patch(`${BASE_URL}/colleges/${collegeId}/courses/${id}/bookmark`);
+    return { _id: id };
   }
 );
