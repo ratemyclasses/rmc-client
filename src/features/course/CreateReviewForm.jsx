@@ -31,7 +31,6 @@ function Step4({ formValues }) {
         required
         component={Input}
         label=""
-        value={formValues.content}
         placeholder="Tell us about the course"
       />
     </div>
@@ -63,7 +62,6 @@ function Step3({ formValues }) {
         required
         component={Input}
         label=""
-        value={formValues.timeTaken}
         placeholder="i.e. Spring 2016"
       />
       <h1 className="mt-3 font-extrabold">How many hours of homework per week?</h1>
@@ -74,7 +72,6 @@ function Step3({ formValues }) {
         required
         component={Input}
         label=""
-        value={formValues.hoursPerWeek}
         placeholder="5"
       />
     </div>

@@ -1,23 +1,28 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ForgotPassword } from './ForgotPassword';
 import { LoginForm } from './LoginForm';
 import { SignupForm } from './SignupForm';
+import { ResetPassword } from './ResetPassword';
 
 export function Auth() {
   const location = useLocation();
   const authenticated = useSelector(({ auth }) => auth.authenticated);
   const history = useHistory();
+  const { resetPasswordToken } = useParams();
 
   if (authenticated) {
     history.push('/');
   }
 
+  const dynamicLink = `/reset-password/${resetPasswordToken || ''}`;
+
   const forms = {
     '/login': <LoginForm />,
     '/signup': <SignupForm />,
-    '/forgot-password': <ForgotPassword />
+    '/forgot-password': <ForgotPassword />,
+    [dynamicLink]: <ResetPassword />
   };
 
   return (
