@@ -28,6 +28,8 @@ function App() {
         <Switch>
           <Route path="/login" component={Auth} />
           <Route path="/signup" component={Auth} />
+          <Route path="/forgot-password" component={Auth} />
+          <Route path="/reset-password/:resetPasswordToken" component={Auth} />
           <Route path="/profile" component={requireAuth(Profile)} />
           <Route
             path="/moderate/u/:tag"
