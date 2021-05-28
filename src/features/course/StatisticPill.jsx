@@ -1,8 +1,7 @@
 import { StarIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { STATISTICS } from '../../app/constants';
-import { rounded } from '../utils';
-// import { mode } from '../utils';
+import { capitalize, mode, rounded } from '../utils';
 
 export function StatisticPill({ field, value }) {
   const { type, ratingReverse, neutral } = field;
@@ -25,7 +24,10 @@ export function StatisticPill({ field, value }) {
     }
 
     if (type === STATISTICS.percentage) {
-      return value > 0.5 ? 'green' : 'red';
+      if (value > 0.5) {
+        return ratingReverse ? 'red' : 'green';
+      }
+      return ratingReverse ? 'green' : 'red';
     }
 
     return 'blue';
@@ -56,7 +58,7 @@ export function StatisticPill({ field, value }) {
       <span
         className={`px-2 py-1 flex items-center text-sm rounded-lg font-semibold text-${determinePillColor()}-500 bg-${determinePillColor()}-50`}
       >
-        {value}
+        {capitalize(mode(value).toLowerCase())}
       </span>
     );
   }

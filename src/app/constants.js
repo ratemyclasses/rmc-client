@@ -12,7 +12,8 @@ export const ACTIONS = {
     getById: 'course/getById',
     create: 'course/create',
     updateById: 'course/update',
-    deleteById: 'course/delete'
+    deleteById: 'course/delete',
+    toggleBookmarkById: 'course/toggleBookmark'
   },
   college: {
     get: 'college/get',
