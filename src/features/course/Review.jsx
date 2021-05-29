@@ -33,12 +33,9 @@ export function Review({ review, moderate = false, setInitValues, setOpen }) {
   return (
     <>
       <div className="w-80 sm:w-full mx-0 mt-8 border-b">
-        {/* <div className="block sm:hidden w-10 ml-8">
-          <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />
-        </div> */}
         {review.approved !== APPROVAL_STATUS.approved && (
           <span className="mb-16 ml-8 sm:ml-16 text-sm font-medium bg-red-100 py-1 px-2 rounded text-red-500 align-middle">
-            DRAFT
+            UNDER REVIEW
           </span>
         )}
         <div className="flex items-center">
@@ -50,7 +47,9 @@ export function Review({ review, moderate = false, setInitValues, setOpen }) {
                   {review.userId.displayName || 'Anonymous User'}
                   {'  '}
                   <span className="hidden sm:block text-gray-500 font-normal">
-                    {'  '}recommends this course
+                    {'  '}
+                    {review.rating < 3 ? 'does not ' : ''}recommend{review.rating < 3 ? '' : 's'}{' '}
+                    this course
                   </span>
                 </p>
                 <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />

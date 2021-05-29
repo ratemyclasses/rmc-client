@@ -41,7 +41,8 @@ export function Modal({ open, setOpen, title, children, submitBtn, cancelBtn, wi
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div
-              className={`inline-block align-bottom bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-${width} sm:w-full`}
+              style={{ height: '600px' }}
+              className={`inline-block align-bottom bg-white rounded-lg overflow-auto shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-${width} sm:w-full`}
             >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">

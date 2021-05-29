@@ -7,13 +7,39 @@ import { Select } from '../../common/Select';
 import { Slider } from '../../common/Slider';
 import { createReview, updateReviewById } from '../../app/actions/review.actions';
 import { isNumeric } from '../utils';
+import { Textarea } from '../../common/Textarea';
+import { Dropdown } from '../../common/Dropdown';
+
+const quarters = [
+  { name: 'Spring 2021', value: 'Spring 2021' },
+  { name: 'Winter 2020', value: 'Winter 2020' },
+  { name: 'Fall 2020', value: 'Fall 2020' },
+  { name: 'Summer 2020', value: 'Summer 2020' },
+  { name: 'Spring 2020', value: 'Spring 2020' },
+  { name: 'Winter 2019', value: 'Winter 2019' }
+];
+
+const options = [
+  { name: 'Yes', value: true },
+  { name: 'No', value: false }
+];
+
+const quizFrequencies = [
+  { name: 'Weekly', value: 'WEEKLY' },
+  { name: 'Biweekly', value: 'BIWEEKLY' },
+  { name: 'Monthly', value: 'MONTHLY' }
+];
+
+const resources = [
+  { name: 'Textbook', value: 'Textbook' },
+  { name: 'Lecture Notes', value: 'Lecture Notes' },
+  { name: 'Course Website', value: 'Course Website' },
+  { name: 'Office Hours', value: 'Office Hours' },
+  { name: 'Lots of TAs', value: 'Lots of TAs' },
+  { name: 'Other', value: 'Other' }
+];
 
 function Step4({ formValues }) {
-  const options = [
-    { name: 'Yes', value: true },
-    { name: 'No', value: false }
-  ];
-
   return (
     <div className="text-center">
       <h1 className="mt-6 mb-3 text-2xl font-bold">Would you take this class again?</h1>
@@ -23,13 +49,14 @@ function Step4({ formValues }) {
         options={options}
         values={[formValues.wouldTakeAgain]}
       />
-      <h1 className="mt-3 font-extrabold">Your personalized review</h1>
+      <h1 className="mt-3 font-bold">Your personalized review</h1>
       <Field
         name="content"
         id="content"
         type="text"
+        rows={6}
         required
-        component={Input}
+        component={Textarea}
         label=""
         placeholder="Tell us about the course"
       />
@@ -38,15 +65,9 @@ function Step4({ formValues }) {
 }
 
 function Step3({ formValues }) {
-  const quizFrequencies = [
-    { name: 'Weekly', value: 'WEEKLY' },
-    { name: 'Biweekly', value: 'BIWEEKLY' },
-    { name: 'Monthly', value: 'MONTHLY' }
-  ];
-
   return (
     <div className="md:w-2/3">
-      <h1 className="mt-3 font-extrabold">How often are there quizzes (if any)?</h1>
+      <h1 className="mt-3 font-bold">How often are there quizzes (if any)?</h1>
       <Field
         name="quizFrequency"
         component={Select}
@@ -54,8 +75,8 @@ function Step3({ formValues }) {
         values={[formValues.quizFrequency]}
       />
 
-      <h1 className="mt-3 font-extrabold">When did you take this class?</h1>
-      <Field
+      <h1 className="mt-3 font-bold">When did you take this class?</h1>
+      {/* <Field
         name="timeTaken"
         id="timeTaken"
         type="text"
@@ -63,8 +84,18 @@ function Step3({ formValues }) {
         component={Input}
         label=""
         placeholder="i.e. Spring 2016"
+      /> */}
+      <Field
+        name="timeTaken"
+        id="timeTaken"
+        required
+        component={Dropdown}
+        label="Choose semester/quarter"
+        placeholder="i.e. Spring 2016"
+        options={quarters}
+        value={{ name: formValues.timeTaken, value: formValues.timeTaken }}
       />
-      <h1 className="mt-3 font-extrabold">How many hours of homework per week?</h1>
+      <h1 className="mt-3 font-bold">How many hours of homework per week?</h1>
       <Field
         name="hoursPerWeek"
         id="hoursPerWeek"
@@ -79,15 +110,10 @@ function Step3({ formValues }) {
 }
 
 function Step2({ formValues }) {
-  const options = [
-    { name: 'Yes', value: true },
-    { name: 'No', value: false }
-  ];
-
   return (
     <div className="md:w-2/3">
       <div className="flex flex-wrap gap-2">
-        <h1 className="mt-3 font-extrabold">Is attendance mandatory?</h1>
+        <h1 className="mt-3 font-bold">Is attendance mandatory?</h1>
         <Field
           name="mandatoryAttendance"
           component={Select}
@@ -96,7 +122,7 @@ function Step2({ formValues }) {
         />
       </div>
       <div className="flex flex-wrap gap-2">
-        <h1 className="mt-3 font-extrabold">Was it a project heavy class?</h1>
+        <h1 className="mt-3 font-bold">Was it a project heavy class?</h1>
         <Field
           name="projHeavy"
           component={Select}
@@ -105,7 +131,7 @@ function Step2({ formValues }) {
         />
       </div>
       <div className="flex flex-wrap gap-2">
-        <h1 className="mt-3 font-extrabold">Does the class have fair deadlines?</h1>
+        <h1 className="mt-3 font-bold">Does the class have fair deadlines?</h1>
         <Field
           name="fairDeadlines"
           component={Select}
@@ -114,7 +140,7 @@ function Step2({ formValues }) {
         />
       </div>
 
-      <h1 className="mt-3 mb-3 font-extrabold">How responsive is the professor?</h1>
+      <h1 className="mt-3 mb-3 font-bold">How responsive is the professor?</h1>
       <Field
         name="profResponsiveness"
         component={Slider}
@@ -126,7 +152,7 @@ function Step2({ formValues }) {
         value={formValues.profResponsiveness}
       />
 
-      <h1 className="mt-10 mb-3 font-extrabold">How difficult are the exams?</h1>
+      <h1 className="mt-10 mb-3 font-bold">How difficult are the exams?</h1>
       <Field
         name="examDifficulty"
         component={Slider}
@@ -142,26 +168,17 @@ function Step2({ formValues }) {
 }
 
 function Step1({ formValues }) {
-  const options = [
-    { name: 'Textbook', value: 'Textbook' },
-    { name: 'Lecture Notes', value: 'Lecture Notes' },
-    { name: 'Course Website', value: 'Course Website' },
-    { name: 'Office Hours', value: 'Office Hours' },
-    { name: 'Lots of TAs', value: 'Lots of TAs' },
-    { name: 'Other', value: 'Other' }
-  ];
-
   return (
     <div className="md:w-2/3">
-      <h1 className="mt-6 mb-3 font-extrabold">What resources does the class offer?</h1>
+      <h1 className="mt-6 mb-3 font-bold">What resources does the class offer?</h1>
       <Field
         name="resources"
         component={Select}
-        options={options}
+        options={resources}
         values={formValues.resources}
         isMulti
       />
-      <h1 className="mt-6 mb-3 font-extrabold">How difficult is this class?</h1>
+      <h1 className="mt-6 mb-3 font-bold">How difficult is this class?</h1>
       <Field
         name="difficulty"
         component={Slider}
@@ -173,7 +190,7 @@ function Step1({ formValues }) {
         value={formValues.difficulty}
       />
 
-      <h1 className="mt-10 mb-3 font-extrabold">How helpful were the course staff?</h1>
+      <h1 className="mt-10 mb-3 font-bold">How helpful were the course staff?</h1>
       <Field
         name="staffRating"
         component={Slider}
@@ -185,7 +202,7 @@ function Step1({ formValues }) {
         value={formValues.staffRating}
       />
 
-      <h1 className="mt-10 mb-3 font-extrabold">What would you rate this class overall?</h1>
+      <h1 className="mt-10 mb-3 font-bold">What would you rate this class overall?</h1>
       <Field
         name="rating"
         component={Slider}
@@ -202,6 +219,9 @@ function Step1({ formValues }) {
 
 export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
   const [step, setStep] = useState(1);
+  if (!initValues.timeTaken) {
+    initValues.timeTaken = quarters[0].value;
+  }
   const [formValues, setFormValues] = useState(initValues);
 
   const dispatch = useDispatch();
@@ -245,18 +265,10 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
     <div>
       <div className="border-b-2 mb-2 py-4">
         <div className="flex md:space-x-52">
-          {step === 1 && (
-            <div className="text-2xl font-extrabold text-gray-700">Leave a Review</div>
-          )}
-          {step === 2 && (
-            <div className="text-2xl font-extrabold text-gray-700">Leave a Review</div>
-          )}
-          {step === 3 && (
-            <div className="text-2xl font-extrabold text-gray-700">Leave a Review</div>
-          )}
-          {step === 4 && (
-            <div className="text-2xl font-extrabold text-gray-700">Leave a Review</div>
-          )}
+          {step === 1 && <div className="text-2xl font-bold text-gray-700">Leave a Review</div>}
+          {step === 2 && <div className="text-2xl font-bold text-gray-700">Leave a Review</div>}
+          {step === 3 && <div className="text-2xl font-bold text-gray-700">Leave a Review</div>}
+          {step === 4 && <div className="text-2xl font-bold text-gray-700">Leave a Review</div>}
 
           <div className="flex items-center md:w-64">
             <div className={`w-${step}/4 bg-gray-200 rounded-full mr-2 h-2`}>
