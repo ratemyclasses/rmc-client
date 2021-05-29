@@ -15,7 +15,7 @@ import {
 import { APPROVAL_STATUS, STATISTICS } from '../../app/constants';
 import { StatisticPill } from './StatisticPill';
 
-export function Review({ review, moderate = false, setInitValues, setOpen }) {
+export function Review({ review, moderate = false, setInitValues, setOpen, ref }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
 

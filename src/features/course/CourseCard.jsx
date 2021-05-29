@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCourseById, toggleBookmarkCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
+import { APPROVAL_STATUS } from '../../app/constants';
 import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
 import { LoginForm } from '../auth/LoginForm';
@@ -39,6 +40,12 @@ export function CourseCard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, courseId, dispatch]);
 
+  let curUserReview = null;
+
+  if (user) {
+    curUserReview = reviews.find((review) => review.userId._id === user._id);
+  }
+
   if (!course) {
     return <div className="mt-3">Select a course</div>;
   }
@@ -61,11 +68,11 @@ export function CourseCard() {
     );
   };
 
-  const renderReviewBtn = () => {
-    const btn = (
+  const renderReviewBtn = (className) => {
+    let btn = (
       <button
         type="submit"
-        className="rounded-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className={className}
         onClick={() => {
           setInitValues({});
           setOpen(true);
@@ -74,6 +81,29 @@ export function CourseCard() {
         Leave Review
       </button>
     );
+
+    if (curUserReview) {
+      if (curUserReview.approved !== APPROVAL_STATUS.approved) {
+        btn = (
+          <button
+            type="submit"
+            className={className}
+            onClick={() => {
+              setInitValues(curUserReview);
+              setOpen(true);
+            }}
+          >
+            Edit My Review
+          </button>
+        );
+      } else {
+        btn = (
+          <button type="submit" className={className}>
+            See My Review
+          </button>
+        );
+      }
+    }
 
     if (user) {
       if (hasRoles(user.roles, ['MEMBER'])) {
@@ -168,7 +198,10 @@ export function CourseCard() {
                 ) : (
                   <>
                     Would you take this class again?{' '}
-                    <button
+                    {renderReviewBtn(
+                      'font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none'
+                    )}
+                    {/* <button
                       type="button"
                       className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
                       onClick={() => {
@@ -177,7 +210,7 @@ export function CourseCard() {
                       }}
                     >
                       Leave a review now
-                    </button>
+                    </button> */}
                   </>
                 )
               }
@@ -202,7 +235,9 @@ export function CourseCard() {
         <div>
           <div className="flex items-center">
             <p className="font-bold text-xl mr-6">Student Reviews</p>
-            {renderReviewBtn()}
+            {renderReviewBtn(
+              'rounded-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+            )}
           </div>
 
           {reviews.length ? (
