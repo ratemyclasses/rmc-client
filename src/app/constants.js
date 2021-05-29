@@ -12,7 +12,8 @@ export const ACTIONS = {
     getById: 'course/getById',
     create: 'course/create',
     updateById: 'course/update',
-    deleteById: 'course/delete'
+    deleteById: 'course/delete',
+    toggleBookmarkById: 'course/toggleBookmark'
   },
   college: {
     get: 'college/get',
@@ -56,4 +57,16 @@ export const STATUS = {
   success: 'success',
   pending: 'pending',
   failed: 'failed'
+};
+
+export const STATISTICS = {
+  majority: 'majority',
+  rating: 'rating',
+  percentage: 'percentage'
+};
+
+export const APPROVAL_STATUS = {
+  approved: 'APPROVED',
+  in_progress: 'IN_PROGRESS',
+  denied: 'DENIED'
 };
