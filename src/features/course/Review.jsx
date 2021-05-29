@@ -3,9 +3,10 @@ import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import ThumbDownOutline from '@heroicons/react/outline/ThumbDownIcon';
 import ThumbUpOutline from '@heroicons/react/outline/ThumbUpIcon';
 import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
-import * as moment from 'moment';
-import React from 'react';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCourseById } from '../../app/actions/course.actions';
 import {
   clearVoteReviewById,
   deleteReviewById,
@@ -15,9 +16,11 @@ import {
 import { APPROVAL_STATUS, STATISTICS } from '../../app/constants';
 import { StatisticPill } from './StatisticPill';
 
-export function Review({ review, moderate = false, setInitValues, setOpen }) {
+export function Review({ review, moderate = false, setInitValues, setOpen, profile = false }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const course = useSelector((state) => state.course.course);
+  const college = useSelector((state) => state.college.college);
 
   let upvoted = false;
   let downvoted = false;
@@ -29,7 +32,16 @@ export function Review({ review, moderate = false, setInitValues, setOpen }) {
       downvoted = true;
     }
   }
-
+  useEffect(() => {
+    if (college) {
+      dispatch(getCourseById({ collegeId: college._id, id: review.courseId }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [college, review.courseId, dispatch]);
+  if (profile && course === null) {
+    return <div> Loading Reviews...</div>;
+  }
+  console.log(course);
   return (
     <>
       <div className="w-80 sm:w-full mx-0 mt-8 border-b">
@@ -46,13 +58,24 @@ export function Review({ review, moderate = false, setInitValues, setOpen }) {
           <div>
             <div className="flex flex-wrap items-start">
               <div className="flex-none flex items-center">
-                <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
-                  {review.userId.displayName || 'Anonymous User'}
-                  {'  '}
-                  <span className="hidden sm:block text-gray-500 font-normal">
-                    {'  '}recommends this course
-                  </span>
-                </p>
+                {profile ? (
+                  <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
+                    {course.abbreviation} {course.number}
+                    {'  '}
+                    <span className="hidden sm:block text-gray-500 font-normal">
+                      {'  '} was reviewed by you
+                    </span>
+                  </p>
+                ) : (
+                  <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
+                    {review.userId.displayName || 'Anonymous User'}
+                    {'  '}
+                    <span className="hidden sm:block text-gray-500 font-normal">
+                      {'  '}recommends this course
+                    </span>
+                  </p>
+                )}
+
                 <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />
               </div>
               <div className="flex-none">
