@@ -2,7 +2,7 @@
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import ThumbDownOutline from '@heroicons/react/outline/ThumbDownIcon';
 import ThumbUpOutline from '@heroicons/react/outline/ThumbUpIcon';
-import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
+import { ChartBarIcon, ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,7 +41,6 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
   if (profile && course === null) {
     return <div> Loading Reviews...</div>;
   }
-  console.log(course);
   return (
     <>
       <div className="w-80 sm:w-full mx-0 mt-8 border-b">
@@ -54,7 +53,14 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
           </span>
         )}
         <div className="flex items-center">
-          <div className=" w-8 h-8 sm:w-12 sm:h-12 rounded-full mr-2 sm:mr-4 bg-gray-100"> </div>
+          {profile ? (
+            <div className=" w-8 h-8 sm:w-12 sm:h-12 rounded-full mr-2 sm:mr-4 bg-indigo-200">
+              {' '}
+              <ChartBarIcon className="mt-1 text-indigo-800 w-12 h-10 inline-flex items-center justify-center" />
+            </div>
+          ) : (
+            <div className=" w-8 h-8 sm:w-12 sm:h-12 rounded-full mr-2 sm:mr-4 bg-gray-400"> </div>
+          )}
           <div>
             <div className="flex flex-wrap items-start">
               <div className="flex-none flex items-center">
