@@ -14,7 +14,8 @@ export function ViewReviews() {
     useEffect(() => {
       dispatch(
         getReviews({
-          userId: user._id
+          userId: user._id,
+          populate: ['courseId']
         })
       );
       // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import { BookmarkIcon as BookmarkOutlineIcon } from '@heroicons/react/outline';
 import { BookmarkIcon, DotsVerticalIcon, StarIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
@@ -7,8 +8,8 @@ import { getCourseById, toggleBookmarkCourseById } from '../../app/actions/cours
 import { getReviews } from '../../app/actions/review.actions';
 import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
-import { LoginForm } from '../auth/LoginForm';
-import { SignupForm } from '../auth/SignupForm';
+import { AuthModal } from '../auth/AuthModal';
+
 import { hasRoles, rounded } from '../utils';
 import './CourseCard.css';
 import { CourseResources } from './CourseResources';
@@ -28,7 +29,6 @@ export function CourseCard() {
   const authenticated = useSelector((state) => state.auth.authenticated);
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
-  const [signup, setSignup] = useState(false);
   const [initValues, setInitValues] = useState({});
 
   useEffect(() => {
@@ -44,19 +44,13 @@ export function CourseCard() {
   }
 
   const renderModal = () => {
-    const AuthForm = signup ? (
-      <SignupForm setSignup={setSignup} />
-    ) : (
-      <LoginForm setSignup={setSignup} />
-    );
+    if (!authenticated) {
+      return <AuthModal open={open} />;
+    }
 
     return (
-      <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>
-        {authenticated ? (
-          <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} initValues={initValues} />
-        ) : (
-          <>{AuthForm}</>
-        )}
+      <Modal open={open} setOpen={setOpen} width="4xl">
+        <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} initValues={initValues} />
       </Modal>
     );
   };

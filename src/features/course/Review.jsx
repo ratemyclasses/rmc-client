@@ -4,9 +4,8 @@ import ThumbDownOutline from '@heroicons/react/outline/ThumbDownIcon';
 import ThumbUpOutline from '@heroicons/react/outline/ThumbUpIcon';
 import { ChartBarIcon, ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourseById } from '../../app/actions/course.actions';
 import {
   clearVoteReviewById,
   deleteReviewById,
@@ -20,7 +19,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const course = useSelector((state) => state.course.course);
-  const college = useSelector((state) => state.college.college);
+  const authenticated = useSelector((state) => state.auth.authenticated);
 
   let upvoted = false;
   let downvoted = false;
@@ -32,12 +31,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
       downvoted = true;
     }
   }
-  useEffect(() => {
-    if (college) {
-      dispatch(getCourseById({ collegeId: college._id, id: review.courseId }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [college, review.courseId, dispatch]);
+
   if (profile && course === null) {
     return <div> Loading Reviews...</div>;
   }
@@ -66,7 +60,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
               <div className="flex-none flex items-center">
                 {profile ? (
                   <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
-                    {course.abbreviation} {course.number}
+                    {review.courseId.abbreviation} {review.courseId.number}
                     {'  '}
                     <span className="hidden sm:block text-gray-500 font-normal">
                       {'  '} was reviewed by you
@@ -139,14 +133,16 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
                 <div className="flex justify-center h-12 rounded-lg text-sm mb-4" role="group">
                   <button
                     type="button"
-                    disabled={!user}
+                    disabled={false}
                     className={`${
                       upvoted ? 'text-indigo-500' : 'text-gray-600'
                     } flex items-center hover:text-indigo-500 px-3 py-1 mx-0 border-r outline-none focus:outline-none`}
                     onClick={() =>
-                      dispatch(
-                        upvoted ? clearVoteReviewById(review._id) : upvoteReviewById(review._id)
-                      )
+                      authenticated
+                        ? dispatch(
+                            upvoted ? clearVoteReviewById(review._id) : upvoteReviewById(review._id)
+                          )
+                        : setOpen(true)
                     }
                   >
                     {upvoted ? (
@@ -158,13 +154,17 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
                   </button>
                   <button
                     type="button"
-                    disabled={!user}
+                    disabled={false}
                     className={`${downvoted ? 'text-indigo-500' : 'text-gray-600'}
             flex items-center hover:text-indigo-500 px-3 py-1 mx-0 outline-none focus:outline-none`}
                     onClick={() =>
-                      dispatch(
-                        downvoted ? clearVoteReviewById(review._id) : downvoteReviewById(review._id)
-                      )
+                      authenticated
+                        ? dispatch(
+                            downvoted
+                              ? clearVoteReviewById(review._id)
+                              : downvoteReviewById(review._id)
+                          )
+                        : setOpen(true)
                     }
                   >
                     {downvoted ? (
