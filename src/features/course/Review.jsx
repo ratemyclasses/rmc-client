@@ -44,7 +44,9 @@ export function Review({ review, moderate = false, setInitValues, setOpen, ref }
             <div className="flex flex-wrap items-start">
               <div className="flex-none flex items-center">
                 <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
-                  {review.userId.displayName || 'Anonymous User'}
+                  {review.userId._id
+                    ? review.userId.displayName || 'Anonymous User'
+                    : user.displayName}
                   {'  '}
                   <span className="hidden sm:block text-gray-500 font-normal">
                     {'  '}
@@ -55,7 +57,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, ref }
                 <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />
               </div>
               <div className="flex-none">
-                {user && user._id === review.userId._id && (
+                {user && user._id === (review.userId._id || review.userId) && (
                   <button
                     className="text-red-500 p-2 ml-2 bg-gray-50 hover:bg-gray-100 rounded-full"
                     onClick={() => dispatch(deleteReviewById(review._id))}
@@ -65,7 +67,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, ref }
                   </button>
                 )}
                 {user &&
-                  user._id === review.userId._id &&
+                  user._id === (review.userId._id || review.userId) &&
                   review.approved !== APPROVAL_STATUS.approved && (
                     <button
                       onClick={() => {

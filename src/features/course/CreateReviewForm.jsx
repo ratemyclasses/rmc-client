@@ -1,8 +1,9 @@
 import { Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { createReview, updateReviewById } from '../../app/actions/review.actions';
+import { STATUS } from '../../app/constants';
 import { Dropdown } from '../../common/Dropdown';
 import { Input } from '../../common/Input';
 import { Select } from '../../common/Select';
@@ -15,14 +16,9 @@ const quarters = [
   { name: 'Fall 2020', value: 'Fall 2020' },
   { name: 'Summer 2020', value: 'Summer 2020' },
   { name: 'Spring 2020', value: 'Spring 2020' },
-  { name: 'Winter 2019', value: 'Winter 2019' }
-];
-
-const profs = [
-  { name: 'John Kubiatowicz', value: 'John Kubiatowicz' },
-  { name: 'Josh Hug', value: 'Josh Hug' },
-  { name: 'John DeNero', value: 'John DeNero' },
-  { name: "Couldn't find my professor", value: "Couldn't find my professor" }
+  { name: 'Winter 2019', value: 'Winter 2019' },
+  { name: 'Fall 2019', value: 'Fall 2019' },
+  { name: 'Summer 2019', value: 'Summer 2019' }
 ];
 
 const options = [
@@ -138,7 +134,7 @@ function Step3({ formValues }) {
   );
 }
 
-function Step2({ formValues }) {
+function Step2({ formValues, professors }) {
   return (
     <div>
       <div className="flex flex-wrap gap-2">
@@ -152,7 +148,7 @@ function Step2({ formValues }) {
           values={[formValues.mandatoryAttendance]}
         />
       </div>
-      {/* <h1 className="mt-3 font-bold">
+      <h1 className="mt-3 font-bold">
         Who was your professor? <span className="text-sm text-red-500">*</span>
       </h1>
       <Field
@@ -161,12 +157,14 @@ function Step2({ formValues }) {
         required
         component={Dropdown}
         label="Choose professor"
-        options={profs}
-        value={{ name: formValues.professor, value: formValues.professor }}
+        options={professors}
+        value={{
+          name: formValues.professor || "Couldn't find my professor",
+          value: formValues.professor
+        }}
       />
       {formValues.professor === "Couldn't find my professor" && (
-        <>
-          {' '}
+        <div className="sm:w-1/2">
           <h1 className="mt-3 font-bold">
             Different Professor? <span className="text-sm text-red-500">*</span>
           </h1>
@@ -179,9 +177,8 @@ function Step2({ formValues }) {
             label=""
             placeholder="i.e. Josh Hug"
           />
-        </>
-      )} */}
-
+        </div>
+      )}
       <h1 className="mt-3 mb-3 font-bold">How responsive was your professor?</h1>
       <Field
         name="profResponsiveness"
@@ -259,23 +256,58 @@ function Step1({ formValues }) {
   );
 }
 
-export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
+export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, professors = [] }) {
   const [step, setStep] = useState(1);
+  const dispatch = useDispatch();
+  const course = useSelector((state) => state.course.course);
+  const status = useSelector((state) => state.review.status);
+
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+
+    if (status === STATUS.success) {
+      setSuccess(STATUS.success);
+    } else if (status === STATUS.failed) {
+      setSuccess(STATUS.failed);
+    }
+  }, [status, setSuccess]);
+
+  const profs = [
+    ...professors.map((p) => ({
+      name: p,
+      value: p
+    })),
+    { name: "Couldn't find my professor", value: "Couldn't find my professor" }
+  ];
+
   if (!initValues.timeTaken) {
     initValues.timeTaken = quarters[0].value;
   }
-  const dispatch = useDispatch();
-  const course = useSelector((state) => state.course.course);
+
+  if (!initValues.professor) {
+    initValues.professor = profs[0].value;
+  } else if (initValues.professor !== "Couldn't find my professor") {
+    profs.unshift({ name: initValues.professor, value: initValues.professor });
+  }
 
   const validate = {
     1: Yup.object({
       timeTaken: Yup.string("Invalid. Must be in form 'Spring 2016'").required('Required'),
       resources: Yup.array().min(1, 'Required').max(resources.length).required('Required'),
       difficulty: Yup.number().integer().min(1).max(ratings.length).required('Required'),
-      hoursPerWeek: Yup.number('Invalid. Must be a valid number').required('Required')
+      hoursPerWeek: Yup.number('Invalid. Must be a valid number')
+        .min(1, 'Must be >= 1')
+        .max(40, 'Must be <= 40')
+        .required('Required')
     }),
     2: Yup.object({
       mandatoryAttendance: Yup.boolean().required('Required'),
+      professor: Yup.string().required('Required'),
       profResponsiveness: Yup.number().integer().min(1).max(ratings.length),
       staffRating: Yup.number().integer().min(1).max(ratings.length)
     }),
@@ -303,17 +335,21 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
         }
       });
 
+      if (cleanedData.professor === "Couldn't find my professor") {
+        cleanedData.professor = cleanedData.profName;
+      }
+
       if (initValues._id) {
         dispatch(updateReviewById({ id: initValues._id, formData: cleanedData }));
       } else {
         dispatch(createReview({ ...cleanedData, courseId: course._id }));
       }
       setOpen(false);
-      setSuccess(true);
+      // setSuccess(true);
     } else {
       setStep(step + 1);
-      setSubmitting(false);
     }
+    setSubmitting(false);
   };
 
   return (
@@ -356,55 +392,52 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {} }) {
       </div>
 
       <Formik initialValues={initValues} validationSchema={validate[step]} onSubmit={onSubmit}>
-        {({ values, errors }) => {
-          console.log(errors);
-          return (
-            <Form>
-              {step === 4 && <Step4 formValues={values} />}
-              {step === 3 && <Step3 formValues={values} />}
-              {step === 2 && <Step2 formValues={values} />}
-              {step === 1 && <Step1 formValues={values} />}
+        {({ values }) => (
+          <Form>
+            {step === 1 && <Step1 formValues={values} />}
+            {step === 2 && <Step2 formValues={values} professors={profs} />}
+            {step === 3 && <Step3 formValues={values} />}
+            {step === 4 && <Step4 formValues={values} />}
 
-              <div className="fixed bottom-5 left-0 right-0 py-5">
-                <div className="max-w-3xl mx-auto px-4">
-                  <div className="flex justify-between">
-                    <div className="w-1/2">
-                      {step >= 2 && (
-                        <button
-                          type="button"
-                          className="w-32 focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
-                          onClick={() => setStep(step - 1)}
-                        >
-                          Previous
-                        </button>
-                      )}
-                    </div>
+            <div className="fixed bottom-5 left-0 right-0 py-5">
+              <div className="max-w-3xl mx-auto px-4">
+                <div className="flex justify-between">
+                  <div className="w-1/2">
+                    {step >= 2 && (
+                      <button
+                        type="button"
+                        className="w-32 focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
+                        onClick={() => setStep(step - 1)}
+                      >
+                        Previous
+                      </button>
+                    )}
+                  </div>
 
-                    <div className="w-1/2 text-right">
-                      {step <= 3 && (
-                        <button
-                          type="submit"
-                          className="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-indigo-500 hover:bg-indigo-600 font-medium"
-                        >
-                          Next
-                        </button>
-                      )}
+                  <div className="w-1/2 text-right">
+                    {step <= 3 && (
+                      <button
+                        type="submit"
+                        className="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-indigo-600 hover:bg-indigo-600 font-medium"
+                      >
+                        Next
+                      </button>
+                    )}
 
-                      {step === 4 && (
-                        <button
-                          type="submit"
-                          className="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-blue-500 hover:bg-blue-600 font-medium"
-                        >
-                          Complete
-                        </button>
-                      )}
-                    </div>
+                    {step === 4 && (
+                      <button
+                        type="submit"
+                        className="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-blue-500 hover:bg-blue-600 font-medium"
+                      >
+                        Complete
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
-            </Form>
-          );
-        }}
+            </div>
+          </Form>
+        )}
       </Formik>
     </div>
   );

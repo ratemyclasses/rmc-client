@@ -43,7 +43,12 @@ export function CourseCard() {
   let curUserReview = null;
 
   if (user) {
-    curUserReview = reviews.find((review) => review.userId._id === user._id);
+    curUserReview = reviews.find((review) => {
+      if (review.userId._id) {
+        return review.userId._id === user._id;
+      }
+      return review.userId === user._id;
+    });
   }
 
   if (!course) {
@@ -60,7 +65,12 @@ export function CourseCard() {
     return (
       <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>
         {authenticated ? (
-          <CreateReviewForm setOpen={setOpen} setSuccess={setSuccess} initValues={initValues} />
+          <CreateReviewForm
+            setOpen={setOpen}
+            setSuccess={setSuccess}
+            initValues={{ ...initValues }}
+            professors={course.professors || []}
+          />
         ) : (
           <>{AuthForm}</>
         )}
@@ -193,7 +203,11 @@ export function CourseCard() {
               label={
                 course.reviewCount ? (
                   `${
-                    course.wtaPercent < 1 ? `${course.wtaPercent * 100}% of` : 'All'
+                    course.wtaPercent < 1
+                      ? `${
+                          course.wtaPercent * 100 === 0 ? 'No' : `${course.wtaPercent * 100}%  of`
+                        }`
+                      : 'All'
                   } reviewers said they would take this class again`
                 ) : (
                   <>
