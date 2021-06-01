@@ -32,18 +32,16 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
     }
   }
 
-  if (profile && course === null) {
+  if (profile && !course) {
     return <div> Loading Reviews...</div>;
   }
+
   return (
     <>
       <div className="w-80 sm:w-full mx-0 mt-8 border-b">
-        {/* <div className="block sm:hidden w-10 ml-8">
-          <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />
-        </div> */}
         {review.approved !== APPROVAL_STATUS.approved && (
           <span className="mb-16 ml-8 sm:ml-16 text-sm font-medium bg-red-100 py-1 px-2 rounded text-red-500 align-middle">
-            DRAFT
+            UNDER REVIEW
           </span>
         )}
         <div className="flex items-center">
@@ -68,28 +66,35 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
                   </p>
                 ) : (
                   <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
-                    {review.userId.displayName || 'Anonymous User'}
+                    {review.userId._id
+                      ? review.userId.displayName || 'Anonymous User'
+                      : user.displayName}
                     {'  '}
                     <span className="hidden sm:block text-gray-500 font-normal">
-                      {'  '}recommends this course
+                      {'  '}
+                      {review.rating < 3 ? 'does not ' : ''}recommend{review.rating < 3 ? '' : 's'}{' '}
+                      this course
                     </span>
                   </p>
                 )}
-
                 <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />
               </div>
               <div className="flex-none">
-                {user && user._id === review.userId._id && (
+                {user && user._id === (review.userId._id || review.userId) && (
                   <button
                     className="text-red-500 p-2 ml-2 bg-gray-50 hover:bg-gray-100 rounded-full"
-                    onClick={() => dispatch(deleteReviewById(review._id))}
+                    onClick={() =>
+                      dispatch(deleteReviewById(review._id)).then(() =>
+                        dispatch(getCourseById({ collegeId: college._id, id: course._id }))
+                      )
+                    }
                     type="button"
                   >
                     <TrashIcon className="h-5 h-5" />
                   </button>
                 )}
                 {user &&
-                  user._id === review.userId._id &&
+                  user._id === (review.userId._id || review.userId) &&
                   review.approved !== APPROVAL_STATUS.approved && (
                     <button
                       onClick={() => {

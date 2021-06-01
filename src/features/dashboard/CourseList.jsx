@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses } from '../../app/actions/course.actions';
-import { CourseListItem } from '../course/CourseListItem';
 import { Paginator } from '../../common/Paginator';
+import { CourseListItem } from '../course/CourseListItem';
 
 export function CourseList() {
   const courses = useSelector((state) => state.course.courses);
@@ -22,7 +22,7 @@ export function CourseList() {
             limit,
             offset,
             sortBy: ['abbreviation:1', 'number:1'],
-            fields: ['name', 'abbreviation', 'number']
+            fields: ['name', 'abbreviation', 'number', 'avgRating', 'reviewCount']
           }
         })
       );

@@ -1,5 +1,7 @@
+import { StarIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { determinePillColor, rounded } from '../utils';
 
 export function CourseListItem({ course }) {
   const { url } = useRouteMatch();
@@ -25,9 +27,15 @@ export function CourseListItem({ course }) {
                         </span>
                     </dd> */}
         </div>
-        <span className="rounded-xl px-4 py-4 bg-purple-200 float-right font-extrabold text-purple-800">
-          4.5
-        </span>
+        {course.reviewCount > 0 && (
+          <span
+            className={`px-3 py-1 flex items-center text-2xl rounded-lg font-bold text-${determinePillColor(
+              rounded(course.avgRating)
+            )}-500 bg-${determinePillColor(rounded(course.avgRating))}-50`}
+          >
+            <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.avgRating)}
+          </span>
+        )}
       </div>
     </button>
   );

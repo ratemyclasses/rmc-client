@@ -10,7 +10,7 @@ export function BookmarkedCoursesView() {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.course.courses);
   const college = useSelector((state) => state.college.college);
-  console.log(user.bookmarkedCourses);
+
   if (user.bookmarkedCourses.length > 0 && college) {
     useEffect(() => {
       dispatch(

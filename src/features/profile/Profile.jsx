@@ -8,7 +8,7 @@ import { EditProfile } from './EditProfile';
 import { ViewReviews } from './ViewReviews';
 
 export function Profile() {
-  const [reviewOrProfile, setReviewOrProfile] = useState(0);
+  const [reviewOrProfile, setReviewOrProfile] = useState('My Profile');
   const iconStyle = 'text-indigo-500 w-5 h-6 inline-flex items-center justify-center';
   const mapping = {
     'My Reviews': <ViewReviews />,

@@ -17,7 +17,8 @@ export function ResetPasswordProfile() {
   const onSubmit = async (values, { setSubmitting }) => {
     try {
       await axios.patch(`${BASE_URL}/user/reset-password-by-email`, {
-        ...values
+        ...values,
+        email: user.email
       });
       setSubmitting(false);
       history.push('/profile');
@@ -32,30 +33,14 @@ export function ResetPasswordProfile() {
         <Formik
           enableReinitialize
           initialValues={{
-            email,
             oldPassword: '',
             newPassword: ''
           }}
-          validationSchema={Yup.object({
-            email: Yup.string().email('Invalid email address').required('Required')
-          })}
           onSubmit={onSubmit}
         >
-          {({ values, isSubmitting }) => (
+          {({ isSubmitting }) => (
             <Form>
-              <div className="shadow overflow-hidden sm:rounded-md px-10 py-8 bg-white sm:p-6">
-                <div>
-                  <Field
-                    id="email-address"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder="Email address"
-                    component={Input}
-                    disabled
-                  />
-                </div>
+              <div className="overflow-hidden sm:rounded-md px-10 py-8 bg-white sm:p-6">
                 {email && (
                   <>
                     <div>
