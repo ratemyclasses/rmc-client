@@ -32,15 +32,18 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
       downvoted = true;
     }
   }
+
   useEffect(() => {
     if (college) {
       dispatch(getCourseById({ collegeId: college._id, id: review.courseId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, review.courseId, dispatch]);
-  if (profile && course === null) {
+
+  if (profile && !course) {
     return <div> Loading Reviews...</div>;
   }
+
   return (
     <>
       <div className="w-80 sm:w-full mx-0 mt-8 border-b">

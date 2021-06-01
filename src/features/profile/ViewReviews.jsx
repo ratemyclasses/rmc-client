@@ -10,33 +10,33 @@ export function ViewReviews() {
   const [open, setOpen] = useState(false);
   const reviews = useSelector((state) => state.review.reviews);
   const user = useSelector((state) => state.user.user);
-  if (user) {
-    useEffect(() => {
+
+  useEffect(() => {
+    if (user) {
       dispatch(
         getReviews({
           userId: user._id
         })
       );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
-    if (reviews.length > 0) {
-      return (
-        <div>
-          {reviews.map((review) => (
-            <Review
-              key={review._id}
-              review={review}
-              setOpen={setOpen}
-              setInitValues={setInitValues}
-              profile={true}
-            />
-          ))}
-        </div>
-      );
-    } else {
-      return <div> Loading Reviews ... </div>;
     }
-  } else {
-    return <div> Login </div>;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  if (!reviews.length) {
+    return <div> Loading Reviews ... </div>;
   }
+
+  return (
+    <div>
+      {reviews.map((review) => (
+        <Review
+          key={review._id}
+          review={review}
+          setOpen={setOpen}
+          setInitValues={setInitValues}
+          profile={true}
+        />
+      ))}
+    </div>
+  );
 }

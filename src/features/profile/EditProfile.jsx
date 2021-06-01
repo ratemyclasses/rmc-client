@@ -39,11 +39,11 @@ export function EditProfile({}) {
     email: Yup.string().email().nullable()
   });
   return (
-    <>
+    <div className="w-3/4">
       <Formik initialValues={newValues} validationSchema={validate} onSubmit={onSubmit}>
         <Form>
           <h2 className="mt-6 mb-2 font-bold">Personal Information </h2>
-          <div className="shadow mr-2 overflow-hidden sm:rounded-md">
+          <div className="mr-2 overflow-hidden sm:rounded-md">
             <div className="px-4 py-5 bg-white sm:p-6">
               <div className="grid grid-cols-6 gap-6">
                 {labels.map((item) => {
@@ -66,7 +66,7 @@ export function EditProfile({}) {
             </div>
             <button
               type="submit"
-              className="mb-3 ml-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mb-3 ml-5 inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Save
             </button>
@@ -84,6 +84,6 @@ export function EditProfile({}) {
       >
         Delete Account
       </button>
-    </>
+    </div>
   );
 }

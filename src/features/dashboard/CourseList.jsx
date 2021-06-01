@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getCourses } from '../../app/actions/course.actions';
-import { CourseListItem } from '../course/CourseListItem';
 import { Paginator } from '../../common/Paginator';
+import { CourseListItem } from '../course/CourseListItem';
 
 export function CourseList() {
   const courses = useSelector((state) => state.course.courses);
   const total = useSelector((state) => state.course.totalCount);
   const college = useSelector((state) => state.college.college);
   const dispatch = useDispatch();
+  const history = useHistory();
   const [offset, setOffset] = useState(0);
   const perPage = 7;
   const limit = total ? Math.min(perPage, total - offset) : perPage;
+
+  const isFirstRun = useRef(true);
 
   useEffect(() => {
     if (college) {
@@ -26,6 +30,11 @@ export function CourseList() {
           }
         })
       );
+    }
+
+    if (courses.length && isFirstRun.current) {
+      history.push(`/u/${college.tag}/${courses[0]._id}`);
+      isFirstRun.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, offset, dispatch]);
