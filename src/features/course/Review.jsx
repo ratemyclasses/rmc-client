@@ -3,7 +3,7 @@ import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline';
 import ThumbDownOutline from '@heroicons/react/outline/ThumbDownIcon';
 import ThumbUpOutline from '@heroicons/react/outline/ThumbUpIcon';
 import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
-import * as moment from 'moment';
+import moment from 'moment';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
