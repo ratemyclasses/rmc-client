@@ -10,7 +10,7 @@ import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
 import { LoginForm } from '../auth/LoginForm';
 import { SignupForm } from '../auth/SignupForm';
-import { hasRoles, rounded } from '../utils';
+import { determinePillColor, hasRoles, rounded } from '../utils';
 import './CourseCard.css';
 import { CourseResources } from './CourseResources';
 import { CourseStatistic } from './CourseStatistic';
@@ -124,18 +124,6 @@ export function CourseCard() {
     }
 
     return btn;
-  };
-
-  const determinePillColor = (value) => {
-    if (value < 3) {
-      return 'red';
-    }
-
-    if (value < 4) {
-      return 'yellow';
-    }
-
-    return 'green';
   };
 
   return (
