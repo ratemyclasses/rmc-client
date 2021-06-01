@@ -6,6 +6,7 @@ import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
 import moment from 'moment';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCourseById } from '../../app/actions/course.actions';
 import {
   clearVoteReviewById,
   deleteReviewById,
@@ -18,6 +19,8 @@ import { StatisticPill } from './StatisticPill';
 export function Review({ review, moderate = false, setInitValues, setOpen, ref }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const course = useSelector((state) => state.course.course);
+  const college = useSelector((state) => state.college.college);
 
   let upvoted = false;
   let downvoted = false;
@@ -60,7 +63,11 @@ export function Review({ review, moderate = false, setInitValues, setOpen, ref }
                 {user && user._id === (review.userId._id || review.userId) && (
                   <button
                     className="text-red-500 p-2 ml-2 bg-gray-50 hover:bg-gray-100 rounded-full"
-                    onClick={() => dispatch(deleteReviewById(review._id))}
+                    onClick={() =>
+                      dispatch(deleteReviewById(review._id)).then(() =>
+                        dispatch(getCourseById({ collegeId: college._id, id: course._id }))
+                      )
+                    }
                     type="button"
                   >
                     <TrashIcon className="h-5 h-5" />
