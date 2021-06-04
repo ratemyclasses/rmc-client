@@ -1,7 +1,9 @@
 /*eslint-disable*/
 import { ChartBarIcon, ChatIcon, UserIcon } from '@heroicons/react/solid';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ActivateBar } from '../../common/ActivateBar';
 import { Navbar } from '../../common/Navbar';
 import { BookmarkedCoursesView } from './BookmarkedCoursesView';
 import { EditProfile } from './EditProfile';

@@ -5,24 +5,27 @@ import { ForgotPassword } from './ForgotPassword';
 import { LoginForm } from './LoginForm';
 import { SignupForm } from './SignupForm';
 import { ResetPassword } from './ResetPassword';
+import { Activate } from './Activate';
 
 export function Auth() {
   const location = useLocation();
   const authenticated = useSelector(({ auth }) => auth.authenticated);
   const history = useHistory();
-  const { resetPasswordToken } = useParams();
+  const { resetPasswordToken, activationToken } = useParams();
 
   if (authenticated) {
     history.push('/');
   }
 
-  const dynamicLink = `/reset-password/${resetPasswordToken || ''}`;
+  const resetPasswordLink = `/reset-password/${resetPasswordToken || ''}`;
+  const activationTokenLink = `/activate-account/${activationToken || ''}`;
 
   const forms = {
     '/login': <LoginForm />,
     '/signup': <SignupForm />,
     '/forgot-password': <ForgotPassword />,
-    [dynamicLink]: <ResetPassword />
+    [resetPasswordLink]: <ResetPassword />,
+    [activationTokenLink]: <Activate />
   };
 
   return (

@@ -55,7 +55,6 @@ export function ResetPassword() {
           enableReinitialize
           initialValues={{
             email,
-            oldPassword: '',
             newPassword: ''
           }}
           validationSchema={Yup.object({
@@ -63,7 +62,7 @@ export function ResetPassword() {
           })}
           onSubmit={onSubmit}
         >
-          {({ values, isSubmitting }) => (
+          {({ isSubmitting }) => (
             <Form>
               <div className="rounded-md shadow-sm -space-y-px">
                 <div>
@@ -79,34 +78,22 @@ export function ResetPassword() {
                   />
                 </div>
                 {email && (
-                  <>
-                    <div>
-                      <Field
-                        id="old-password"
-                        name="oldPassword"
-                        type="password"
-                        required
-                        placeholder="Old Password"
-                        component={Input}
-                      />
-                    </div>
-                    <div>
-                      <Field
-                        id="new-password"
-                        name="newPassword"
-                        type="password"
-                        required
-                        placeholder="New Password"
-                        component={Input}
-                      />
-                    </div>
-                  </>
+                  <div>
+                    <Field
+                      id="new-password"
+                      name="newPassword"
+                      type="password"
+                      required
+                      placeholder="New Password"
+                      component={Input}
+                    />
+                  </div>
                 )}
               </div>
               <div className="flex items-center justify-between mt-3">
                 <div className="text-sm">
                   <div className="text-red-500">
-                    {error && error.statusCode === 400 && 'Old password is incorrect'}
+                    {error && error.statusCode === 400 && 'You must choose a new password.'}
                   </div>
                 </div>
               </div>
