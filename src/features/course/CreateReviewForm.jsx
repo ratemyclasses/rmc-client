@@ -262,11 +262,27 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
   const course = useSelector((state) => state.course.course);
   const status = useSelector((state) => state.review.status);
 
-  const isFirstRun = useRef(true);
+  const isFirstRun = useRef([]);
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
+    if (!isFirstRun.current.length) {
+      isFirstRun.current = [
+        ...professors.map((p) => ({
+          name: p,
+          value: p
+        })),
+        { name: "Couldn't find my professor", value: "Couldn't find my professor" }
+      ];
+
+      if (!initValues.timeTaken) {
+        initValues.timeTaken = quarters[0].value;
+      }
+
+      if (!initValues.professor) {
+        initValues.professor = isFirstRun.current[0].value;
+      } else if (initValues.professor !== "Couldn't find my professor") {
+        isFirstRun.current.unshift({ name: initValues.professor, value: initValues.professor });
+      }
       return;
     }
 
@@ -275,25 +291,7 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
     } else if (status === STATUS.failed) {
       setSuccess(STATUS.failed);
     }
-  }, [status, setSuccess]);
-
-  const profs = [
-    ...professors.map((p) => ({
-      name: p,
-      value: p
-    })),
-    { name: "Couldn't find my professor", value: "Couldn't find my professor" }
-  ];
-
-  if (!initValues.timeTaken) {
-    initValues.timeTaken = quarters[0].value;
-  }
-
-  if (!initValues.professor) {
-    initValues.professor = profs[0].value;
-  } else if (initValues.professor !== "Couldn't find my professor") {
-    profs.unshift({ name: initValues.professor, value: initValues.professor });
-  }
+  }, [status, setSuccess, professors, initValues]);
 
   const validate = {
     1: Yup.object({
@@ -391,11 +389,11 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
         </div>
       </div>
 
-      <Formik initialValues={initValues} validationSchema={validate[step]} onSubmit={onSubmit}>
+      <Formik initialValues={initValues} validationSchema={validate[step]} r onSubmit={onSubmit}>
         {({ values }) => (
           <Form>
             {step === 1 && <Step1 formValues={values} />}
-            {step === 2 && <Step2 formValues={values} professors={profs} />}
+            {step === 2 && <Step2 formValues={values} professors={isFirstRun.current} />}
             {step === 3 && <Step3 formValues={values} />}
             {step === 4 && <Step4 formValues={values} />}
 
