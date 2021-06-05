@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as actions from '../actions/auth.actions';
-import { createStatusReducers } from '../utils';
 import { STATUS } from '../constants';
+import { createStatusReducers } from '../utils';
 
 const initialState = {
   authenticated: false,
@@ -9,7 +9,7 @@ const initialState = {
   error: null
 };
 
-const { login, logout, signup, googleLogin } = actions;
+const { login, signup, googleLogin } = actions;
 
 export const authSlice = createSlice({
   name: 'auth',
