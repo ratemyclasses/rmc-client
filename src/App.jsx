@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { getCurrentUser } from './app/actions/user.actions';
 import { STATUS } from './app/constants';
+import { ActivateBar } from './common/ActivateBar';
 import { PageNotFound } from './common/PageNotFound';
 import { requireAuth } from './common/requireAuth';
 import { Auth } from './features/auth/Auth';
@@ -14,6 +15,7 @@ import { Profile } from './features/profile/Profile';
 function App() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.user.status);
+  const user = useSelector((state) => state.user.user);
   const authenticated = useSelector((state) => state.auth.authenticated);
 
   useEffect(() => {
@@ -25,11 +27,13 @@ function App() {
   return (
     <div>
       <Router>
+        {user && !user.activated && <ActivateBar />}
         <Switch>
           <Route path="/login" component={Auth} />
           <Route path="/signup" component={Auth} />
           <Route path="/forgot-password" component={Auth} />
           <Route path="/reset-password/:resetPasswordToken" component={Auth} />
+          <Route path="/activate-account/:activationToken" component={Auth} />
           <Route path="/profile" component={requireAuth(Profile)} />
           <Route
             path="/moderate/u/:tag"
