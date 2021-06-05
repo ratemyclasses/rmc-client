@@ -283,13 +283,6 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
       } else if (initValues.professor !== "Couldn't find my professor") {
         isFirstRun.current.unshift({ name: initValues.professor, value: initValues.professor });
       }
-      return;
-    }
-
-    if (status === STATUS.success) {
-      setSuccess(STATUS.success);
-    } else if (status === STATUS.failed) {
-      setSuccess(STATUS.failed);
     }
   }, [status, setSuccess, professors, initValues]);
 
@@ -338,12 +331,23 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
       }
 
       if (initValues._id) {
-        dispatch(updateReviewById({ id: initValues._id, formData: cleanedData }));
+        dispatch(updateReviewById({ id: initValues._id, formData: cleanedData })).then(() => {
+          if (status === STATUS.success) {
+            setSuccess(STATUS.success);
+          } else if (status === STATUS.failed) {
+            setSuccess(STATUS.failed);
+          }
+        });
       } else {
-        dispatch(createReview({ ...cleanedData, courseId: course._id }));
+        dispatch(createReview({ ...cleanedData, courseId: course._id })).then(() => {
+          if (status === STATUS.success) {
+            setSuccess(STATUS.success);
+          } else if (status === STATUS.failed) {
+            setSuccess(STATUS.failed);
+          }
+        });
       }
       setOpen(false);
-      // setSuccess(true);
     } else {
       setStep(step + 1);
     }
