@@ -28,10 +28,6 @@ export const authSlice = createSlice({
     [googleLogin.fulfilled]: (state, action) => {
       state.authenticated = action.payload;
       state.status = STATUS.success;
-    },
-    [logout.fulfilled]: (state, action) => {
-      state.authenticated = action.payload;
-      state.status = STATUS.success;
     }
   }
 });
