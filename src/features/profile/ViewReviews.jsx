@@ -9,6 +9,7 @@ export function ViewReviews() {
   const [initValues, setInitValues] = useState({});
   const [open, setOpen] = useState(false);
   const reviews = useSelector((state) => state.review.reviews);
+  const reviewCount = useSelector((state) => state.review.reviewCount);
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
@@ -21,11 +22,12 @@ export function ViewReviews() {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, user._id]);
 
-  if (!reviews.length) {
-    return <div> Loading Reviews ... </div>;
-  }
+  // if (reviewCount == 0) {
+  //   console.log('Here');
+  //   return <div> Loading Reviews ... </div>;
+  // }
 
   return (
     <div>

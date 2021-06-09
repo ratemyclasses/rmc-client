@@ -12,6 +12,7 @@ import {
   downvoteReviewById,
   upvoteReviewById
 } from '../../app/actions/review.actions';
+import { getCourseById } from '../../app/actions/course.actions';
 import { APPROVAL_STATUS, STATISTICS } from '../../app/constants';
 import { StatisticPill } from './StatisticPill';
 
@@ -20,6 +21,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
   const user = useSelector((state) => state.user.user);
   const course = useSelector((state) => state.course.course);
   const authenticated = useSelector((state) => state.auth.authenticated);
+  const college = useSelector((state) => state.college.college);
 
   let upvoted = false;
   let downvoted = false;
@@ -30,10 +32,6 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
     } else if (review.downvoters.includes(user._id)) {
       downvoted = true;
     }
-  }
-
-  if (profile && !course) {
-    return <div> Loading Reviews...</div>;
   }
 
   return (
