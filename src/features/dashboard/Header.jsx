@@ -1,14 +1,46 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { getDepartments } from '../../app/actions/department.actions';
+import { MultiSelectDropdown } from '../../common/filter/MultiSelectDropdown';
 
 export function Header() {
   const college = useSelector((state) => state.college.college);
+  const departments = useSelector((state) => state.department.departments);
+  const dispatch = useDispatch();
+
   const location = useLocation();
 
-  if (!college) {
+  useEffect(() => {
+    if (college) {
+      dispatch(
+        getDepartments({
+          collegeId: college._id
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [college, dispatch]);
+
+  console.log(departments);
+
+  const filters = [
+    {
+      departmentName: 'Department',
+      options: departments
+    }
+  ];
+
+  if (!college || !departments) {
     return <div>Loading...</div>;
   }
+
+  const departmentArr = [];
+  departments.forEach((department) => {
+    departmentArr.push({ name: department.longName, value: department.longName });
+  });
+
+  filters[0].options = departmentArr;
 
   const isModeratorMode = location.pathname.includes('moderate');
 
@@ -25,88 +57,10 @@ export function Header() {
               placeholder="Search"
             />
           </div>
-          <div className="w-full flex mb-4 mx-auto items-center overflow-auto sm:w-full sm:ml-4 sm:mb-0">
-            <button
-              type="button"
-              className="px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
-            >
-              Department
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
-            >
-              Department
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
-            >
-              Department
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="ml-2 px-4 py-2 text-base flex items-center rounded-full text-indigo-500 border border-indigo-500 undefined "
-            >
-              Department
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
+
+          {filters.map((filter) => (
+            <MultiSelectDropdown options={filter.options} label={filter.departmentName} />
+          ))}
         </>
       )}
     </div>

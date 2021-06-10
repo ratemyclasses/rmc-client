@@ -2,12 +2,16 @@ import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import React, { Fragment, useState } from 'react';
 
-export function Dropdown({ field, form, label, options, value, ...props }) {
+export function Dropdown({ field, handleChange, filter, form, label, options, value, ...props }) {
   const [chosen, setChosen] = useState(value.name ? value : options[0]);
 
   const onChange = (val) => {
     setChosen(val);
     form.setFieldValue(field.name, val.value);
+
+    if (handleChange) {
+      handleChange();
+    }
   };
 
   return (
