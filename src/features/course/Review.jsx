@@ -4,7 +4,7 @@ import ThumbDownOutline from '@heroicons/react/outline/ThumbDownIcon';
 import ThumbUpOutline from '@heroicons/react/outline/ThumbUpIcon';
 import { ChartBarIcon, ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById } from '../../app/actions/course.actions';
 import {
@@ -33,12 +33,12 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
     }
   }
 
-  useEffect(() => {
-    if (college) {
-      dispatch(getCourseById({ collegeId: college._id, id: review.courseId }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [college, review.courseId, dispatch]);
+  // useEffect(() => {
+  //   if (college) {
+  //     dispatch(getCourseById({ collegeId: college._id, id: review.courseId }));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [college]);
 
   if (profile && !course) {
     return <div> Loading Reviews...</div>;

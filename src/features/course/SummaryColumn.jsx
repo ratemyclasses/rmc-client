@@ -8,12 +8,11 @@ import {
   UsersIcon
 } from '@heroicons/react/solid';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { STATISTICS } from '../../app/constants';
 import { rounded } from '../utils';
 import { StatisticPill } from './StatisticPill';
 
-export function SummaryColumn({ col }) {
+export function SummaryColumn({ col, aggregate }) {
   const fields = {
     Structure: {
       avgProfResponsiveness: {
@@ -48,7 +47,7 @@ export function SummaryColumn({ col }) {
         icon: <CheckCircleIcon className="h-3 w-3 text-indigo-600" />,
         label: 'Quiz Frequency',
         questionContent: null,
-        type: STATISTICS.majority
+        type: STATISTICS.list
       },
       projHeavyPercent: {
         icon: <PresentationChartBarIcon className="h-3 w-3 text-indigo-600" />,
@@ -66,28 +65,31 @@ export function SummaryColumn({ col }) {
     }
   };
 
-  const course = useSelector((state) => state.course.course);
-
-  if (!course) {
+  if (!aggregate) {
     return <div> Loading...</div>;
   }
 
   const renderRows = () => {
     let existCount = 0;
     const rows = Object.keys(fields[col]).map((key) => {
-      if (fields[col][key].type === STATISTICS.rating && course[key]) {
+      if (fields[col][key].type === STATISTICS.rating && aggregate[key]) {
         existCount += 1;
-        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+        return <SummaryRow key={key} field={fields[col][key]} value={aggregate[key]} />;
       }
 
-      if (fields[col][key].type === STATISTICS.percentage && course[key] !== null) {
+      if (fields[col][key].type === STATISTICS.percentage && aggregate[key] !== null) {
         existCount += 1;
-        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+        return <SummaryRow key={key} field={fields[col][key]} value={aggregate[key]} />;
       }
 
-      if (fields[col][key].type === STATISTICS.majority && course[key].length) {
+      if (fields[col][key].type === STATISTICS.majority && aggregate[key].length) {
         existCount += 1;
-        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+        return <SummaryRow key={key} field={fields[col][key]} value={aggregate[key]} />;
+      }
+
+      if (fields[col][key].type === STATISTICS.list && aggregate[key].length) {
+        existCount += 1;
+        return <SummaryRow key={key} field={fields[col][key]} value={aggregate[key]} />;
       }
 
       return '';

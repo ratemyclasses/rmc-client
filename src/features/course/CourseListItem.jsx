@@ -27,13 +27,13 @@ export function CourseListItem({ course }) {
                         </span>
                     </dd> */}
         </div>
-        {course.reviewCount > 0 && (
+        {course.aggregate.reviewCount > 0 && (
           <span
             className={`px-3 py-1 flex items-center text-2xl rounded-lg font-bold text-${determinePillColor(
-              rounded(course.avgRating)
-            )}-500 bg-${determinePillColor(rounded(course.avgRating))}-50`}
+              rounded(course.aggregate.avgRating)
+            )}-500 bg-${determinePillColor(rounded(course.aggregate.avgRating))}-50`}
           >
-            <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.avgRating)}
+            <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.aggregate.avgRating)}
           </span>
         )}
       </div>

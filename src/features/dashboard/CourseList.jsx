@@ -22,7 +22,13 @@ export function CourseList() {
             limit,
             offset,
             sortBy: ['abbreviation:1', 'number:1'],
-            fields: ['name', 'abbreviation', 'number', 'avgRating', 'reviewCount']
+            fields: [
+              'name',
+              'abbreviation',
+              'number',
+              'aggregate.avgRating',
+              'aggregate.reviewCount'
+            ]
           }
         })
       );

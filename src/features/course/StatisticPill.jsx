@@ -63,6 +63,16 @@ export function StatisticPill({ field, value }) {
     );
   }
 
+  if (type === STATISTICS.list) {
+    return value.map((val) => (
+      <span
+        className={`px-2 py-1 mr-2 flex items-center text-sm rounded-lg font-semibold text-${determinePillColor()}-500 bg-${determinePillColor()}-50`}
+      >
+        {capitalize(val.toLowerCase())}
+      </span>
+    ));
+  }
+
   return (
     <span className="px-2 py-1 flex items-center text-sm rounded-lg font-semibold text-blue-500 bg-blue-50">
       Value
