@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { getCourses } from '../../app/actions/course.actions';
 import { Paginator } from '../../common/Paginator';
 import { CourseListItem } from '../course/CourseListItem';
 
-export function CourseList() {
+export function CourseList({ searchTerm, pageNum }) {
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const courses = useSelector((state) => state.course.courses);
   const total = useSelector((state) => state.course.totalCount);
   const college = useSelector((state) => state.college.college);
-  const dispatch = useDispatch();
-  const [offset, setOffset] = useState(0);
   const perPage = 7;
+  const [offset, setOffset] = useState(pageNum * perPage);
   const limit = total ? Math.min(perPage, total - offset) : perPage;
+  const curPageNum = Math.round(offset / perPage) + 1;
 
   useEffect(() => {
     if (college) {
@@ -21,20 +25,30 @@ export function CourseList() {
           params: {
             limit,
             offset,
-            sortBy: ['abbreviation:1', 'number:1'],
-            fields: [
-              'name',
-              'abbreviation',
-              'number',
-              'aggregate.avgRating',
-              'aggregate.reviewCount'
-            ]
+            sortBy: ['score:-1', 'shortName:1'],
+            fields: ['name', 'shortName', 'aggregate.avgRating', 'aggregate.reviewCount'],
+            searchTerm
           }
         })
       );
     }
+
+    const queryParams = new URLSearchParams(location.search);
+
+    if (queryParams.has('pageNum')) {
+      queryParams.set('pageNum', curPageNum);
+      history.replace({
+        search: queryParams.toString()
+      });
+    } else {
+      queryParams.set('pageNum', curPageNum);
+      history.push({
+        pathname: location.pathname,
+        search: queryParams.toString()
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [college, offset, dispatch]);
+  }, [college, searchTerm, offset, dispatch]);
 
   if (!courses.length) {
     return <div>Loading courses...</div>;
@@ -56,7 +70,7 @@ export function CourseList() {
         setOffset={setOffset}
         offset={offset}
         perPage={perPage}
-        curPageNum={Math.round(offset / perPage) + 1}
+        curPageNum={curPageNum}
         total={total}
       />
     </div>

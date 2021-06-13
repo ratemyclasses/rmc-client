@@ -1,4 +1,5 @@
 import { StarIcon } from '@heroicons/react/solid';
+import parse from 'html-react-parser';
 import React from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { determinePillColor, rounded } from '../utils';
@@ -6,6 +7,24 @@ import { determinePillColor, rounded } from '../utils';
 export function CourseListItem({ course }) {
   const { url } = useRouteMatch();
   const history = useHistory();
+
+  const highlightedCourse = {};
+
+  if (course.highlights?.length) {
+    course.highlights.forEach((highlight) => {
+      const { texts } = highlight;
+      const replacements = texts
+        .map((text) => {
+          if (text.type === 'hit') {
+            return `<span class='text-indigo-600 underline' style="text-underline-offset:0.2em">${text.value}</span>`;
+          }
+          return text.value;
+        })
+        .join('');
+      const originals = texts.map((text) => text.value).join('');
+      highlightedCourse[highlight.path] = course[highlight.path].replace(originals, replacements);
+    });
+  }
 
   return (
     <button
@@ -16,10 +35,11 @@ export function CourseListItem({ course }) {
       <div className="overflow-ellipsis overflow-hidden relative py-4 px-4 flex items-start justify-between">
         <div className="py-2 w-2/3 text-left">
           <p className="float-left text-lg font-bold text-gray-900">
-            {course.abbreviation} {course.number}
+            {highlightedCourse.shortName ? parse(highlightedCourse.shortName) : course.shortName}
           </p>
+          {/* <p className="float-left text-sm font-bold text-gray-900">{course.score}</p> */}
           <p className="float-left text-md font-regular leading-5 text-gray-500 w-full truncate">
-            {course.name}
+            {highlightedCourse.name ? parse(highlightedCourse.name) : course.name}
           </p>
           {/* <dd className="text-gray-500 font-semibold">
                         <span>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-export function Header() {
+export function Header({ searchTerm, setSearchTerm }) {
   const college = useSelector((state) => state.college.college);
+  const history = useHistory();
   const location = useLocation();
 
   if (!college) {
@@ -11,6 +12,22 @@ export function Header() {
   }
 
   const isModeratorMode = location.pathname.includes('moderate');
+
+  const onChangeSearchTerm = (term) => {
+    setSearchTerm(term);
+    if (!term) {
+      const queryParams = new URLSearchParams(location.search);
+      queryParams.delete('q');
+      history.replace({
+        search: queryParams.toString()
+      });
+    } else {
+      history.push({
+        pathname: location.pathname,
+        search: `?q=${term}`
+      });
+    }
+  };
 
   return (
     <div className="md:flex md:items-center bg-white border-t border-b py-3 pl-4">
@@ -23,6 +40,8 @@ export function Header() {
               type="text"
               className="block w-full sm:w-full py-2 pl-4 pr-4 leading-normal rounded-full focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 ring-opacity-90 bg-gray-100 dark:bg-gray-800 text-gray-400 aa-input"
               placeholder="Search"
+              onChange={(e) => onChangeSearchTerm(e.target.value)}
+              value={searchTerm}
             />
           </div>
           <div className="w-full flex mb-4 mx-auto items-center overflow-auto sm:w-full sm:ml-4 sm:mb-0">
