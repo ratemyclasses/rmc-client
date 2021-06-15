@@ -35,7 +35,7 @@ export function Navbar({ moderate = false }) {
   const [collegeMenuOpen, setCollegeMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white">
+    <nav className="bg-white ">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -222,6 +222,20 @@ export function Navbar({ moderate = false }) {
                   id="user-menu-item-1"
                 >
                   Course Search
+                </Link>
+                <Link
+                  to="/compare/u/ucb"
+                  onClick={() => setUserMenuOpen(false)}
+                  className={
+                    !userMenuOpen
+                      ? 'hidden'
+                      : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                  }
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-1"
+                >
+                  Compare Courses
                 </Link>
                 {user && hasRoles(user.roles, ['ADMIN', 'MODERATOR']) && (
                   <Link
