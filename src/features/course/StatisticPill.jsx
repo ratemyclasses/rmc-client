@@ -66,6 +66,7 @@ export function StatisticPill({ field, value }) {
   if (type === STATISTICS.list) {
     return value.map((val) => (
       <span
+        key={val}
         className={`px-2 py-1 mr-2 flex items-center text-sm rounded-lg font-semibold text-${determinePillColor()}-500 bg-${determinePillColor()}-50`}
       >
         {capitalize(val.toLowerCase())}

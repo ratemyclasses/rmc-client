@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { getCourseById, toggleBookmarkCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
 import { APPROVAL_STATUS } from '../../app/constants';
-import InstructorDropdown from '../../common/InstructorDropdown';
+import { CustomDropdown } from '../../common/CustomDropdown';
 import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
 import { LoginForm } from '../auth/LoginForm';
@@ -38,27 +38,26 @@ export function CourseCard() {
     if (college) {
       dispatch(getCourseById({ collegeId: college._id, id: courseId }));
     }
-
-    dispatch(getReviews({ courseId, populate: ['userId'], select: ['userId.displayName'] }));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, courseId, dispatch]);
 
   useEffect(() => {
-    if (instructor.value) {
-      dispatch(
-        getReviews({
-          courseId,
-          aggregateId: instructor.value,
-          populate: ['userId'],
-          select: ['userId.displayName']
-        })
-      );
-    } else {
-      dispatch(getReviews({ courseId, populate: ['userId'], select: ['userId.displayName'] }));
+    if (college && course) {
+      if (instructor.value) {
+        dispatch(
+          getReviews({
+            courseId,
+            aggregateId: instructor.value,
+            populate: ['userId'],
+            select: ['userId.displayName']
+          })
+        );
+      } else {
+        dispatch(getReviews({ courseId, populate: ['userId'], select: ['userId.displayName'] }));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [instructor, dispatch]);
+  }, [college, course, instructor, dispatch]);
 
   let curUserReview = null;
 
@@ -167,15 +166,15 @@ export function CourseCard() {
       <ReviewCompleteAlert setSuccess={setSuccess} success={success} />
       {renderModal()}
       <div className="course-card w-full mt-16 mx-8 sm:mx-auto">
+        <div className="flex items-center gap-3 w-full">
+          <UserIcon className="w-5 h-5 text-indigo-600" />
+          <CustomDropdown options={instNames} handleChange={handleInstDropdownChange} />
+        </div>
         <div className="flex flex-wrap items-start gap-16">
           <div className="flex-none w-80">
-            <div className="flex items-center gap-3 w-full">
-              <UserIcon className="w-5 h-5 text-indigo-600" />
-              <InstructorDropdown options={instNames} handleChange={handleInstDropdownChange} />
-            </div>
             <div className="flex items-center mb-2 mt-3">
               <h2 className="text-3xl mr-4 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                {course.abbreviation} {course.number}
+                {course.shortName}
               </h2>
               {aggregate.reviewCount > 0 && (
                 <span
@@ -208,7 +207,11 @@ export function CourseCard() {
                   Visit Website
                 </button>
               )}
-              <button className="rounded-full ml-3 relative p-3 bg-gray-100" type="button">
+              <button
+                className="rounded-full ml-3 relative p-3 bg-gray-100 focus:outline-none"
+                title="More"
+                type="button"
+              >
                 <DotsVerticalIcon className="h-5 w-5 text-gray-600" />
               </button>
               {user && (
@@ -216,7 +219,8 @@ export function CourseCard() {
                   onClick={() =>
                     dispatch(toggleBookmarkCourseById({ collegeId: college._id, id: course._id }))
                   }
-                  className="rounded-full ml-3 relative p-3 bg-gray-100"
+                  title="Bookmark Course"
+                  className="rounded-full ml-3 relative p-3 bg-gray-100 focus:outline-none"
                   type="button"
                 >
                   {user.bookmarkedCourses.includes(course._id) ? (

@@ -1,17 +1,16 @@
 import { StarIcon } from '@heroicons/react/solid';
 import parse from 'html-react-parser';
 import React from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { determinePillColor, rounded } from '../utils';
 
 export function CourseListItem({ course }) {
   const { url } = useRouteMatch();
+  const { search } = useLocation();
   const history = useHistory();
 
-  const highlightedCourse = {};
-
-  if (course.highlights?.length) {
-    course.highlights.forEach((highlight) => {
+  const getHighlightedFields = (highlights = []) =>
+    highlights.reduce((acc, highlight) => {
       const { texts } = highlight;
       const replacements = texts
         .map((text) => {
@@ -22,15 +21,17 @@ export function CourseListItem({ course }) {
         })
         .join('');
       const originals = texts.map((text) => text.value).join('');
-      highlightedCourse[highlight.path] = course[highlight.path].replace(originals, replacements);
-    });
-  }
+      return { ...acc, [highlight.path]: course[highlight.path].replace(originals, replacements) };
+    }, {});
+
+  const highlightedCourse = getHighlightedFields(course.highlights);
 
   return (
     <button
-      onClick={() => history.push(`${url}/${course._id}`)}
+      onClick={() => history.push({ pathname: `${url}/${course._id}`, search })}
       className="w-full py-2 px-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-purple-200 border-b"
       type="button"
+      title={`${course.shortName}: ${course.name}`}
     >
       <div className="overflow-ellipsis overflow-hidden relative py-4 px-4 flex items-start justify-between">
         <div className="py-2 w-2/3 text-left">
