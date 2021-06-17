@@ -1,11 +1,12 @@
 import { BookmarkIcon as BookmarkOutlineIcon } from '@heroicons/react/outline';
-import { BookmarkIcon, DotsVerticalIcon, StarIcon } from '@heroicons/react/solid';
+import { BookmarkIcon, DotsVerticalIcon, StarIcon, UserIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCourseById, toggleBookmarkCourseById } from '../../app/actions/course.actions';
 import { getReviews } from '../../app/actions/review.actions';
 import { APPROVAL_STATUS } from '../../app/constants';
+import { CustomDropdown } from '../../common/CustomDropdown';
 import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
 import { LoginForm } from '../auth/LoginForm';
@@ -27,6 +28,7 @@ export function CourseCard() {
   const user = useSelector((state) => state.user.user);
   const reviews = useSelector((state) => state.review.reviews);
   const authenticated = useSelector((state) => state.auth.authenticated);
+  const [instructor, setInstructor] = useState({ name: 'All Professors', value: null });
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
   const [signup, setSignup] = useState(false);
@@ -36,9 +38,26 @@ export function CourseCard() {
     if (college) {
       dispatch(getCourseById({ collegeId: college._id, id: courseId }));
     }
-    dispatch(getReviews({ courseId, populate: ['userId'], select: ['userId.displayName'] }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, courseId, dispatch]);
+
+  useEffect(() => {
+    if (college && course) {
+      if (instructor.value) {
+        dispatch(
+          getReviews({
+            courseId,
+            aggregateId: instructor.value,
+            populate: ['userId'],
+            select: ['userId.displayName']
+          })
+        );
+      } else {
+        dispatch(getReviews({ courseId, populate: ['userId'], select: ['userId.displayName'] }));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [college, course, instructor, dispatch]);
 
   let curUserReview = null;
 
@@ -69,7 +88,7 @@ export function CourseCard() {
             setOpen={setOpen}
             setSuccess={setSuccess}
             initValues={{ ...initValues }}
-            professors={course.professors || []}
+            aggsByInstructor={course.aggsByInstructor || []}
           />
         ) : (
           <>{AuthForm}</>
@@ -126,24 +145,44 @@ export function CourseCard() {
     return btn;
   };
 
+  const handleInstDropdownChange = (val) => {
+    setInstructor(val);
+  };
+
+  const aggregate =
+    course.aggsByInstructor.find((agg) => agg.instructorName === instructor.name) ||
+    course.aggregate;
+
+  const instNames = [
+    { name: 'All Instructors', value: null },
+    ...course.aggsByInstructor.map((agg) => ({
+      name: agg.instructorName,
+      value: agg._id
+    }))
+  ];
+
   return (
     <>
       <ReviewCompleteAlert setSuccess={setSuccess} success={success} />
       {renderModal()}
       <div className="course-card w-full mt-16 mx-8 sm:mx-auto">
+        <div className="flex items-center gap-3 w-full">
+          <UserIcon className="w-5 h-5 text-indigo-600" />
+          <CustomDropdown options={instNames} handleChange={handleInstDropdownChange} />
+        </div>
         <div className="flex flex-wrap items-start gap-16">
           <div className="flex-none w-80">
-            <div className="flex items-center mb-2">
+            <div className="flex items-center mb-2 mt-3">
               <h2 className="text-3xl mr-4 font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                {course.abbreviation} {course.number}
+                {course.shortName}
               </h2>
-              {course.reviewCount > 0 && (
+              {aggregate.reviewCount > 0 && (
                 <span
                   className={`px-3 py-1 flex items-center text-2xl rounded-lg font-bold text-${determinePillColor(
-                    rounded(course.avgRating)
-                  )}-500 bg-${determinePillColor(rounded(course.avgRating))}-50`}
+                    rounded(aggregate.avgRating)
+                  )}-500 bg-${determinePillColor(rounded(aggregate.avgRating))}-50`}
                 >
-                  <StarIcon className="h-6 w-6 mr-1" /> {rounded(course.avgRating)}
+                  <StarIcon className="h-6 w-6 mr-1" /> {rounded(aggregate.avgRating)}
                 </span>
               )}
             </div>
@@ -153,11 +192,11 @@ export function CourseCard() {
             </h2>
             <div className="flex items-center mb-6">
               <p className="mr-4 text-gray-500">
-                {course.reviewCount
-                  ? `${course.reviewCount} Review${course.reviewCount !== 1 ? 's' : ''}`
+                {aggregate.reviewCount
+                  ? `${aggregate.reviewCount} Review${aggregate.reviewCount !== 1 ? 's' : ''}`
                   : 'No Reviews'}
               </p>
-              <p className="text-gray-500">Average Grade: {course.avgLetterGrade || 'N/A'}</p>
+              <p className="text-gray-500">Average Grade: {aggregate.avgLetterGrade || 'N/A'}</p>
             </div>
             <div className="flex items-center mb-8">
               {course.website && (
@@ -168,7 +207,11 @@ export function CourseCard() {
                   Visit Website
                 </button>
               )}
-              <button className="rounded-full ml-3 relative p-3 bg-gray-100" type="button">
+              <button
+                className="rounded-full ml-3 relative p-3 bg-gray-100 focus:outline-none"
+                title="More"
+                type="button"
+              >
                 <DotsVerticalIcon className="h-5 w-5 text-gray-600" />
               </button>
               {user && (
@@ -176,7 +219,8 @@ export function CourseCard() {
                   onClick={() =>
                     dispatch(toggleBookmarkCourseById({ collegeId: college._id, id: course._id }))
                   }
-                  className="rounded-full ml-3 relative p-3 bg-gray-100"
+                  title="Bookmark Course"
+                  className="rounded-full ml-3 relative p-3 bg-gray-100 focus:outline-none"
                   type="button"
                 >
                   {user.bookmarkedCourses.includes(course._id) ? (
@@ -189,11 +233,13 @@ export function CourseCard() {
             </div>
             <Sidenote
               label={
-                course.reviewCount ? (
+                aggregate.reviewCount ? (
                   `${
-                    course.wtaPercent < 1
+                    aggregate.wtaPercent < 1
                       ? `${
-                          course.wtaPercent * 100 === 0 ? 'No' : `${course.wtaPercent * 100}%  of`
+                          aggregate.wtaPercent * 100 === 0
+                            ? 'No'
+                            : `${aggregate.wtaPercent * 100}%  of`
                         }`
                       : 'All'
                   } reviewers said they would take this class again`
@@ -220,18 +266,22 @@ export function CourseCard() {
           </div>
           <div className="flex-grow hidden sm:block"> </div>
           <div className="flex flex-none flex-wrap items-center gap-12 sm:gap-16 w-80">
-            <CourseStatistic field="difficulty" value={course.avgDifficulty} subtext="/5" />
-            <CourseStatistic field="workload" value={course.avgHoursPerWeek} subtext="hours/week" />
-            <CourseResources resources={course.resources} />
+            <CourseStatistic field="difficulty" value={aggregate.avgDifficulty} subtext="/5" />
+            <CourseStatistic
+              field="workload"
+              value={aggregate.avgHoursPerWeek}
+              subtext="hours/week"
+            />
+            <CourseResources resources={aggregate.resources} />
           </div>
         </div>
         <div className="flex flex-wrap items-start gap-8 sm:gap-16 mt-8 mb-8">
           <div className="flex-none w-80">
-            <SummaryColumn col="Structure" />
+            <SummaryColumn col="Structure" aggregate={aggregate} />
           </div>
           <div className="flex-grow"> </div>
           <div className="flex flex-none flex-wrap items-center gap-16 w-80">
-            <SummaryColumn col="Assignments/Exams" />
+            <SummaryColumn col="Assignments/Exams" aggregate={aggregate} />
           </div>
         </div>
         <div>

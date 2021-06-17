@@ -4,21 +4,10 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses } from '../../app/actions/course.actions';
 
-// const courses = [
-//   { name: 'Wade Cooper' },
-//   { name: 'Arlene Mccoy' },
-//   { name: 'Devon Webb' },
-//   { name: 'Tom Cook' },
-//   { name: 'Tanya Fox' },
-//   { name: 'Hellen Schmidt' }
-// ];
-
 export function CourseDropDown({ selectedCourse, setSelectedCourse }) {
   const courses = useSelector((state) => state.course.courses);
   const college = useSelector((state) => state.college.college);
   const dispatch = useDispatch();
-
-  //   const [selectedCourse, setSelectedCourse] = useState({ name: 'Select Course' });
 
   useEffect(() => {
     if (college) {
@@ -34,10 +23,6 @@ export function CourseDropDown({ selectedCourse, setSelectedCourse }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [college, dispatch]);
-
-  const handleCourseChange = (e) => {
-    setSelectedCourse();
-  };
 
   if (!courses) {
     return <div>Loading...</div>;

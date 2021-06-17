@@ -13,7 +13,6 @@ export function CompareCourses() {
     courseList.push(course);
     setCoursesToCompare(courseList);
   };
-  console.log(coursesToCompare);
 
   return (
     <div>
@@ -29,7 +28,7 @@ export function CompareCourses() {
             </div>
             <div className="flex">
               {coursesToCompare.map((course) => (
-                <CompareCard course={course} />
+                <CompareCard key={course._id} course={course} />
               ))}
             </div>
             <div className="w-80">
