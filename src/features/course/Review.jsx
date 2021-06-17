@@ -67,7 +67,7 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
               <div className="flex-none flex items-center">
                 {profile ? (
                   <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
-                    {review.courseId.abbreviation} {review.courseId.number}
+                    {review.courseId.shortName}
                     {'  '}
                     <span className="hidden sm:block text-gray-500 font-normal">
                       {'  '} was reviewed by you

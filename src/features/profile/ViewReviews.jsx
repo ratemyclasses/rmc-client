@@ -17,7 +17,8 @@ export function ViewReviews() {
       dispatch(
         getReviews({
           userId: user._id,
-          populate: ['courseId']
+          populate: ['courseId'],
+          select: ['courseId.shortName']
         })
       );
     }

@@ -17,30 +17,32 @@ export function EditProfile({}) {
   if (!user) {
     return <div> Loading .. </div>;
   }
-  const newValues = {
-    email: user.email,
-    firstName: user.firstName || '',
-    lastName: user.lastName || '',
-    displayName: user.displayName || ''
-  };
   const labels = [
     { label: 'Email', key: 'email' },
     { label: 'First Name', key: 'firstName' },
     { label: 'Last Name', key: 'lastName' },
     { label: 'Display Name', key: 'displayName' }
   ];
-  const validate = Yup.object({
-    firstName: Yup.string('Invalid. Must only have letters')
-      .matches(/^[A-Za-z]+$/, 'Invalid. Must only have letters')
-      .nullable(),
-    lastName: Yup.string('Invalid. Must only have letters')
-      .matches(/^[A-Za-z]+$/, 'Invalid. Must only have letters')
-      .nullable(),
-    email: Yup.string().email().nullable()
-  });
   return (
     <div className="w-3/4">
-      <Formik initialValues={newValues} validationSchema={validate} onSubmit={onSubmit}>
+      <Formik
+        initialValues={{
+          email: user.email,
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          displayName: user.displayName || ''
+        }}
+        validationSchema={Yup.object({
+          firstName: Yup.string('Invalid. Must only have letters')
+            .matches(/^[A-Za-z]+$/, 'Invalid. Must only have letters')
+            .nullable(),
+          lastName: Yup.string('Invalid. Must only have letters')
+            .matches(/^[A-Za-z]+$/, 'Invalid. Must only have letters')
+            .nullable(),
+          email: Yup.string().email().nullable()
+        })}
+        onSubmit={onSubmit}
+      >
         <Form>
           <h2 className="mt-6 mb-2 font-bold">Personal Information </h2>
           <div className="mr-2 overflow-hidden sm:rounded-md">

@@ -78,17 +78,13 @@ export function CourseCard() {
     }
 
     return (
-      <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>
-        {authenticated ? (
-          <CreateReviewForm
-            setOpen={setOpen}
-            setSuccess={setSuccess}
-            initValues={{ ...initValues }}
-            aggsByInstructor={course.aggsByInstructor || []}
-          />
-        ) : (
-          <>{AuthForm}</>
-        )}
+      <Modal open={open} setOpen={setOpen} width="4xl">
+        <CreateReviewForm
+          setOpen={setOpen}
+          setSuccess={setSuccess}
+          initValues={{ ...initValues }}
+          aggsByInstructor={course.aggsByInstructor || []}
+        />
       </Modal>
     );
   };
