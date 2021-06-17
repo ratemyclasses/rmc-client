@@ -1,11 +1,12 @@
 /*eslint-disable*/
 import { ChartBarIcon, ChatIcon, UserIcon } from '@heroicons/react/solid';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { reset } from '../../app/actions/common.actions';
 import { ActivateBar } from '../../common/ActivateBar';
 import { Navbar } from '../../common/Navbar';
-import { BookmarkedCoursesView } from './BookmarkedCoursesView';
+import { BookmarkedCourses } from './BookmarkedCourses';
 import { EditProfile } from './EditProfile';
 import { ViewReviews } from './ViewReviews';
 
@@ -15,13 +16,19 @@ export function Profile() {
   const mapping = {
     'My Reviews': <ViewReviews />,
     'My Profile': <EditProfile />,
-    'Bookmarked Courses': <BookmarkedCoursesView />
+    'Bookmarked Courses': <BookmarkedCourses />
   };
   const navItems = [
     { label: 'My Profile', icon: <UserIcon className={iconStyle} /> },
     { label: 'My Reviews', icon: <ChatIcon className={iconStyle} /> },
     { label: 'Bookmarked Courses', icon: <ChartBarIcon className={iconStyle} /> }
   ];
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(reset());
+  });
+
   const changeDisplay = (e) => {
     setReviewOrProfile(e.target.innerText);
   };

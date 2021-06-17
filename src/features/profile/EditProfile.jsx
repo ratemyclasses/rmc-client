@@ -10,19 +10,23 @@ import { ResetPasswordProfile } from './ResetPasswordProfile';
 export function EditProfile({}) {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-  const onSubmit = (values, { setSubmitting }) => {
-    dispatch(updateUser(values));
-    setSubmitting(false);
-  };
-  if (!user) {
-    return <div> Loading .. </div>;
-  }
+
   const labels = [
     { label: 'Email', key: 'email' },
     { label: 'First Name', key: 'firstName' },
     { label: 'Last Name', key: 'lastName' },
     { label: 'Display Name', key: 'displayName' }
   ];
+
+  const onSubmit = (values, { setSubmitting }) => {
+    dispatch(updateUser(values));
+    setSubmitting(false);
+  };
+
+  if (!user) {
+    return <div> Loading .. </div>;
+  }
+
   return (
     <div className="w-3/4">
       <Formik

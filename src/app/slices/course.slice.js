@@ -61,7 +61,12 @@ export const courseSlice = createSlice({
       state.status = STATUS.success;
     },
     [reset.fulfilled]: (state, action) => {
-      state = initialState;
+      state.courses = initialState.courses;
+      state.course = initialState.course;
+      state.error = initialState.error;
+      state.status = initialState.status;
+      state.compareCourses = initialState.compareCourses;
+      state.totalCount = initialState.totalCount;
     },
     [toggleCompareCourse.fulfilled]: (state, action) => {
       if (state.compareCourses.find((course) => course._id === action.payload._id)) {

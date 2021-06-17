@@ -127,11 +127,13 @@ export function Navbar() {
                 />
               </Link>
             </div>
-            <div className="ml-6">
-              <div className="flex space-x-4">
-                <CustomDropdown options={options} handleChange={onChange} />
+            {location.pathname !== '/profile' && (
+              <div className="ml-6">
+                <div className="flex space-x-4">
+                  <CustomDropdown options={options} handleChange={onChange} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="absolute float-right inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div className={user ? 'hidden' : 'px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'}>
