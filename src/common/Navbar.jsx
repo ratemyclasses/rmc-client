@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { logout } from '../app/actions/auth.actions';
 import { getCollegeByTag, getColleges } from '../app/actions/college.actions';
 import { STATUS } from '../app/constants';
 import { hasRoles } from '../features/utils';
 import { CustomDropdown } from './CustomDropdown';
 
-export function Navbar({ moderate = false }) {
+export function Navbar() {
   const dispatch = useDispatch();
   const collegeStatus = useSelector((state) => state.college.status);
   const colleges = useSelector((state) => state.college.colleges);
   const currCollege = useSelector((state) => state.college.college);
   const user = useSelector((state) => state.user.user);
+  const location = useLocation();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const history = useHistory();
   const { tag } = useParams();
@@ -61,8 +62,12 @@ export function Navbar({ moderate = false }) {
   }, [dispatch, tag]);
 
   const onChange = ({ value }) => {
-    if (value) {
-      history.push(moderate ? `/moderate/u/${value}` : `/u/${value}`);
+    if (location.pathname.includes('/moderate')) {
+      history.push(`/moderate/u/${value}`);
+    } else if (location.pathname.includes('/courses')) {
+      history.push(`/courses/u/${value}`);
+    } else if (location.pathname.includes('/compare')) {
+      history.push(`/compare/u/${value}`);
     }
   };
 
@@ -190,7 +195,7 @@ export function Navbar({ moderate = false }) {
                   Your Profile
                 </Link>
                 <Link
-                  to="/u/ucb"
+                  to="/courses/u/ucb"
                   onClick={() => setUserMenuOpen(false)}
                   className={
                     !userMenuOpen

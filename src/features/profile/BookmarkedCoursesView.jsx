@@ -26,7 +26,7 @@ export function BookmarkedCoursesView() {
         <ul className="flex flex-col bg-white-300 p-4">
           {courses.map((course) => {
             return (
-              <Link to={`/u/${college.tag}/${course._id}`}>
+              <Link to={`/courses/u/${college.tag}/${course._id}`}>
                 <li className="border-indigo-400 flex flex-row mb-2 w-200">
                   <div className="select-none cursor-pointer bg-indigo-200 rounded-md flex flex-1 items-center p-4  transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
                     <div className="flex flex-col rounded-md w-10 h-10 bg-indigo-300 justify-center items-center mr-4">

@@ -10,7 +10,7 @@ export function ModerateDashboard() {
 
   return (
     <div>
-      <Navbar moderate />
+      <Navbar />
       <SearchFilters />
       <div className="flex items-start justify-between">
         <div className="hidden sm:block w-full border-r border-gray-200 sm:w-64 lg:w-96">

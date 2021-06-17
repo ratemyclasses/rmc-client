@@ -40,7 +40,7 @@ function App() {
             path="/moderate/u/:tag"
             component={requireAuth(ModerateDashboard, ['ADMIN', 'MODERATOR'])}
           />
-          <Route path="/u/:tag" component={Dashboard} />
+          <Route path="/courses/u/:tag" component={Dashboard} />
           <Route path="/compare/u/:tag" component={CompareCourses} />
           <Route exact path="/" component={Landing} />
           <Route path="/*" component={PageNotFound} />

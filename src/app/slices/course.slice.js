@@ -6,13 +6,22 @@ import { STATUS } from '../constants';
 
 const initialState = {
   courses: [],
+  compareCourses: [],
   course: null,
   status: STATUS.idle,
   error: null,
   totalCount: 0
 };
 
-const { createCourse, getCourses, getCourseById, updateCourseById, deleteCourseById } = actions;
+const {
+  createCourse,
+  getCourses,
+  getCourseById,
+  updateCourseById,
+  deleteCourseById,
+  toggleCompareCourse,
+  getCompareCourseByCollege
+} = actions;
 
 export const courseSlice = createSlice({
   name: 'course',
@@ -28,6 +37,10 @@ export const courseSlice = createSlice({
       state.courses = action.payload.data;
       state.totalCount = action.payload.totalCount;
       state.status = STATUS.success;
+    },
+    [getCourses.rejected]: (state, action) => {
+      state.courses = [];
+      state.status = STATUS.failed;
     },
     [getCourseById.fulfilled]: (state, action) => {
       state.course = action.payload;
@@ -49,6 +62,25 @@ export const courseSlice = createSlice({
     },
     [reset.fulfilled]: (state, action) => {
       state = initialState;
+    },
+    [toggleCompareCourse.fulfilled]: (state, action) => {
+      if (state.compareCourses.find((course) => course._id === action.payload._id)) {
+        state.compareCourses = state.compareCourses.filter(({ _id }) => _id !== action.payload._id);
+      } else {
+        state.compareCourses.push(action.payload);
+      }
+      state.courses = state.courses.filter(({ _id }) => _id !== action.payload._id);
+      state.status = STATUS.success;
+    },
+    [getCompareCourseByCollege.rejected]: (state, action) => {
+      state.compareCourses = [];
+      state.status = STATUS.failed;
+    },
+    [getCompareCourseByCollege.fulfilled]: (state, action) => {
+      state.compareCourses = action.payload;
+      const ids = action.payload.map(({ _id }) => _id);
+      state.courses = state.courses.filter(({ _id }) => !ids.includes(_id));
+      state.status = STATUS.success;
     }
   }
 });
