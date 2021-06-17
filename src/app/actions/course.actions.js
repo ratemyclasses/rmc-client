@@ -47,3 +47,19 @@ export const toggleBookmarkCourseById = createAsyncThunk(
     return { _id: id };
   }
 );
+
+export const toggleCompareCourse = createAsyncThunk(
+  ACTIONS.course.toggleCompareCourse,
+  async ({ collegeId, courseId }) => {
+    const res = await axios.patch(`${BASE_URL}/colleges/${collegeId}/courses/${courseId}/compare`);
+    return res.data;
+  }
+);
+
+export const getCompareCourseByCollege = createAsyncThunk(
+  ACTIONS.course.getCompareCourseByCollege,
+  async (collegeId) => {
+    const res = await axios.get(`${BASE_URL}/colleges/${collegeId}/compare`);
+    return res.data?.courses;
+  }
+);

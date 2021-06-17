@@ -8,12 +8,11 @@ import {
   UsersIcon
 } from '@heroicons/react/solid';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { STATISTICS } from '../../app/constants';
 import { rounded } from '../utils';
 import { StatisticPill } from './StatisticPill';
 
-export function SummaryColumn({ col }) {
+export function SummaryColumn({ col, aggregate, compare }) {
   const fields = {
     Structure: {
       avgProfResponsiveness: {
@@ -48,7 +47,7 @@ export function SummaryColumn({ col }) {
         icon: <CheckCircleIcon className="h-3 w-3 text-indigo-600" />,
         label: 'Quiz Frequency',
         questionContent: null,
-        type: STATISTICS.majority
+        type: STATISTICS.list
       },
       projHeavyPercent: {
         icon: <PresentationChartBarIcon className="h-3 w-3 text-indigo-600" />,
@@ -66,28 +65,69 @@ export function SummaryColumn({ col }) {
     }
   };
 
-  const course = useSelector((state) => state.course.course);
-
-  if (!course) {
+  if (!aggregate) {
     return <div> Loading...</div>;
   }
 
   const renderRows = () => {
     let existCount = 0;
     const rows = Object.keys(fields[col]).map((key) => {
-      if (fields[col][key].type === STATISTICS.rating && course[key]) {
+      if (fields[col][key].type === STATISTICS.rating && aggregate[key]) {
         existCount += 1;
-        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+        return (
+          <SummaryRow
+            key={key}
+            field={fields[col][key]}
+            value={aggregate[key]}
+            condense={compare}
+          />
+        );
       }
 
-      if (fields[col][key].type === STATISTICS.percentage && course[key] !== null) {
+      if (fields[col][key].type === STATISTICS.percentage && aggregate[key] !== null) {
         existCount += 1;
-        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+        return (
+          <SummaryRow
+            key={key}
+            field={fields[col][key]}
+            value={aggregate[key]}
+            condense={compare}
+          />
+        );
       }
 
-      if (fields[col][key].type === STATISTICS.majority && course[key].length) {
+      if (fields[col][key].type === STATISTICS.majority && aggregate[key].length) {
         existCount += 1;
-        return <SummaryRow key={key} field={fields[col][key]} value={course[key]} />;
+        return (
+          <SummaryRow
+            key={key}
+            field={fields[col][key]}
+            value={aggregate[key]}
+            condense={compare}
+          />
+        );
+      }
+
+      if (fields[col][key].type === STATISTICS.list && aggregate[key].length) {
+        existCount += 1;
+        return (
+          <SummaryRow
+            key={key}
+            field={fields[col][key]}
+            value={aggregate[key]}
+            condense={compare}
+          />
+        );
+      }
+
+      if (compare) {
+        return (
+          <div key={key} className="flex justify-center mb-2">
+            <span className="px-2 py-2 flex items-center text-xs rounded-lg font-semibold text-gray-500 bg-gray-50">
+              Inadequate Data
+            </span>
+          </div>
+        );
       }
 
       return '';
@@ -96,7 +136,7 @@ export function SummaryColumn({ col }) {
     return (
       <div>
         {rows}
-        {existCount < rounded(0.5 * Object.keys(fields[col]).length) && (
+        {existCount < rounded(0.5 * Object.keys(fields[col]).length) && !compare && (
           <p className="text-gray-500">
             {col === 'Structure'
               ? 'Share details about this course’s structure.'
@@ -109,20 +149,24 @@ export function SummaryColumn({ col }) {
 
   return (
     <div>
-      <p className="font-bold text-xl mb-2">{col}</p>
+      {!compare && <p className="font-bold text-xl mb-2">{col}</p>}
       {renderRows()}
     </div>
   );
 }
 
-function SummaryRow({ field, value }) {
+function SummaryRow({ field, value, condense }) {
   const { icon, label } = field;
   return (
-    <div className="flex items-center mb-2">
-      <span className="rounded-md relative p-1 bg-purple-200 mr-2">{icon}</span>
-      <div className="text-gray-700 mr-2">{label}:</div>
-      <StatisticPill field={field} value={value} />
-      {/* <div className="text-gray-700">{value}</div> */}
+    <div className={`flex items-center ${condense ? 'justify-center' : ''} mb-2`}>
+      {!condense && (
+        <>
+          <span className="rounded-md relative p-1 bg-purple-200 mr-2">{icon}</span>
+          <div className="text-gray-700 mr-2">{label}:</div>
+        </>
+      )}
+
+      <StatisticPill field={field} value={value} expand={condense} />
     </div>
   );
 }

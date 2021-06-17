@@ -26,7 +26,10 @@ export function UniversityCard(props) {
             Explore and add to the thousands of courses and reviews at {props.name}.
           </p>{' '}
           {/* Access props.description here */}
-          <Link className="mt-3 text-indigo-500 inline-flex items-center" to={`/u/${props.tag}`}>
+          <Link
+            className="mt-3 text-indigo-500 inline-flex items-center"
+            to={`/courses/u/${props.tag}`}
+          >
             Check Reviews
             <svg
               fill="none"

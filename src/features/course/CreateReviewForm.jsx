@@ -125,16 +125,17 @@ function Step3({ formValues }) {
       </div>
       <h1 className="mt-3 font-bold">How often are there quizzes (if any)?</h1>
       <Field
-        name="quizFrequency"
+        name="quizFrequencies"
         component={Select}
         options={quizFrequencies}
-        values={[formValues.quizFrequency]}
+        values={formValues.quizFrequencies}
+        isMulti
       />
     </div>
   );
 }
 
-function Step2({ formValues, professors }) {
+function Step2({ formValues, instructors }) {
   return (
     <div>
       <div className="flex flex-wrap gap-2">
@@ -149,28 +150,28 @@ function Step2({ formValues, professors }) {
         />
       </div>
       <h1 className="mt-3 font-bold">
-        Who was your professor? <span className="text-sm text-red-500">*</span>
+        Who was your instructor (lecturer)? <span className="text-sm text-red-500">*</span>
       </h1>
       <Field
-        name="professor"
-        id="professor"
+        name="instructor"
+        id="instructor"
         required
         component={Dropdown}
-        label="Choose professor"
-        options={professors}
+        label="Choose instructor"
+        options={instructors}
         value={{
-          name: formValues.professor || "Couldn't find my professor",
-          value: formValues.professor
+          name: formValues.instructor || "Couldn't find my instructor",
+          value: formValues.instructor
         }}
       />
-      {formValues.professor === "Couldn't find my professor" && (
+      {formValues.instructor === "Couldn't find my instructor" && (
         <div className="sm:w-1/2">
           <h1 className="mt-3 font-bold">
-            Different Professor? <span className="text-sm text-red-500">*</span>
+            Different Instructor? <span className="text-sm text-red-500">*</span>
           </h1>
           <Field
-            name="profName"
-            id="profName"
+            name="instructorName"
+            id="instructorName"
             type="text"
             required
             component={Input}
@@ -179,14 +180,14 @@ function Step2({ formValues, professors }) {
           />
         </div>
       )}
-      <h1 className="mt-3 mb-3 font-bold">How responsive was your professor?</h1>
+      <h1 className="mt-3 mb-3 font-bold">How responsive was your instructor?</h1>
       <Field
-        name="profResponsiveness"
+        name="instResponsiveness"
         component={Select}
         minLabel="Not Responsive"
         maxLabel="Very Responsive"
         options={ratings}
-        values={[formValues.profResponsiveness]}
+        values={[formValues.instResponsiveness]}
       />
       <h1 className="mt-10 mb-3 font-bold">How helpful were the course staff (if any)?</h1>
       <Field
@@ -256,7 +257,7 @@ function Step1({ formValues }) {
   );
 }
 
-export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, professors = [] }) {
+export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, aggsByInstructor = [] }) {
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const course = useSelector((state) => state.course.course);
@@ -267,24 +268,24 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
   useEffect(() => {
     if (!isFirstRun.current.length) {
       isFirstRun.current = [
-        ...professors.map((p) => ({
-          name: p,
-          value: p
+        ...aggsByInstructor.map((agg) => ({
+          name: agg.instructorName,
+          value: agg.instructorName
         })),
-        { name: "Couldn't find my professor", value: "Couldn't find my professor" }
+        { name: "Couldn't find my instructor", value: "Couldn't find my instructor" }
       ];
 
       if (!initValues.timeTaken) {
         initValues.timeTaken = quarters[0].value;
       }
 
-      if (!initValues.professor) {
-        initValues.professor = isFirstRun.current[0].value;
-      } else if (initValues.professor !== "Couldn't find my professor") {
-        isFirstRun.current.unshift({ name: initValues.professor, value: initValues.professor });
+      if (!initValues.instructor) {
+        initValues.instructor = isFirstRun.current[0].value;
+      } else if (initValues.instructor !== "Couldn't find my instructor") {
+        isFirstRun.current.unshift({ name: initValues.instructor, value: initValues.instructor });
       }
     }
-  }, [status, setSuccess, professors, initValues]);
+  }, [status, setSuccess, aggsByInstructor, initValues]);
 
   const validate = {
     1: Yup.object({
@@ -298,7 +299,7 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
     }),
     2: Yup.object({
       mandatoryAttendance: Yup.boolean().required('Required'),
-      professor: Yup.string().required('Required'),
+      instructor: Yup.string().required('Required'),
       profResponsiveness: Yup.number().integer().min(1).max(ratings.length),
       staffRating: Yup.number().integer().min(1).max(ratings.length)
     }),
@@ -306,7 +307,7 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
       examDifficulty: Yup.number().integer().min(1).max(ratings.length).required('Required'),
       projectHeavy: Yup.boolean(),
       fairDeadlines: Yup.boolean(),
-      quizFrequency: Yup.string()
+      quizFrequencies: Yup.array().min(1, 'Required').max(quizFrequencies.length)
     }),
     4: Yup.object({
       rating: Yup.number().integer().min(1).max(ratings.length).required('Required'),
@@ -326,8 +327,11 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
         }
       });
 
-      if (cleanedData.professor === "Couldn't find my professor") {
-        cleanedData.professor = cleanedData.profName;
+      if (cleanedData.instructor !== "Couldn't find my instructor") {
+        cleanedData.instructorName = cleanedData.instructor;
+        cleanedData.aggregateId = aggsByInstructor.find(
+          (agg) => agg.instructorName === cleanedData.instructorName
+        )._id;
       }
 
       if (initValues._id) {
@@ -397,7 +401,7 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, profess
         {({ values }) => (
           <Form>
             {step === 1 && <Step1 formValues={values} />}
-            {step === 2 && <Step2 formValues={values} professors={isFirstRun.current} />}
+            {step === 2 && <Step2 formValues={values} instructors={isFirstRun.current} />}
             {step === 3 && <Step3 formValues={values} />}
             {step === 4 && <Step4 formValues={values} />}
 

@@ -1,41 +1,78 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { logout } from '../app/actions/auth.actions';
 import { getCollegeByTag, getColleges } from '../app/actions/college.actions';
 import { STATUS } from '../app/constants';
 import { hasRoles } from '../features/utils';
+import { CustomDropdown } from './CustomDropdown';
 
-export function Navbar({ moderate = false }) {
+export function Navbar() {
   const dispatch = useDispatch();
   const collegeStatus = useSelector((state) => state.college.status);
   const colleges = useSelector((state) => state.college.colleges);
   const currCollege = useSelector((state) => state.college.college);
   const user = useSelector((state) => state.user.user);
+  const location = useLocation();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const history = useHistory();
   const { tag } = useParams();
 
-  const tags = colleges.map((college) => college.tag);
+  const tags = [];
+  const options = [];
+  colleges.forEach((college) => {
+    tags.push(college.tag);
+    if (!tag) {
+      options.push({
+        name: college.shortName,
+        value: college.tag
+      });
+    } else if (currCollege && currCollege.tag !== college.tag) {
+      options.push({
+        name: college.shortName,
+        value: college.tag
+      });
+    }
+  });
+
+  if (tag && currCollege) {
+    options.unshift({
+      name: currCollege.shortName,
+      value: currCollege.tag
+    });
+  } else {
+    options.unshift({ name: 'Select a school', value: null });
+  }
 
   useEffect(() => {
     if (collegeStatus === STATUS.idle) {
       dispatch(
         getColleges({
-          fields: ['shortName', 'tag', 'website']
+          fields: ['shortName', 'tag']
         })
       );
     }
+  }, [dispatch, collegeStatus]);
 
-    if (tag && tags.includes(tag) && (!currCollege || tag !== currCollege.tag)) {
+  useEffect(() => {
+    if (tag && (!currCollege || tag !== currCollege.tag)) {
       dispatch(getCollegeByTag(tag));
     }
-  }, [tag, tags, dispatch, collegeStatus, currCollege]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, tag]);
 
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [collegeMenuOpen, setCollegeMenuOpen] = useState(false);
+  const onChange = ({ value }) => {
+    if (location.pathname.includes('/moderate')) {
+      history.push(`/moderate/u/${value}`);
+    } else if (location.pathname.includes('/courses')) {
+      history.push(`/courses/u/${value}`);
+    } else if (location.pathname.includes('/compare')) {
+      history.push(`/compare/u/${value}`);
+    }
+  };
 
   return (
-    <nav className="bg-white">
+    <nav className="bg-white ">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -92,59 +129,7 @@ export function Navbar({ moderate = false }) {
             </div>
             <div className="ml-6">
               <div className="flex space-x-4">
-                <div>
-                  <button
-                    onClick={() => setCollegeMenuOpen(!collegeMenuOpen)}
-                    type="button"
-                    className=" border border-gray-300 bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
-                    id="options-menu"
-                  >
-                    {currCollege ? currCollege.shortName : 'Select a School'}
-                    <svg
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      viewBox="0 0 1792 1792"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z" />
-                    </svg>
-                  </button>
-                </div>
-
-                <div
-                  className={
-                    !collegeMenuOpen
-                      ? 'hidden'
-                      : 'origin-top-right absolute left-12 mt-12 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
-                  }
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="user-menu-button"
-                  tabIndex="-1"
-                >
-                  {colleges.map((college) => {
-                    if (college.tag !== tag) {
-                      return (
-                        <Link
-                          onClick={() => setCollegeMenuOpen(false)}
-                          to={moderate ? `/moderate/u/${college.tag}` : `/u/${college.tag}`}
-                          className={
-                            !collegeMenuOpen ? 'hidden' : 'block px-4 py-2 text-sm text-gray-700'
-                          }
-                          role="menuitem"
-                          tabIndex="-1"
-                          id="user-menu-item-0"
-                          key={college.tag}
-                        >
-                          {college.shortName}
-                        </Link>
-                      );
-                    }
-
-                    return '';
-                  })}
-                </div>
+                <CustomDropdown options={options} handleChange={onChange} />
               </div>
             </div>
           </div>
@@ -210,7 +195,7 @@ export function Navbar({ moderate = false }) {
                   Your Profile
                 </Link>
                 <Link
-                  to="/u/ucb"
+                  to="/courses/u/ucb"
                   onClick={() => setUserMenuOpen(false)}
                   className={
                     !userMenuOpen
@@ -222,6 +207,20 @@ export function Navbar({ moderate = false }) {
                   id="user-menu-item-1"
                 >
                   Course Search
+                </Link>
+                <Link
+                  to="/compare/u/ucb"
+                  onClick={() => setUserMenuOpen(false)}
+                  className={
+                    !userMenuOpen
+                      ? 'hidden'
+                      : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                  }
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-1"
+                >
+                  Compare Courses
                 </Link>
                 {user && hasRoles(user.roles, ['ADMIN', 'MODERATOR']) && (
                   <Link

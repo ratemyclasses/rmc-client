@@ -6,13 +6,13 @@ import { ChartBarIcon, ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid
 import moment from 'moment';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCourseById } from '../../app/actions/course.actions';
 import {
   clearVoteReviewById,
   deleteReviewById,
   downvoteReviewById,
   upvoteReviewById
 } from '../../app/actions/review.actions';
-import { getCourseById } from '../../app/actions/course.actions';
 import { APPROVAL_STATUS, STATISTICS } from '../../app/constants';
 import { StatisticPill } from './StatisticPill';
 
@@ -32,6 +32,17 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
     } else if (review.downvoters.includes(user._id)) {
       downvoted = true;
     }
+  }
+
+  // useEffect(() => {
+  //   if (college) {
+  //     dispatch(getCourseById({ collegeId: college._id, id: review.courseId }));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [college]);
+
+  if (profile && !course) {
+    return <div> Loading Reviews...</div>;
   }
 
   return (

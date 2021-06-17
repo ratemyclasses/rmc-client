@@ -13,7 +13,9 @@ export const ACTIONS = {
     create: 'course/create',
     updateById: 'course/update',
     deleteById: 'course/delete',
-    toggleBookmarkById: 'course/toggleBookmark'
+    toggleBookmarkById: 'course/toggleBookmark',
+    toggleCompareCourse: 'course/toggleCompareCourse',
+    getCompareCourseByCollege: 'course/getCompareCourseByCollege'
   },
   college: {
     get: 'college/get',

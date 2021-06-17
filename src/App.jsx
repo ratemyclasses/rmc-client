@@ -7,6 +7,7 @@ import { ActivateBar } from './common/ActivateBar';
 import { PageNotFound } from './common/PageNotFound';
 import { requireAuth } from './common/requireAuth';
 import { Auth } from './features/auth/Auth';
+import { CompareCourses } from './features/compare/CompareCourses';
 import { Dashboard } from './features/dashboard/Dashboard';
 import { Landing } from './features/landing/Landing';
 import { ModerateDashboard } from './features/moderator/ModerateDashboard';
@@ -39,7 +40,8 @@ function App() {
             path="/moderate/u/:tag"
             component={requireAuth(ModerateDashboard, ['ADMIN', 'MODERATOR'])}
           />
-          <Route path="/u/:tag" component={Dashboard} />
+          <Route path="/courses/u/:tag" component={Dashboard} />
+          <Route path="/compare/u/:tag" component={CompareCourses} />
           <Route exact path="/" component={Landing} />
           <Route path="/*" component={PageNotFound} />
         </Switch>

@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
-import { signup } from '../../app/actions/auth.actions';
+import { googleLogin, signup } from '../../app/actions/auth.actions';
 import { STATUS } from '../../app/constants';
 import { Input } from '../../common/Input';
 
@@ -136,6 +136,13 @@ export function SignupForm({ setSignup, setOpen }) {
           </Form>
         )}
       </Formik>
+      <button
+        onClick={() => dispatch(googleLogin())}
+        className="group relative flex justify-center py-2 px-4 border text-sm font-medium rounded-md text-red-600 bg-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
+        type="button"
+      >
+        Continue with Google
+      </button>
     </div>
   );
 }

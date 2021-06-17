@@ -42,7 +42,7 @@ export function ReviewCard() {
         <div className="w-1/6" />
         <Link
           className="text-indigo-600 hover:text-indigo-500"
-          to={`/u/${college.tag}/${review.courseId}`}
+          to={`/courses/u/${college.tag}/${review.courseId}`}
           target="_blank"
           rel="noopener noreferrer"
         >
