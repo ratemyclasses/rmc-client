@@ -238,6 +238,20 @@ export function Navbar() {
                     Approve Reviews
                   </Link>
                 )}
+                <a
+                  href="https://forms.gle/npzDseY42HSDHBRM8"
+                  target="_blank"
+                  onClick={() => setUserMenuOpen(false)}
+                  className={
+                    !userMenuOpen
+                      ? 'hidden'
+                      : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                  }
+                  rel="noopener noreferrer"
+                  id="user-menu-item-3"
+                >
+                  Report a bug
+                </a>
                 <button
                   onClick={() => dispatch(logout())}
                   className={
@@ -247,7 +261,7 @@ export function Navbar() {
                   }
                   role="menuitem"
                   tabIndex="-1"
-                  id="user-menu-item-3"
+                  id="user-menu-item-4"
                   type="button"
                 >
                   Sign out

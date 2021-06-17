@@ -7,7 +7,7 @@ import { googleLogin, login } from '../../app/actions/auth.actions';
 import { STATUS } from '../../app/constants';
 import { Input } from '../../common/Input';
 
-export function LoginForm({ setSignup }) {
+export function LoginForm({ setSignup, setOpen }) {
   const status = useSelector(({ auth }) => auth.status);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -15,6 +15,9 @@ export function LoginForm({ setSignup }) {
   const onSubmit = (values, { setSubmitting }) => {
     dispatch(login(values));
     setSubmitting(false);
+    if (setOpen) {
+      setOpen(false);
+    }
   };
 
   return (

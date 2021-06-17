@@ -9,8 +9,7 @@ import { APPROVAL_STATUS } from '../../app/constants';
 import { CustomDropdown } from '../../common/CustomDropdown';
 import { Modal } from '../../common/Modal';
 import { Sidenote } from '../../common/Sidenote';
-import { LoginForm } from '../auth/LoginForm';
-import { SignupForm } from '../auth/SignupForm';
+import { AuthModal } from '../auth/AuthModal';
 import { determinePillColor, hasRoles, rounded } from '../utils';
 import './CourseCard.css';
 import { CourseResources } from './CourseResources';
@@ -31,7 +30,6 @@ export function CourseCard() {
   const [instructor, setInstructor] = useState({ name: 'All Professors', value: null });
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
-  const [signup, setSignup] = useState(false);
   const [initValues, setInitValues] = useState({});
 
   useEffect(() => {
@@ -75,11 +73,9 @@ export function CourseCard() {
   }
 
   const renderModal = () => {
-    const AuthForm = signup ? (
-      <SignupForm setSignup={setSignup} />
-    ) : (
-      <LoginForm setSignup={setSignup} />
-    );
+    if (!authenticated) {
+      return <AuthModal open={open} />;
+    }
 
     return (
       <Modal open={open} setOpen={setOpen} width={authenticated ? '4xl' : 'md'}>

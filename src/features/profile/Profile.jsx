@@ -59,6 +59,7 @@ export function Profile() {
                     className="text-indigo-700"
                     href="https://forms.gle/npzDseY42HSDHBRM8"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Report it here
                   </a>

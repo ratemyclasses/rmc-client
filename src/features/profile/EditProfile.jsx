@@ -54,7 +54,6 @@ export function EditProfile({}) {
                         name={item.key}
                         id={item.key}
                         type="text"
-                        required
                         component={Input}
                         label=""
                         placeholder={item.label}
