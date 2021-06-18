@@ -19,6 +19,7 @@ export function ReviewList() {
       dispatch(
         getReviews({
           approved: APPROVAL_STATUS.in_progress,
+          collegeId: college._id,
           limit,
           offset,
           sortBy: ['createdAt:1', 'updatedAt:1'],

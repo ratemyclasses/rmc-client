@@ -34,9 +34,52 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
     }
   }
 
+  const renderHeader = () => {
+    if (profile) {
+      return (
+        <Link
+          to={`/courses/u/${review.collegeId.tag}/${review.courseId._id}`}
+          className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1"
+        >
+          {review.courseId.shortName}
+          {'  '}
+          <span className="hidden sm:block text-gray-500 font-normal">
+            {'  '} was reviewed by you
+          </span>
+        </Link>
+      );
+    }
+
+    if (moderate) {
+      return (
+        <Link
+          to={`/courses/u/${review.collegeId.tag}/${review.courseId._id}`}
+          className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1"
+        >
+          {review.courseId.shortName}
+          {'  '}
+          <span className="hidden sm:block text-gray-500 font-normal">
+            {'  '} was reviewed by {review.userId.displayName || 'Anonymous User'}
+          </span>
+        </Link>
+      );
+    }
+
+    return (
+      <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
+        {review.userId._id ? review.userId.displayName || 'Anonymous User' : user.displayName}
+        {'  '}
+        <span className="hidden sm:block text-gray-500 font-normal">
+          {'  '}
+          {review.rating < 3 ? 'does not ' : ''}recommend{review.rating < 3 ? '' : 's'} this course
+        </span>
+      </p>
+    );
+  };
+
   return (
     <>
-      <div className="w-80 sm:w-full mx-0 mt-8 border-b">
+      <div className={`w-80 sm:w-full mx-0 mt-8 ${!moderate && 'border-b'}`}>
         {review.approved !== APPROVAL_STATUS.approved && (
           <span className="mb-16 ml-8 sm:ml-16 text-sm font-medium bg-red-100 py-1 px-2 rounded text-red-500 align-middle">
             UNDER REVIEW
@@ -47,34 +90,11 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
           <div>
             <div className="flex flex-wrap items-start">
               <div className="flex-none flex items-center">
-                {profile ? (
-                  <Link
-                    to="/courses/u/ucb"
-                    className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1"
-                  >
-                    {review.courseId.shortName}
-                    {'  '}
-                    <span className="hidden sm:block text-gray-500 font-normal">
-                      {'  '} was reviewed by you
-                    </span>
-                  </Link>
-                ) : (
-                  <p className="mr-4 text-sm sm:text-md font-bold flex items-center gap-1">
-                    {review.userId._id
-                      ? review.userId.displayName || 'Anonymous User'
-                      : user.displayName}
-                    {'  '}
-                    <span className="hidden sm:block text-gray-500 font-normal">
-                      {'  '}
-                      {review.rating < 3 ? 'does not ' : ''}recommend{review.rating < 3 ? '' : 's'}{' '}
-                      this course
-                    </span>
-                  </p>
-                )}
+                {renderHeader()}
                 <StatisticPill field={{ type: STATISTICS.rating }} value={review.rating} />
               </div>
               <div className="flex-none">
-                {user && user._id === (review.userId._id || review.userId) && (
+                {!profile && user && user._id === (review.userId._id || review.userId) && (
                   <button
                     className="text-red-500 p-2 ml-2 bg-gray-50 hover:bg-gray-100 rounded-full"
                     onClick={() =>
@@ -87,7 +107,8 @@ export function Review({ review, moderate = false, setInitValues, setOpen, profi
                     <TrashIcon className="h-5 h-5" />
                   </button>
                 )}
-                {user &&
+                {!profile &&
+                  user &&
                   user._id === (review.userId._id || review.userId) &&
                   review.approved !== APPROVAL_STATUS.approved && (
                     <button

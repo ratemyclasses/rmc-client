@@ -13,7 +13,7 @@ export function ReviewListItem({ review }) {
     >
       <div className="overflow-ellipsis overflow-hidden relative py-4 px-4 flex items-start justify-between">
         <div className="py-2 w-2/3 text-left">
-          <p className="float-left text-lg font-bold text-gray-900">{review.courseId.name}</p>
+          <p className="float-left text-lg font-bold text-gray-900">{review.courseId.shortName}</p>
           <p className="float-left text-md font-regular leading-5 text-gray-500 w-full truncate">
             {review.content}
           </p>

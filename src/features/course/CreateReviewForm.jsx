@@ -261,6 +261,7 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, aggsByI
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const course = useSelector((state) => state.course.course);
+  const college = useSelector((state) => state.college.college);
   const status = useSelector((state) => state.review.status);
 
   const isFirstRun = useRef([]);
@@ -318,7 +319,7 @@ export function CreateReviewForm({ setOpen, setSuccess, initValues = {}, aggsByI
 
   const onSubmit = (values, { setSubmitting }) => {
     if (step === 4) {
-      const cleanedData = {};
+      const cleanedData = { collegeId: college._id };
       Object.keys(values).forEach((key) => {
         if (isNumeric(values[key])) {
           cleanedData[key] = parseInt(values[key], 10);
